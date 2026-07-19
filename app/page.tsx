@@ -1,14 +1,18 @@
 import { SmoothScroll } from '@/components/smooth-scroll'
+import { Preloader } from '@/components/preloader'
 import { ScrollProgress } from '@/components/scroll-progress'
 import { SiteNav } from '@/components/site-nav'
 import { Hero } from '@/components/hero'
+import { CinematicSection } from '@/components/cinematic-section'
 import { JourneyScroll } from '@/components/journey-scroll'
+import { Boat360 } from '@/components/boat-360'
 import { SpecsSection } from '@/components/specs-section'
 import { FeaturesSection } from '@/components/features-section'
 import { GallerySection } from '@/components/gallery-section'
 import { PricingCta } from '@/components/pricing-cta'
 import { SiteFooter } from '@/components/site-footer'
-import { boat } from '@/lib/boat-data'
+import { AiChatWidget } from '@/components/ai-chat-widget'
+import { boat, cinematic } from '@/lib/boat-data'
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -47,19 +51,25 @@ export default function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <Preloader />
       <SmoothScroll>
         <ScrollProgress />
         <SiteNav />
         <main>
           <Hero />
+          <CinematicSection {...cinematic[0]} priority />
           <JourneyScroll />
+          <CinematicSection {...cinematic[1]} />
+          <Boat360 />
           <SpecsSection />
           <FeaturesSection />
+          <CinematicSection {...cinematic[2]} />
           <GallerySection />
           <PricingCta />
         </main>
         <SiteFooter />
       </SmoothScroll>
+      <AiChatWidget />
     </>
   )
 }

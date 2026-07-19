@@ -6,8 +6,8 @@ import { Anchor, MessageCircle, Menu, X } from 'lucide-react'
 
 const links = [
   { href: '#experiencia', label: 'A bordo' },
+  { href: '#tour360', label: 'Vista 360°' },
   { href: '#ficha', label: 'Ficha técnica' },
-  { href: '#destaques', label: 'Destaques' },
   { href: '#galeria', label: 'Galeria' },
   { href: '#negociar', label: 'Negociar' },
 ]
