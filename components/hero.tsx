@@ -60,7 +60,7 @@ export function Hero() {
       id="topo"
       className="relative flex h-[100svh] items-center justify-center overflow-hidden"
     >
-      <div ref={imgRef} className="absolute inset-0 -z-10 will-change-transform">
+      <div ref={imgRef} className="absolute inset-0 z-0 will-change-transform">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/hero-side.jpeg"

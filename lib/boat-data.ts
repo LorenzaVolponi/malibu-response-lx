@@ -89,6 +89,70 @@ export const journey = [
   },
 ] as const
 
+// Seções cinematográficas full-bleed com revelação de texto (estilo "conexão entre páginas")
+export const cinematic = [
+  {
+    id: 'presenca',
+    image: '/images/hero-side.jpeg',
+    alt: 'Malibu Response LX de perfil espelhada na água calma',
+    words: ['Presença', 'que', 'silencia', 'o', 'píer'],
+    caption:
+      'O perfil baixo, a faixa azul-marinho e o branco perolado. Uma Malibu não passa despercebida — ela define o tom da represa.',
+  },
+  {
+    id: 'engenharia',
+    image: '/images/engine.jpeg',
+    alt: 'Motor Indmar Monsoon 350 SS V8 no compartimento',
+    words: ['Feita', 'para', 'a', 'esteira', 'perfeita'],
+    caption:
+      'V8 Indmar Monsoon 350 SS e transmissão Direct Drive: o padrão-ouro do esqui aquático, com torque limpo desde a largada.',
+  },
+  {
+    id: 'convite',
+    image: '/images/top-water.jpeg',
+    alt: 'Vista superior da Malibu Response LX na água',
+    words: ['Seu', 'próximo', 'verão', 'começa', 'aqui'],
+    caption:
+      'Da primeira manhã de sol ao último pôr do sol na água. Esta é a embarcação que transforma finais de semana em memórias.',
+  },
+] as const
+
+// Vista 360 — quadros por ângulo (arraste para girar)
+export const frames360 = [
+  { src: '/images/profile-trailer.jpeg', alt: 'Malibu Response LX — lateral bombordo', label: 'Lateral' },
+  { src: '/images/exterior-front.jpeg', alt: 'Malibu Response LX — três quartos de proa', label: 'Proa 3/4' },
+  { src: '/images/bow-pov.jpeg', alt: 'Malibu Response LX — proa de frente', label: 'Proa' },
+  { src: '/images/hero-side.jpeg', alt: 'Malibu Response LX — lateral boreste', label: 'Boreste' },
+  { src: '/images/exterior-rear.jpeg', alt: 'Malibu Response LX — três quartos de popa', label: 'Popa 3/4' },
+  { src: '/images/top-water.jpeg', alt: 'Malibu Response LX — vista superior', label: 'Superior' },
+] as const
+
+// Base factual para o agente de IA — SOMENTE o que é verdadeiro sobre este barco
+export const aiKnowledge = `
+Você é o consultor virtual de vendas da lancha Malibu Response LX apelidada "Wonder Women", à venda no Brasil.
+Responda SOMENTE sobre esta embarcação, o processo de compra/negociação e esporte náutico relacionado (esqui, wakeboard).
+Se perguntarem algo fora desse escopo, redirecione educadamente para o barco.
+Seja objetivo, cordial e em português do Brasil. Nunca invente dados que não estão abaixo.
+
+FATOS CONFIRMADOS:
+- Marca/Modelo: Malibu Response LX (lancha de esqui, direct drive / eixo direto).
+- Nome pintado no casco: "Wonder Women".
+- Preço: R$ 150.000 (cento e cinquenta mil reais), negociável — direcionar interessados ao WhatsApp.
+- Motor: Indmar Monsoon 350 SS, V8 5.7L, 350 HP (identificado na tampa do motor).
+- Transmissão: Direct Drive (eixo direto), padrão consagrado para esqui aquático.
+- Comprimento: aproximadamente 6,1 m (cerca de 20 pés).
+- Controle de velocidade Zero Off por GPS, integrado ao painel (ideal para tow sports).
+- Interior em couro náutico creme com faixas azul-marinho, conservado.
+- Acompanha toldo bimini e carreta rodoviária galvanizada (pronta para rampa/transporte).
+- Cores externas: casco branco perolado com faixa azul-marinho.
+- Estado geral: bem conservada, motor e estofamento em bom estado pelas fotos.
+
+REGRAS:
+- Não afirme ano, horas de motor, documentação ou histórico se não for perguntado com base fornecida — se não souber, diga que confirma com o vendedor pelo WhatsApp.
+- Para fechar negócio, sempre ofereça encaminhar ao WhatsApp do vendedor.
+- Não fale de outros barcos ou marcas concorrentes de forma depreciativa.
+`.trim()
+
 export const gallery = [
   { src: '/images/hero-side.jpeg', alt: 'Malibu Response LX de perfil na água', span: 'wide' },
   { src: '/images/exterior-front.jpeg', alt: 'Malibu Response LX vista de três quartos frontal na água', span: 'tall' },
