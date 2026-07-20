@@ -2,14 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import { boat } from '@/lib/boat-data'
-import { Anchor, MessageCircle, Menu, X } from 'lucide-react'
+import { MessageCircle, Menu, X } from 'lucide-react'
 
 const links = [
-  { href: '#experiencia', label: 'A bordo' },
-  { href: '#tour360', label: 'Vista 360°' },
-  { href: '#ficha', label: 'Ficha técnica' },
+  { href: '#experiencia', label: 'Experiência' },
+  { href: '#ficha', label: 'Performance' },
   { href: '#galeria', label: 'Galeria' },
-  { href: '#negociar', label: 'Negociar' },
+  { href: '#negociar', label: 'Contato' },
 ]
 
 const wa = (msg: string) =>
@@ -39,10 +38,10 @@ export function SiteNav() {
           }`}
           aria-label="Navegação principal"
         >
-          <a href="#topo" className="flex items-center gap-2 pl-1">
-            <Anchor className="size-5 text-gold" aria-hidden="true" />
-            <span className="font-serif text-lg leading-none text-cream">
-              Malibu <span className="text-gold">Response LX</span>
+          <a href="#topo" className="flex items-center gap-3 pl-1">
+            <span className="h-px w-8 bg-gold" aria-hidden="true" />
+            <span className="text-xs font-semibold tracking-[0.28em] text-cream uppercase">
+              Malibu Response LX
             </span>
           </a>
 
@@ -69,7 +68,7 @@ export function SiteNav() {
               className="hidden items-center gap-2 rounded-full bg-gold px-4 py-2 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03] sm:flex"
             >
               <MessageCircle className="size-4" aria-hidden="true" />
-              WhatsApp
+              Agendar visita
             </a>
             <button
               type="button"

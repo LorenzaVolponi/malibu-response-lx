@@ -9,7 +9,7 @@ export const boat = {
   whatsapp: '5511999999999',
   whatsappLabel: '(11) 99999-9999',
   location: 'Brasil',
-  tagline: 'Direct Drive. V8 Monsoon 350. Feita para a esteira perfeita.',
+  tagline: 'Precisão direct drive, presença clássica Malibu e um conjunto pronto para transformar cada saída em um ritual na água.',
 } as const
 
 // Especificações confirmadas pelas fotos e ficha do modelo.
@@ -26,28 +26,28 @@ export const features = [
   {
     title: 'Motor Indmar Monsoon 350 SS',
     description:
-      'V8 5.7L de 350 HP com resposta imediata. O coração da Malibu para tracionar esquiador ou wakeboarder com sobra de torque.',
+      'Conjunto V8 5.7L de 350 HP com entrega vigorosa, resposta limpa e força de sobra para dias intensos na água.',
     image: '/images/engine.jpeg',
     alt: 'Motor Indmar Monsoon 350 SS V8 dentro do compartimento da lancha',
   },
   {
     title: 'Controle Zero Off GPS',
     description:
-      'Sistema de velocidade por GPS integrado ao painel, mantendo a velocidade exata para treinos consistentes de esqui e wake.',
+      'Sistema por GPS integrado ao painel para manter ritmo constante e navegação mais previsível em sessões esportivas.',
     image: '/images/cockpit-dash.jpeg',
     alt: 'Painel da Malibu Response LX com instrumentos e controle Zero Off',
   },
   {
     title: 'Estofamento creme com acabamento azul',
     description:
-      'Interior em couro náutico creme com faixas azul-marinho, conservado e sem rasgos. Bancos de proa e popa amplos.',
+      'Interior náutico creme com faixas azul-marinho, visual clássico e áreas de convivência bem distribuídas da proa à popa.',
     image: '/images/cockpit-lake.jpeg',
     alt: 'Interior em couro creme com faixas azuis da Malibu Response LX',
   },
   {
     title: 'Toldo bimini + carreta inclusa',
     description:
-      'Acompanha toldo bimini para proteção solar e carreta rodoviária galvanizada, pronta para transporte e rampa.',
+      'Acompanha toldo bimini e carreta rodoviária galvanizada, facilitando deslocamento, rampa e uso no fim de semana.',
     image: '/images/profile-trailer.jpeg',
     alt: 'Malibu Response LX sobre carreta galvanizada com toldo bimini',
   },
@@ -59,7 +59,7 @@ export const journey = [
     id: 'proa',
     kicker: 'A partida',
     title: 'Sente-se na proa',
-    copy: 'Bancos de proa abertos, acabamento creme e vista livre para a água. O convés dianteiro convida a relaxar antes do primeiro giro.',
+    copy: 'Bancos de proa abertos, acabamento creme e vista livre para a água. O convés dianteiro convida a desacelerar antes da partida.',
     image: '/images/bow-pov.jpeg',
     alt: 'Vista a partir da proa da Malibu Response LX olhando para o lago e o píer',
   },
@@ -105,7 +105,7 @@ export const cinematic = [
     alt: 'Motor Indmar Monsoon 350 SS V8 no compartimento',
     words: ['Feita', 'para', 'a', 'esteira', 'perfeita'],
     caption:
-      'V8 Indmar Monsoon 350 SS e transmissão Direct Drive: o padrão-ouro do esqui aquático, com torque limpo desde a largada.',
+      'Indmar Monsoon 350 SS e eixo direto formam um conjunto de resposta imediata, condução previsível e ritmo consistente.',
   },
   {
     id: 'convite',
