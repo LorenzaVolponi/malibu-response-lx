@@ -10,7 +10,8 @@ const SUGGESTIONS = [
   'Acompanha carreta e bimini?',
   'Pode me passar vídeo completo?',
   'O preço é negociável?',
-  'Qual o motor e a potência?',
+  'Acompanha carreta?',
+  'Quais dados faltam confirmar?',
 ]
 
 export function AiChatWidget() {

@@ -11,6 +11,7 @@ import { SpecsSection } from '@/components/specs-section'
 import { FeaturesSection } from '@/components/features-section'
 import { ConditionSection } from '@/components/condition-section'
 import { GallerySection } from '@/components/gallery-section'
+import { BuyerGuideSection } from '@/components/buyer-guide-section'
 import { PricingCta } from '@/components/pricing-cta'
 import { FaqSection } from '@/components/faq-section'
 import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
@@ -91,8 +92,7 @@ export default function Page() {
           <ConditionSection />
           <CinematicSection {...cinematic[2]} />
           <GallerySection />
-          <BuyerConfidenceSection />
-          <FaqSection />
+          <BuyerGuideSection />
           <PricingCta />
         </main>
         <SiteFooter />
