@@ -81,13 +81,13 @@ export function PricingCta() {
                 data-cta-reveal
                 className="mb-3 text-xs tracking-luxe text-gold uppercase"
               >
-                Fechar negócio
+                Concierge de venda
               </p>
               <h2
                 data-cta-reveal
                 className="text-balance font-serif text-4xl leading-tight text-cream sm:text-5xl"
               >
-                Sua próxima temporada na água começa aqui
+                Agende uma avaliação privada da embarcação
               </h2>
               <div data-cta-reveal className="mt-8 flex items-end gap-3">
                 <span className="text-sm text-muted-foreground">Valor</span>
@@ -109,7 +109,7 @@ export function PricingCta() {
                   className="flex items-center justify-center gap-2 rounded-full bg-gold px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
                 >
                   <MessageCircle className="size-5" aria-hidden="true" />
-                  Falar no WhatsApp
+                  Agendar visita
                 </a>
                 <a
                   href={`tel:+${boat.whatsapp}`}
@@ -120,13 +120,13 @@ export function PricingCta() {
                 </a>
               </div>
               <p data-cta-reveal className="mt-4 text-xs text-muted-foreground">
-                Aceita proposta e estuda troca. Documentação em ordem.
+                Atendimento direto com o vendedor. Propostas, troca, documentação e teste sob consulta.
               </p>
             </div>
 
             <div data-cta-reveal className="lg:border-l lg:border-cream/10 lg:pl-10">
               <p className="mb-5 text-sm font-medium text-cream">
-                O que está incluso
+                Incluso no conjunto
               </p>
               <ul className="flex flex-col gap-3">
                 {includes.map((item) => (

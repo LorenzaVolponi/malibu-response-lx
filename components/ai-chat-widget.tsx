@@ -5,10 +5,12 @@ import { useChat } from '@ai-sdk/react'
 import { boat } from '@/lib/boat-data'
 
 const SUGGESTIONS = [
-  'Qual o motor e a potência?',
+  'Quero agendar uma visita',
+  'Quais dados faltam confirmar?',
+  'Acompanha carreta e bimini?',
+  'Pode me passar vídeo completo?',
   'O preço é negociável?',
-  'Acompanha carreta?',
-  'Serve para wakeboard?',
+  'Qual o motor e a potência?',
 ]
 
 export function AiChatWidget() {
@@ -81,7 +83,7 @@ export function AiChatWidget() {
               <div className="space-y-4">
                 <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-cream/10 px-4 py-3 text-sm leading-relaxed text-cream">
                   Olá! Sou o consultor virtual desta {boat.brand} {boat.model}. Posso ajudar com
-                  especificações, condições e negociação. O que você gostaria de saber?
+                  especificações, estado, visita e negociação. Posso te ajudar a preparar uma avaliação completa.
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {SUGGESTIONS.map((s) => (

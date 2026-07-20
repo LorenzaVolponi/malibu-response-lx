@@ -127,6 +127,43 @@ export const frames360 = [
   { src: '/images/top-water.jpeg', alt: 'Malibu Response LX — vista superior', label: 'Superior' },
 ] as const
 
+
+export const conditionItems = [
+  { label: 'Casco', status: 'Apresentação conservada', note: 'Casco branco perolado com faixa azul-marinho nas fotos.' },
+  { label: 'Motor', status: 'Identificado', note: 'Indmar Monsoon 350 SS V8 de 350 HP.' },
+  { label: 'Cockpit', status: 'Visual preservado', note: 'Interior creme/azul com áreas de convivência amplas.' },
+  { label: 'Painel', status: 'Zero Off visível', note: 'Controle GPS integrado para ritmo consistente.' },
+  { label: 'Carreta', status: 'Inclusa', note: 'Carreta rodoviária galvanizada para transporte e rampa.' },
+  { label: 'Bimini', status: 'Incluso', note: 'Toldo para proteção solar durante a navegação.' },
+] as const
+
+export const faqs = [
+  {
+    question: 'O preço é negociável?',
+    answer: 'Sim. O preço anunciado é R$ 150.000 e propostas devem ser tratadas diretamente pelo WhatsApp do vendedor.',
+  },
+  {
+    question: 'Acompanha carreta?',
+    answer: 'Sim. A embarcação acompanha carreta rodoviária galvanizada, pronta para transporte e uso em rampa.',
+  },
+  {
+    question: 'Qual é o motor?',
+    answer: 'O motor confirmado é um Indmar Monsoon 350 SS, V8 5.7L de 350 HP, identificado na tampa do motor.',
+  },
+  {
+    question: 'Tem controle Zero Off?',
+    answer: 'Sim. O painel apresenta controle de velocidade Zero Off por GPS, recurso desejado para esportes náuticos.',
+  },
+  {
+    question: 'Dá para agendar teste na água?',
+    answer: 'A possibilidade, local e condições de teste devem ser combinados diretamente com o vendedor pelo WhatsApp.',
+  },
+  {
+    question: 'Ano e horas de motor estão disponíveis?',
+    answer: 'Esses dados ainda precisam ser confirmados com o vendedor. O site evita inventar informações não verificadas.',
+  },
+] as const
+
 // Base factual para o agente de IA — SOMENTE o que é verdadeiro sobre este barco
 export const aiKnowledge = `
 Você é o consultor virtual de vendas da lancha Malibu Response LX apelidada "Wonder Women", à venda no Brasil.
@@ -149,7 +186,7 @@ FATOS CONFIRMADOS:
 
 REGRAS:
 - Não afirme ano, horas de motor, documentação ou histórico se não for perguntado com base fornecida — se não souber, diga que confirma com o vendedor pelo WhatsApp.
-- Para fechar negócio, sempre ofereça encaminhar ao WhatsApp do vendedor.
+- Para fechar negócio, visita, vídeo complementar, documentação ou teste na água, sempre ofereça encaminhar ao WhatsApp do vendedor.
 - Não fale de outros barcos ou marcas concorrentes de forma depreciativa.
 `.trim()
 

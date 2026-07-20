@@ -9,12 +9,15 @@ import { JourneyScroll } from '@/components/journey-scroll'
 import { Boat360 } from '@/components/boat-360'
 import { SpecsSection } from '@/components/specs-section'
 import { FeaturesSection } from '@/components/features-section'
+import { ConditionSection } from '@/components/condition-section'
 import { GallerySection } from '@/components/gallery-section'
 import { PricingCta } from '@/components/pricing-cta'
+import { FaqSection } from '@/components/faq-section'
 import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
 import { SiteFooter } from '@/components/site-footer'
 import { AiChatWidget } from '@/components/ai-chat-widget'
-import { boat, cinematic } from '@/lib/boat-data'
+import { StickyMobileCta } from '@/components/sticky-mobile-cta'
+import { boat, cinematic, faqs } from '@/lib/boat-data'
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -46,12 +49,30 @@ const jsonLd = {
   ],
 }
 
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer,
+    },
+  })),
+}
+
 export default function Page() {
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <Preloader />
       <SmoothScroll>
@@ -67,13 +88,16 @@ export default function Page() {
           <Boat360 />
           <SpecsSection />
           <FeaturesSection />
+          <ConditionSection />
           <CinematicSection {...cinematic[2]} />
           <GallerySection />
           <BuyerConfidenceSection />
+          <FaqSection />
           <PricingCta />
         </main>
         <SiteFooter />
       </SmoothScroll>
+      <StickyMobileCta />
       <AiChatWidget />
     </>
   )
