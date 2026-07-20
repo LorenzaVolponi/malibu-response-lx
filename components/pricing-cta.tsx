@@ -7,7 +7,9 @@ import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
 import { MessageCircle, Phone, Check } from 'lucide-react'
 
-gsap.registerPlugin(ScrollTrigger, useGSAP)
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP)
+}
 
 const includes = [
   'Motor Indmar Monsoon 350 SS (V8 350 HP)',
@@ -27,23 +29,27 @@ export function PricingCta() {
 
   useGSAP(
     () => {
-      gsap.to(bg.current, {
-        yPercent: 20,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: root.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-        },
-      })
-      gsap.from('[data-cta-reveal]', {
-        y: 40,
-        opacity: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        stagger: 0.1,
-        scrollTrigger: { trigger: root.current, start: 'top 70%' },
+      const mm = gsap.matchMedia()
+
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.to(bg.current, {
+          yPercent: 20,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: root.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        })
+        gsap.from('[data-cta-reveal]', {
+          y: 40,
+          opacity: 0,
+          duration: 0.9,
+          ease: 'power3.out',
+          stagger: 0.1,
+          scrollTrigger: { trigger: root.current, start: 'top 70%' },
+        })
       })
     },
     { scope: root },
