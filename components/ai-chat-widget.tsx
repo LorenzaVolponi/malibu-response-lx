@@ -8,7 +8,7 @@ const SUGGESTIONS = [
   'Qual o motor e a potência?',
   'O preço é negociável?',
   'Acompanha carreta?',
-  'Serve para wakeboard?',
+  'Quais dados faltam confirmar?',
 ]
 
 export function AiChatWidget() {
