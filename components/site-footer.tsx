@@ -24,11 +24,11 @@ export function SiteFooter() {
           <div>
             <p className="text-sm font-medium text-cream">Navegação</p>
             <ul className="mt-4 flex flex-col gap-2 text-sm text-muted-foreground">
-              <li><a href="#experiencia" className="transition-colors hover:text-cream">A bordo</a></li>
-              <li><a href="#ficha" className="transition-colors hover:text-cream">Ficha técnica</a></li>
+              <li><a href="#experiencia" className="transition-colors hover:text-cream">Experiência</a></li>
+              <li><a href="#ficha" className="transition-colors hover:text-cream">Performance</a></li>
               <li><a href="#destaques" className="transition-colors hover:text-cream">Destaques</a></li>
               <li><a href="#galeria" className="transition-colors hover:text-cream">Galeria</a></li>
-              <li><a href="#negociar" className="transition-colors hover:text-cream">Negociar</a></li>
+              <li><a href="#negociar" className="transition-colors hover:text-cream">Contato</a></li>
             </ul>
           </div>
 
@@ -54,10 +54,9 @@ export function SiteFooter() {
 
         <div className="mt-12 border-t border-cream/10 pt-6">
           <p className="text-xs leading-relaxed text-muted-foreground">
-            Malibu Response LX usada à venda · lancha de esqui aquático e
-            wakeboard · barco seminovo com motor Monsoon 350 · ideal para
-            represas e lagos do Brasil. Palavras-chave: comprar lancha, venda de
-            barcos, lancha à venda São Paulo, barco de wakeboard usado.
+            Anúncio particular de uma Malibu Response LX conservada, voltada
+            para navegação esportiva, lazer em família e dias memoráveis em
+            represas e lagos.
           </p>
           <p className="mt-4 text-xs text-muted-foreground">
             © {year} Malibu Response LX. Anúncio de venda particular. Marcas

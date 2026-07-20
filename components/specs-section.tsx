@@ -5,31 +5,44 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { specs } from '@/lib/boat-data'
-import { Gauge, Cog, Waves, Ship, Ruler, Satellite } from 'lucide-react'
+import { Gauge, Cog, Waves, Ship, Ruler, Satellite, Clock, MapPin, Wrench } from 'lucide-react'
 
-gsap.registerPlugin(ScrollTrigger, useGSAP)
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP)
+}
 
 const icons = [Cog, Gauge, Waves, Ship, Ruler, Satellite]
+
+const toConfirm = [
+  { label: 'Ano', value: 'A confirmar', icon: Clock },
+  { label: 'Horas de motor', value: 'A confirmar', icon: Gauge },
+  { label: 'Local de visita', value: 'Sob consulta', icon: MapPin },
+  { label: 'Histórico de manutenção', value: 'Sob consulta', icon: Wrench },
+] as const
 
 export function SpecsSection() {
   const root = useRef<HTMLElement>(null)
 
   useGSAP(
     () => {
-      gsap.from('[data-spec-head]', {
-        y: 30,
-        opacity: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        scrollTrigger: { trigger: root.current, start: 'top 75%' },
-      })
-      gsap.from('[data-spec-card]', {
-        y: 50,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        stagger: 0.1,
-        scrollTrigger: { trigger: '[data-spec-grid]', start: 'top 80%' },
+      const mm = gsap.matchMedia()
+
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.from('[data-spec-head]', {
+          y: 30,
+          opacity: 0,
+          duration: 0.9,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: root.current, start: 'top 75%' },
+        })
+        gsap.from('[data-spec-card]', {
+          y: 44,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          stagger: 0.08,
+          scrollTrigger: { trigger: '[data-spec-grid]', start: 'top 80%' },
+        })
       })
     },
     { scope: root },
@@ -38,42 +51,65 @@ export function SpecsSection() {
   return (
     <section ref={root} id="ficha" className="relative bg-background py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-5">
-        <div className="mb-14 max-w-2xl" data-spec-head>
-          <p className="mb-3 text-xs tracking-luxe text-gold uppercase">
-            Ficha técnica
-          </p>
-          <h2 className="text-balance font-serif text-4xl leading-tight text-cream sm:text-5xl">
-            Engenharia Malibu, feita para a água
-          </h2>
-          <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-            Especificações confirmadas pelas fotos da embarcação. Números
-            aproximados seguem a ficha oficial do modelo Response LX.
+        <div className="mb-14 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end" data-spec-head>
+          <div>
+            <p className="mb-3 text-xs tracking-luxe text-gold uppercase">
+              Ficha técnica
+            </p>
+            <h2 className="text-balance font-serif text-4xl leading-tight text-cream sm:text-5xl">
+              Dados de catálogo, leitura rápida e sem exagero
+            </h2>
+          </div>
+          <p className="max-w-2xl text-pretty leading-relaxed text-muted-foreground lg:justify-self-end">
+            Informações técnicas confirmadas por fotos e descrição disponível. Itens complementares ficam destacados para validação direta com o vendedor.
           </p>
         </div>
 
-        <div data-spec-grid className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {specs.map((spec, i) => {
-            const Icon = icons[i % icons.length]
-            return (
-              <div
-                key={spec.label}
-                data-spec-card
-                className="group relative overflow-hidden rounded-3xl glass p-6 transition-all duration-300 hover:-translate-y-1 hover:border-gold/40"
-              >
-                <div className="mb-8 flex size-12 items-center justify-center rounded-2xl bg-gold/12 text-gold">
-                  <Icon className="size-6" aria-hidden="true" />
+        <div className="grid gap-6 lg:grid-cols-[1.25fr_0.75fr]">
+          <div data-spec-grid className="rounded-4xl glass-strong p-5 sm:p-7">
+            <div className="mb-6 flex items-center justify-between gap-4">
+              <p className="text-xs tracking-luxe text-gold uppercase">Confirmado</p>
+              <span className="rounded-full border border-cream/10 px-3 py-1 text-xs text-cream/60">Malibu Response LX</span>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {specs.map((spec, i) => {
+                const Icon = icons[i % icons.length]
+                return (
+                  <div key={spec.label} data-spec-card className="group rounded-3xl border border-cream/10 bg-cream/[0.035] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-gold/40">
+                    <div className="mb-5 flex items-center justify-between gap-4">
+                      <span className="grid size-10 place-items-center rounded-2xl bg-gold/12 text-gold">
+                        <Icon className="size-5" aria-hidden="true" />
+                      </span>
+                      <span className="text-[10px] tracking-[0.22em] text-cream/35 uppercase">0{i + 1}</span>
+                    </div>
+                    <p className="text-xs tracking-luxe text-muted-foreground uppercase">{spec.label}</p>
+                    <p className="mt-1 font-serif text-2xl text-cream">{spec.value}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{spec.note}</p>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          <aside className="rounded-4xl border border-cream/10 bg-navy-deep/50 p-6 sm:p-7">
+            <p data-spec-card className="text-xs tracking-luxe text-gold uppercase">A confirmar</p>
+            <div className="mt-6 divide-y divide-cream/10">
+              {toConfirm.map(({ label, value, icon: Icon }) => (
+                <div key={label} data-spec-card className="flex items-center gap-4 py-5 first:pt-0 last:pb-0">
+                  <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-cream/7 text-cream/75">
+                    <Icon className="size-5" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <p className="text-sm text-muted-foreground">{label}</p>
+                    <p className="font-serif text-xl text-cream">{value}</p>
+                  </div>
                 </div>
-                <p className="text-xs tracking-luxe text-muted-foreground uppercase">
-                  {spec.label}
-                </p>
-                <p className="mt-1 font-serif text-2xl text-cream">
-                  {spec.value}
-                </p>
-                <p className="mt-2 text-sm text-muted-foreground">{spec.note}</p>
-                <div className="pointer-events-none absolute -right-8 -top-8 size-24 rounded-full bg-gold/10 blur-2xl transition-opacity duration-300 group-hover:opacity-100 opacity-0" />
-              </div>
-            )
-          })}
+              ))}
+            </div>
+            <p data-spec-card className="mt-6 rounded-3xl bg-gold/10 p-4 text-sm leading-relaxed text-cream/75">
+              Para fechar visita, teste na água ou documentação, fale diretamente com o vendedor pelo WhatsApp.
+            </p>
+          </aside>
         </div>
       </div>
     </section>

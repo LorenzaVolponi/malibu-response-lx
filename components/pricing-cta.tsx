@@ -7,7 +7,9 @@ import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
 import { MessageCircle, Phone, Check } from 'lucide-react'
 
-gsap.registerPlugin(ScrollTrigger, useGSAP)
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP)
+}
 
 const includes = [
   'Motor Indmar Monsoon 350 SS (V8 350 HP)',
@@ -27,23 +29,27 @@ export function PricingCta() {
 
   useGSAP(
     () => {
-      gsap.to(bg.current, {
-        yPercent: 20,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: root.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-        },
-      })
-      gsap.from('[data-cta-reveal]', {
-        y: 40,
-        opacity: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        stagger: 0.1,
-        scrollTrigger: { trigger: root.current, start: 'top 70%' },
+      const mm = gsap.matchMedia()
+
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.to(bg.current, {
+          yPercent: 20,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: root.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        })
+        gsap.from('[data-cta-reveal]', {
+          y: 40,
+          opacity: 0,
+          duration: 0.9,
+          ease: 'power3.out',
+          stagger: 0.1,
+          scrollTrigger: { trigger: root.current, start: 'top 70%' },
+        })
       })
     },
     { scope: root },
@@ -75,13 +81,13 @@ export function PricingCta() {
                 data-cta-reveal
                 className="mb-3 text-xs tracking-luxe text-gold uppercase"
               >
-                Fechar negócio
+                Concierge de venda
               </p>
               <h2
                 data-cta-reveal
                 className="text-balance font-serif text-4xl leading-tight text-cream sm:text-5xl"
               >
-                Sua próxima temporada na água começa aqui
+                Agende uma avaliação privada da embarcação
               </h2>
               <div data-cta-reveal className="mt-8 flex items-end gap-3">
                 <span className="text-sm text-muted-foreground">Valor</span>
@@ -103,7 +109,7 @@ export function PricingCta() {
                   className="flex items-center justify-center gap-2 rounded-full bg-gold px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
                 >
                   <MessageCircle className="size-5" aria-hidden="true" />
-                  Falar no WhatsApp
+                  Agendar visita
                 </a>
                 <a
                   href={`tel:+${boat.whatsapp}`}
@@ -114,13 +120,13 @@ export function PricingCta() {
                 </a>
               </div>
               <p data-cta-reveal className="mt-4 text-xs text-muted-foreground">
-                Aceita proposta e estuda troca. Documentação em ordem.
+                Atendimento direto com o vendedor. Propostas, troca, documentação e teste sob consulta.
               </p>
             </div>
 
             <div data-cta-reveal className="lg:border-l lg:border-cream/10 lg:pl-10">
               <p className="mb-5 text-sm font-medium text-cream">
-                O que está incluso
+                Incluso no conjunto
               </p>
               <ul className="flex flex-col gap-3">
                 {includes.map((item) => (
