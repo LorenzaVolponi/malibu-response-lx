@@ -6,7 +6,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { journey } from '@/lib/boat-data'
 
-gsap.registerPlugin(ScrollTrigger, useGSAP)
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP)
+}
 
 export function JourneyScroll() {
   const root = useRef<HTMLElement>(null)
@@ -16,50 +18,51 @@ export function JourneyScroll() {
     () => {
       const slides = gsap.utils.toArray<HTMLElement>('[data-slide]')
       const total = slides.length
+      const mm = gsap.matchMedia()
 
-      // estado inicial
-      slides.forEach((s, i) => {
-        gsap.set(s, {
-          opacity: i === 0 ? 1 : 0,
-          scale: i === 0 ? 1 : 1.08,
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        slides.forEach((s, i) => {
+          gsap.set(s, {
+            opacity: i === 0 ? 1 : 0,
+            scale: i === 0 ? 1 : 1.08,
+          })
+          gsap.set(s.querySelectorAll('[data-slide-text]'), {
+            opacity: i === 0 ? 1 : 0,
+            y: i === 0 ? 0 : 30,
+          })
         })
-        gsap.set(s.querySelectorAll('[data-slide-text]'), {
-          opacity: i === 0 ? 1 : 0,
-          y: i === 0 ? 0 : 30,
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: root.current,
+            start: 'top top',
+            end: () => `+=${total * 90}%`,
+            scrub: 1,
+            pin: pin.current,
+            anticipatePin: 1,
+          },
         })
+
+        for (let i = 1; i < total; i++) {
+          const prev = slides[i - 1]
+          const curr = slides[i]
+
+          tl.to(prev, { opacity: 0, scale: 1.06, duration: 0.5, ease: 'power2.inOut' }, i)
+            .to(prev.querySelectorAll('[data-slide-text]'), { opacity: 0, y: -20, duration: 0.35 }, i)
+            .fromTo(
+              curr,
+              { opacity: 0, scale: 1.1 },
+              { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.inOut' },
+              i,
+            )
+            .fromTo(
+              curr.querySelectorAll('[data-slide-text]'),
+              { opacity: 0, y: 30 },
+              { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power3.out' },
+              i + 0.2,
+            )
+        }
       })
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: root.current,
-          start: 'top top',
-          end: () => `+=${total * 90}%`,
-          scrub: 1,
-          pin: pin.current,
-          anticipatePin: 1,
-        },
-      })
-
-      // Zoom lento contínuo no slide ativo entre transições
-      for (let i = 1; i < total; i++) {
-        const prev = slides[i - 1]
-        const curr = slides[i]
-
-        tl.to(prev, { opacity: 0, scale: 1.06, duration: 0.5, ease: 'power2.inOut' }, i)
-          .to(prev.querySelectorAll('[data-slide-text]'), { opacity: 0, y: -20, duration: 0.35 }, i)
-          .fromTo(
-            curr,
-            { opacity: 0, scale: 1.1 },
-            { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.inOut' },
-            i,
-          )
-          .fromTo(
-            curr.querySelectorAll('[data-slide-text]'),
-            { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power3.out' },
-            i + 0.2,
-          )
-      }
     },
     { scope: root },
   )
@@ -75,6 +78,7 @@ export function JourneyScroll() {
             key={step.id}
             data-slide
             className="absolute inset-0 will-change-transform"
+            style={{ opacity: i === 0 ? 1 : 0 }}
             aria-hidden={i === 0 ? undefined : 'true'}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
