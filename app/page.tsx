@@ -80,6 +80,7 @@ export default function Page() {
         <SiteNav />
         <main>
           <Hero />
+          <BrandStorySection />
           <CinematicSection {...cinematic[0]} priority />
           <JourneyScroll />
           <BrandStorySection />
