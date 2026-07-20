@@ -13,30 +13,24 @@ if (typeof window !== 'undefined') {
 const steps = [
   {
     title: 'Visita presencial',
-    copy: 'Agende uma avaliação com tempo para conhecer casco, cockpit, motor e carreta.',
+    copy: 'Agende uma avaliação com tempo para conhecer a embarcação com calma.',
     icon: CalendarDays,
   },
   {
     title: 'Documentação',
-    copy: 'Informações documentais e dados complementares devem ser confirmados diretamente com o vendedor.',
+    copy: 'Dados documentais e informações pendentes devem ser confirmados diretamente com o vendedor.',
     icon: FileCheck,
   },
   {
     title: 'Teste na água',
-    copy: 'Combine as condições para sentir condução, resposta e comportamento da embarcação.',
+    copy: 'Local, data e condições de teste são combinados caso a caso.',
     icon: Waves,
   },
   {
     title: 'Negociação direta',
-    copy: 'Preço anunciado, proposta, troca e forma de pagamento são tratados pelo WhatsApp.',
+    copy: 'Preço, proposta, troca e forma de pagamento são tratados pelo WhatsApp.',
     icon: Handshake,
   },
-] as const
-
-const checklist = [
-  'Conferir casco, estofamento e painel pessoalmente',
-  'Validar documentação e dados pendentes com o vendedor',
-  'Combinar condições de teste e retirada da embarcação',
 ] as const
 
 export function BuyerConfidenceSection() {
@@ -66,7 +60,7 @@ export function BuyerConfidenceSection() {
         <div data-confidence-reveal className="mb-12 max-w-2xl">
           <p className="mb-3 text-xs tracking-luxe text-gold uppercase">Compra com clareza</p>
           <h2 className="text-balance font-serif text-4xl leading-tight text-cream sm:text-5xl">
-            Um processo simples para avaliar antes de decidir
+            O caminho para avaliar sem pressão
           </h2>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -79,20 +73,6 @@ export function BuyerConfidenceSection() {
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{copy}</p>
             </article>
           ))}
-        </div>
-
-        <div data-confidence-reveal data-confidence-panel className="mt-6 grid gap-4 rounded-4xl border border-cream/10 bg-navy-deep/55 p-5 sm:p-7 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-          <div>
-            <p className="text-xs tracking-luxe text-gold uppercase">Roteiro da visita</p>
-            <h3 className="mt-3 font-serif text-3xl text-cream">Avalie como comprador exigente</h3>
-          </div>
-          <ul className="grid gap-3 text-sm leading-relaxed text-cream/75 sm:grid-cols-3">
-            {checklist.map((item) => (
-              <li key={item} className="rounded-2xl bg-cream/[0.045] p-4">
-                {item}
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </section>

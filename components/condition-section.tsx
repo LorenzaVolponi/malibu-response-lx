@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { CheckCircle2, ShieldCheck } from 'lucide-react'
+import { CheckCircle2 } from 'lucide-react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
@@ -39,11 +39,11 @@ export function ConditionSection() {
           <div>
             <p className="mb-3 text-xs tracking-luxe text-gold uppercase">Estado da embarcação</p>
             <h2 className="text-balance font-serif text-4xl leading-tight text-cream sm:text-5xl">
-              Conservação apresentada com transparência
+              Pontos de estado em leitura rápida
             </h2>
           </div>
           <p className="max-w-2xl text-pretty leading-relaxed text-muted-foreground lg:justify-self-end">
-            Um resumo objetivo dos pontos que merecem atenção na visita presencial, sem inventar dados que ainda precisam ser confirmados.
+            Um bloco curto para estado visual e itens do conjunto; detalhes práticos ficam na ficha, FAQ e CTA.
           </p>
         </div>
 
@@ -62,15 +62,6 @@ export function ConditionSection() {
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.note}</p>
             </article>
           ))}
-        </div>
-
-        <div data-condition-reveal className="mt-6 flex flex-col gap-4 rounded-4xl border border-gold/20 bg-gold/10 p-5 text-sm leading-relaxed text-cream/80 sm:flex-row sm:items-center sm:p-6">
-          <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-gold/15 text-gold">
-            <ShieldCheck className="size-6" aria-hidden="true" />
-          </span>
-          <p>
-            Recomendação: use este checklist para orientar a visita, solicitar vídeo complementar e combinar um teste na água diretamente com o vendedor.
-          </p>
         </div>
       </div>
     </section>
