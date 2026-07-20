@@ -62,6 +62,7 @@ export default function Page() {
           <BrandStorySection />
           <CinematicSection {...cinematic[0]} priority />
           <JourneyScroll />
+          <BrandStorySection />
           <CinematicSection {...cinematic[1]} />
           <Boat360 />
           <SpecsSection />
