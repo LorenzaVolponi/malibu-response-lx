@@ -4,12 +4,14 @@ import { ScrollProgress } from '@/components/scroll-progress'
 import { SiteNav } from '@/components/site-nav'
 import { Hero } from '@/components/hero'
 import { CinematicSection } from '@/components/cinematic-section'
+import { BrandStorySection } from '@/components/brand-story-section'
 import { JourneyScroll } from '@/components/journey-scroll'
 import { Boat360 } from '@/components/boat-360'
 import { SpecsSection } from '@/components/specs-section'
 import { FeaturesSection } from '@/components/features-section'
 import { GallerySection } from '@/components/gallery-section'
 import { PricingCta } from '@/components/pricing-cta'
+import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
 import { SiteFooter } from '@/components/site-footer'
 import { AiChatWidget } from '@/components/ai-chat-widget'
 import { boat, cinematic } from '@/lib/boat-data'
@@ -57,6 +59,7 @@ export default function Page() {
         <SiteNav />
         <main>
           <Hero />
+          <BrandStorySection />
           <CinematicSection {...cinematic[0]} priority />
           <JourneyScroll />
           <CinematicSection {...cinematic[1]} />
@@ -65,6 +68,7 @@ export default function Page() {
           <FeaturesSection />
           <CinematicSection {...cinematic[2]} />
           <GallerySection />
+          <BuyerConfidenceSection />
           <PricingCta />
         </main>
         <SiteFooter />

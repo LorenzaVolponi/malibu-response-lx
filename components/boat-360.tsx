@@ -65,19 +65,19 @@ export function Boat360() {
     <section id="tour360" className="relative bg-navy-deep py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-10 text-center">
-          <span className="font-serif text-sm uppercase tracking-luxe text-primary">Vista 360°</span>
+          <span className="font-serif text-sm uppercase tracking-luxe text-primary">Tour por ângulos</span>
           <h2 className="mt-3 font-serif text-3xl text-cream text-balance sm:text-5xl">
-            Gire e explore cada ângulo
+            Explore os principais ângulos
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-pretty leading-relaxed text-cream/70">
-            Arraste para girar a embarcação e conheça o casco de proa a popa, como se estivesse no píer ao lado dela.
+            Navegue pelos ângulos externos e internos da embarcação, com detalhes de casco, proa, cockpit e popa.
           </p>
         </div>
 
         <div
           ref={containerRef}
           role="slider"
-          aria-label="Girar visão 360 graus da lancha"
+          aria-label="Navegar pelos ângulos da lancha"
           aria-valuemin={1}
           aria-valuemax={total}
           aria-valuenow={index + 1}
@@ -111,7 +111,7 @@ export function Boat360() {
           >
             <span className="glass-strong flex items-center gap-2 rounded-full px-5 py-2.5 text-sm text-cream">
               <ArrowsIcon />
-              Arraste para girar
+              Arraste para navegar
             </span>
           </div>
 

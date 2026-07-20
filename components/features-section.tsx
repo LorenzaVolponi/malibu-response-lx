@@ -6,43 +6,48 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { features } from '@/lib/boat-data'
 
-gsap.registerPlugin(ScrollTrigger, useGSAP)
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP)
+}
 
 export function FeaturesSection() {
   const root = useRef<HTMLElement>(null)
 
   useGSAP(
     () => {
-      const rows = gsap.utils.toArray<HTMLElement>('[data-feature-row]')
-      rows.forEach((row) => {
-        const img = row.querySelector('[data-feature-img]')
-        const text = row.querySelectorAll('[data-feature-text]')
+      const mm = gsap.matchMedia()
 
-        gsap.from(text, {
-          y: 40,
-          opacity: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          stagger: 0.1,
-          scrollTrigger: { trigger: row, start: 'top 72%' },
-        })
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        const rows = gsap.utils.toArray<HTMLElement>('[data-feature-row]')
+        rows.forEach((row) => {
+          const img = row.querySelector('[data-feature-img]')
+          const text = row.querySelectorAll('[data-feature-text]')
 
-        // Parallax interno na imagem
-        gsap.fromTo(
-          img,
-          { yPercent: -8, scale: 1.12 },
-          {
-            yPercent: 8,
-            scale: 1.12,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: row,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: true,
+          gsap.from(text, {
+            y: 40,
+            opacity: 0,
+            duration: 0.9,
+            ease: 'power3.out',
+            stagger: 0.1,
+            scrollTrigger: { trigger: row, start: 'top 72%' },
+          })
+
+          gsap.fromTo(
+            img,
+            { yPercent: -8, scale: 1.12 },
+            {
+              yPercent: 8,
+              scale: 1.12,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: row,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true,
+              },
             },
-          },
-        )
+          )
+        })
       })
     },
     { scope: root },
