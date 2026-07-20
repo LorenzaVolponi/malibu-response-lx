@@ -78,6 +78,7 @@ export function JourneyScroll() {
             key={step.id}
             data-slide
             className="absolute inset-0 will-change-transform"
+            style={{ opacity: i === 0 ? 1 : 0 }}
             aria-hidden={i === 0 ? undefined : 'true'}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
