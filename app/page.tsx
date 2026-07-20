@@ -9,6 +9,7 @@ import { Boat360 } from '@/components/boat-360'
 import { SpecsSection } from '@/components/specs-section'
 import { FeaturesSection } from '@/components/features-section'
 import { GallerySection } from '@/components/gallery-section'
+import { BuyerGuideSection } from '@/components/buyer-guide-section'
 import { PricingCta } from '@/components/pricing-cta'
 import { SiteFooter } from '@/components/site-footer'
 import { AiChatWidget } from '@/components/ai-chat-widget'
@@ -65,6 +66,7 @@ export default function Page() {
           <FeaturesSection />
           <CinematicSection {...cinematic[2]} />
           <GallerySection />
+          <BuyerGuideSection />
           <PricingCta />
         </main>
         <SiteFooter />
