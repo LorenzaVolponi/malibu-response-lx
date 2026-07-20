@@ -33,6 +33,12 @@ const steps = [
   },
 ] as const
 
+const checklist = [
+  'Conferir casco, estofamento e painel pessoalmente',
+  'Validar documentação e dados pendentes com o vendedor',
+  'Combinar condições de teste e retirada da embarcação',
+] as const
+
 export function BuyerConfidenceSection() {
   const root = useRef<HTMLElement>(null)
 
@@ -73,6 +79,20 @@ export function BuyerConfidenceSection() {
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{copy}</p>
             </article>
           ))}
+        </div>
+
+        <div data-confidence-reveal data-confidence-panel className="mt-6 grid gap-4 rounded-4xl border border-cream/10 bg-navy-deep/55 p-5 sm:p-7 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+          <div>
+            <p className="text-xs tracking-luxe text-gold uppercase">Roteiro da visita</p>
+            <h3 className="mt-3 font-serif text-3xl text-cream">Avalie como comprador exigente</h3>
+          </div>
+          <ul className="grid gap-3 text-sm leading-relaxed text-cream/75 sm:grid-cols-3">
+            {checklist.map((item) => (
+              <li key={item} className="rounded-2xl bg-cream/[0.045] p-4">
+                {item}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

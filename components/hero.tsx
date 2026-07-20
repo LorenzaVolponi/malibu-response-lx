@@ -11,6 +11,12 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP)
 }
 
+const heroFacts = [
+  ['Motor', 'Indmar Monsoon 350 SS'],
+  ['Potência', '350 HP'],
+  ['Inclui', 'Bimini + carreta'],
+] as const
+
 export function Hero() {
   const root = useRef<HTMLElement>(null)
   const imgRef = useRef<HTMLDivElement>(null)
@@ -128,6 +134,18 @@ export function Hero() {
         >
           Disponível para venda · {boat.priceLabel}
         </p>
+        <div
+          data-hero-reveal
+          className="mx-auto mt-10 grid max-w-2xl grid-cols-1 overflow-hidden rounded-3xl border border-cream/10 bg-navy-deep/35 text-left backdrop-blur-md sm:grid-cols-3"
+        >
+          {heroFacts.map(([label, value]) => (
+            <div key={label} className="border-b border-cream/10 p-4 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
+              <p className="text-[10px] tracking-[0.24em] text-gold uppercase">{label}</p>
+              <p className="mt-1 font-serif text-lg text-cream">{value}</p>
+            </div>
+          ))}
+        </div>
+
       </div>
 
       <a

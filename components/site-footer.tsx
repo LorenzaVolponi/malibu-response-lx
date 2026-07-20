@@ -24,11 +24,11 @@ export function SiteFooter() {
           <div>
             <p className="text-sm font-medium text-cream">Navegação</p>
             <ul className="mt-4 flex flex-col gap-2 text-sm text-muted-foreground">
-              <li><a href="#experiencia" className="transition-colors hover:text-cream">A bordo</a></li>
-              <li><a href="#ficha" className="transition-colors hover:text-cream">Ficha técnica</a></li>
+              <li><a href="#experiencia" className="transition-colors hover:text-cream">Experiência</a></li>
+              <li><a href="#ficha" className="transition-colors hover:text-cream">Performance</a></li>
               <li><a href="#destaques" className="transition-colors hover:text-cream">Destaques</a></li>
               <li><a href="#galeria" className="transition-colors hover:text-cream">Galeria</a></li>
-              <li><a href="#negociar" className="transition-colors hover:text-cream">Negociar</a></li>
+              <li><a href="#negociar" className="transition-colors hover:text-cream">Contato</a></li>
             </ul>
           </div>
 
