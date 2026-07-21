@@ -7,16 +7,17 @@ const SITE_URL = 'https://malibu-response-lx.vercel.app'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Malibu Response LX à Venda | Lancha Esqui/Wakeboard V8 350HP',
+    default: 'Comprar Barco Malibu Response LX 2013 | Lancha V8 350HP à Venda',
     template: '%s | Malibu Response LX',
   },
   description:
-    'Lancha Malibu Response LX à venda no Brasil por R$ 150.000. Motor Indmar Monsoon 350 SS V8 (350 HP), transmissão direct drive, controle Zero Off, toldo bimini e carreta rodoviária inclusa. Ideal para esqui aquático e wakeboard. Agende sua visita.',
+    'Comprar barco Malibu Response LX 2013 à venda no Brasil por R$ 175.000. Lancha de esqui/wakeboard com 940 horas de motor, Indmar Monsoon 350 SS V8 350 HP, direct drive, Zero Off GPS, bimini e carreta inclusa. Agende visita pelo WhatsApp.',
   applicationName: 'Malibu Response LX',
   keywords: [
     'Malibu Response LX à venda',
     'lancha à venda',
     'barco à venda',
+    'barcos à venda',
     'lancha usada',
     'barco usado',
     'lancha de esqui aquático',
@@ -25,6 +26,17 @@ export const metadata: Metadata = {
     'lancha Monsoon 350',
     'lancha direct drive',
     'comprar lancha São Paulo',
+    'comprar barco',
+    'comprar barco Malibu',
+    'comprar lancha Malibu',
+    'barco Malibu Response LX',
+    'Malibu Response LX 2013',
+    'lancha 350 HP usada',
+    'lancha esqui aquático à venda',
+    'Malibu Response LX preço',
+    'Malibu Response LX horas de motor',
+    'comprar barco wakeboard',
+    'barco para esqui aquático',
     'lancha represa Guarapiranga',
     'venda de barcos',
     'lancha seminova',
@@ -33,16 +45,20 @@ export const metadata: Metadata = {
   creator: 'Malibu Response LX',
   alternates: {
     canonical: '/',
+    languages: {
+      'pt-BR': '/',
+    },
   },
+  classification: 'classified listing, boat listing, nautical sales',
   category: 'Náutica',
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
     url: SITE_URL,
     siteName: 'Malibu Response LX',
-    title: 'Malibu Response LX à Venda — V8 350HP, Direct Drive',
+    title: 'Comprar Barco Malibu Response LX 2013 — V8 350HP, Direct Drive',
     description:
-      'Lancha Malibu Response LX por R$ 150.000. Motor Monsoon 350 SS V8, Zero Off, bimini e carreta inclusa. Esqui e wakeboard de alto nível.',
+      'Lancha Malibu Response LX por R$ 175.000. 2013, 940 horas, motor Monsoon 350 SS V8, Zero Off, bimini e carreta inclusa. Esqui e wakeboard de alto nível.',
     images: [
       {
         url: '/images/hero-side.jpeg',
@@ -54,9 +70,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Malibu Response LX à Venda — V8 350HP',
+    title: 'Comprar Malibu Response LX 2013 — V8 350HP',
     description:
-      'Lancha Malibu Response LX por R$ 150.000. Motor Monsoon 350 SS, Zero Off, bimini e carreta inclusa.',
+      'Lancha Malibu Response LX por R$ 175.000. 2013, 940 horas, Motor Monsoon 350 SS, Zero Off, bimini e carreta inclusa.',
     images: ['/images/hero-side.jpeg'],
   },
   robots: {
@@ -67,7 +83,17 @@ export const metadata: Metadata = {
       follow: true,
       'max-image-preview': 'large',
       'max-snippet': -1,
+      'max-video-preview': -1,
     },
+  },
+  other: {
+    'geo.region': 'BR',
+    'geo.placename': 'Brasil',
+    'product:brand': 'Malibu',
+    'product:condition': 'used',
+    'product:price:amount': '175000',
+    'product:price:currency': 'BRL',
+    'og:see_also': 'https://wa.me/5531998654328',
   },
   generator: 'v0.app',
 }

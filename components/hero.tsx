@@ -14,7 +14,8 @@ if (typeof window !== 'undefined') {
 const heroFacts = [
   ['Motor', 'Indmar Monsoon 350 SS'],
   ['Potência', '350 HP'],
-  ['Inclui', 'Bimini + carreta'],
+  ['Ano', '2013'],
+  ['Horas', '940 h'],
 ] as const
 
 export function Hero() {
@@ -67,14 +68,14 @@ export function Hero() {
     <section
       ref={root}
       id="topo"
-      className="relative flex h-[100svh] items-center justify-center overflow-hidden"
+      className="relative water-surface flex h-[100svh] items-center justify-center overflow-hidden"
     >
       <div ref={imgRef} className="absolute inset-0 z-0 will-change-transform">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/images/hero-side.jpeg"
           alt="Lancha Malibu Response LX de perfil na represa, casco branco com faixa azul-marinho"
-          className="size-full object-cover"
+          className="size-full object-cover saturate-110 contrast-105"
           fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-navy-deep/70 via-navy-deep/30 to-background" />
@@ -136,7 +137,7 @@ export function Hero() {
         </p>
         <div
           data-hero-reveal
-          className="mx-auto mt-10 grid max-w-2xl grid-cols-1 overflow-hidden rounded-3xl border border-cream/10 bg-navy-deep/35 text-left backdrop-blur-md sm:grid-cols-3"
+          className="mx-auto mt-10 grid max-w-2xl grid-cols-1 overflow-hidden rounded-3xl border border-cream/10 bg-navy-deep/35 text-left backdrop-blur-md sm:grid-cols-4"
         >
           {heroFacts.map(([label, value]) => (
             <div key={label} className="border-b border-cream/10 p-4 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
