@@ -18,21 +18,28 @@ import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
 import { SiteFooter } from '@/components/site-footer'
 import { AiChatWidget } from '@/components/ai-chat-widget'
 import { StickyMobileCta } from '@/components/sticky-mobile-cta'
-import { boat, cinematic, faqs } from '@/lib/boat-data'
+import { MarketProofSection } from '@/components/market-proof-section'
+import { boat, cinematic, faqs, gallery } from '@/lib/boat-data'
+import { backendSearchTerms } from '@/lib/seo-data'
+
+const SITE_URL = 'https://malibu-response-lx.vercel.app'
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
-  name: `${boat.brand} ${boat.model}`,
+  '@id': `${SITE_URL}/#product`,
+  additionalType: 'https://schema.org/Boat',
+  name: `${boat.brand} ${boat.model} ${boat.year}`,
+  alternateName: ['Malibu Response LX à venda', 'Lancha Malibu Response LX 2013', 'Comprar barco Malibu'],
   description:
     'Lancha Malibu Response LX à venda. Motor Indmar Monsoon 350 SS V8 (350 HP), transmissão direct drive, controle Zero Off GPS, toldo bimini e carreta rodoviária inclusa. Ideal para esqui aquático e wakeboard.',
   brand: { '@type': 'Brand', name: 'Malibu' },
   category: 'Lancha / Embarcação esportiva',
   image: [
-    '/images/hero-side.jpeg',
-    '/images/exterior-front.jpeg',
-    '/images/engine.jpeg',
-    '/images/cockpit-dash.jpeg',
+    `${SITE_URL}/images/hero-side.jpeg`,
+    `${SITE_URL}/images/exterior-front.jpeg`,
+    `${SITE_URL}/images/engine.jpeg`,
+    `${SITE_URL}/images/cockpit-dash.jpeg`,
   ],
   offers: {
     '@type': 'Offer',
@@ -41,15 +48,110 @@ const jsonLd = {
     availability: 'https://schema.org/InStock',
     itemCondition: 'https://schema.org/UsedCondition',
     areaServed: 'BR',
+    url: SITE_URL,
+    seller: { '@type': 'Organization', name: 'Malibu Response LX Brasil' },
   },
+  sku: `malibu-response-lx-${boat.year}-${boat.engineHours}h`,
+  mpn: 'Response LX',
+  mainEntityOfPage: SITE_URL,
   additionalProperty: [
     { '@type': 'PropertyValue', name: 'Motor', value: 'Indmar Monsoon 350 SS' },
     { '@type': 'PropertyValue', name: 'Potência', value: '350 HP' },
     { '@type': 'PropertyValue', name: 'Transmissão', value: 'Direct Drive' },
     { '@type': 'PropertyValue', name: 'Comprimento', value: 'Aprox. 6,1 m' },
+    { '@type': 'PropertyValue', name: 'Ano de fabricação', value: '2013' },
+    { '@type': 'PropertyValue', name: 'Horas de motor', value: '940 h' },
   ],
 }
 
+
+
+const webPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE_URL}/#webpage`,
+  url: SITE_URL,
+  name: 'Comprar Barco Malibu Response LX 2013',
+  description: 'Página completa para avaliar a Malibu Response LX 2013 à venda, com preço, horas, motor, fotos reais, ficha técnica, guia de compra e contato direto.',
+  inLanguage: 'pt-BR',
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  primaryImageOfPage: `${SITE_URL}/images/hero-side.jpeg`,
+  keywords: [...backendSearchTerms],
+  mentions: backendSearchTerms.map((term) => ({
+    '@type': 'DefinedTerm',
+    name: term,
+  })),
+  relatedLink: [
+    `${SITE_URL}/comprar-barco-malibu-response-lx`,
+  ],
+}
+
+
+const searchTerminologyJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  '@id': `${SITE_URL}/#search-terminology`,
+  name: 'Terminologia de busca para a Malibu Response LX 2013',
+  hasDefinedTerm: backendSearchTerms.map((term) => ({
+    '@type': 'DefinedTerm',
+    name: term,
+    inDefinedTermSet: `${SITE_URL}/#search-terminology`,
+  })),
+}
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE_URL}/#website`,
+  name: 'Malibu Response LX à venda',
+  url: SITE_URL,
+  inLanguage: 'pt-BR',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${SITE_URL}/?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Início', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Barcos à venda', item: `${SITE_URL}/#comprar-barco-malibu` },
+    { '@type': 'ListItem', position: 3, name: `${boat.brand} ${boat.model} ${boat.year}`, item: `${SITE_URL}/#product` },
+  ],
+}
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE_URL}/#seller`,
+  name: 'Malibu Response LX Brasil',
+  url: SITE_URL,
+  telephone: '+55 31 99865-4328',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+55 31 99865-4328',
+    contactType: 'sales',
+    availableLanguage: 'Portuguese',
+    areaServed: 'BR',
+  },
+}
+
+
+const imageGalleryJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  '@id': `${SITE_URL}/#gallery`,
+  name: 'Fotos reais da Malibu Response LX 2013',
+  associatedMedia: gallery.map((image) => ({
+    '@type': 'ImageObject',
+    contentUrl: `${SITE_URL}${image.src}`,
+    caption: image.alt,
+    representativeOfPage: image.src === '/images/hero-side.jpeg',
+  })),
+}
 
 const faqJsonLd = {
   '@context': 'https://schema.org',
@@ -75,6 +177,30 @@ export default function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(searchTerminologyJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(imageGalleryJsonLd) }}
+      />
       <Preloader />
       <SmoothScroll>
         <ScrollProgress />
@@ -84,7 +210,6 @@ export default function Page() {
           <BrandStorySection />
           <CinematicSection {...cinematic[0]} priority />
           <JourneyScroll />
-          <BrandStorySection />
           <CinematicSection {...cinematic[1]} />
           <Boat360 />
           <SpecsSection />
@@ -93,6 +218,10 @@ export default function Page() {
           <CinematicSection {...cinematic[2]} />
           <GallerySection />
           <BuyerGuideSection />
+
+          <MarketProofSection />
+          <FaqSection />
+          <BuyerConfidenceSection />
           <PricingCta />
         </main>
         <SiteFooter />

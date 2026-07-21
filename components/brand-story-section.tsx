@@ -23,7 +23,7 @@ export function BrandStorySection() {
     () => {
       const mm = gsap.matchMedia()
 
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
+      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
         gsap.from('[data-story-reveal]', {
           y: 36,
           opacity: 0,
@@ -84,6 +84,7 @@ export function BrandStorySection() {
               src="/images/top-water.jpeg"
               alt="Vista superior da Malibu Response LX na água"
               fill
+              loading="lazy"
               sizes="(max-width: 1024px) 100vw, 560px"
               className="object-cover will-change-transform"
             />
