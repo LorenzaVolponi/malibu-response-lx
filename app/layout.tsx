@@ -91,7 +91,17 @@ export const metadata: Metadata = {
       'max-video-preview': -1,
       'max-image-preview': 'large',
       'max-snippet': -1,
+      'max-video-preview': -1,
     },
+  },
+  other: {
+    'geo.region': 'BR',
+    'geo.placename': 'Brasil',
+    'product:brand': 'Malibu',
+    'product:condition': 'used',
+    'product:price:amount': '175000',
+    'product:price:currency': 'BRL',
+    'og:see_also': 'https://wa.me/5531998654328',
   },
   generator: 'v0.app',
 }

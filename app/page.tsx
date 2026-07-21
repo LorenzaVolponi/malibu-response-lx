@@ -21,7 +21,10 @@ import { AiChatWidget } from '@/components/ai-chat-widget'
 import { StickyMobileCta } from '@/components/sticky-mobile-cta'
 import { EngineSound } from '@/components/engine-sound'
 import { SeoGrowthSection } from '@/components/seo-growth-section'
-import { boat, cinematic, faqs } from '@/lib/boat-data'
+import { MarketProofSection } from '@/components/market-proof-section'
+import { boat, cinematic, faqs, gallery } from '@/lib/boat-data'
+
+const SITE_URL = 'https://malibu-response-lx.vercel.app'
 
 const SITE_URL = 'https://malibu-response-lx.vercel.app'
 
@@ -107,6 +110,20 @@ const organizationJsonLd = {
   },
 }
 
+
+const imageGalleryJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  '@id': `${SITE_URL}/#gallery`,
+  name: 'Fotos reais da Malibu Response LX 2013',
+  associatedMedia: gallery.map((image) => ({
+    '@type': 'ImageObject',
+    contentUrl: `${SITE_URL}${image.src}`,
+    caption: image.alt,
+    representativeOfPage: image.src === '/images/hero-side.jpeg',
+  })),
+}
+
 const faqJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -143,6 +160,10 @@ export default function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(imageGalleryJsonLd) }}
+      />
       <Preloader />
       <SmoothScroll>
         <ScrollProgress />
@@ -162,6 +183,7 @@ export default function Page() {
           <BuyerGuideSection />
 
           <SeoGrowthSection />
+          <MarketProofSection />
           <FaqSection />
           <BuyerConfidenceSection />
           <PricingCta />

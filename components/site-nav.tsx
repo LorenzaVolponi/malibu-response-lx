@@ -8,6 +8,7 @@ const links = [
   { href: '#experiencia', label: 'Experiência' },
   { href: '#ficha', label: 'Performance' },
   { href: '#galeria', label: 'Galeria' },
+  { href: '#comparar-malibu-response-lx', label: 'Comparar' },
   { href: '#negociar', label: 'Contato' },
 ]
 
