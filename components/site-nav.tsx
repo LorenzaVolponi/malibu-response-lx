@@ -78,7 +78,7 @@ export function SiteNav() {
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
-              className="grid size-9 place-items-center rounded-full glass text-cream md:hidden"
+              className="grid size-11 place-items-center rounded-full glass text-cream md:hidden"
               aria-label={open ? 'Fechar menu' : 'Abrir menu'}
               aria-expanded={open}
             >

@@ -48,5 +48,5 @@ export const backendSearchTerms = [
   'motor V8 350 HP lancha',
   'Zero Off GPS lancha',
   'lancha com carreta galvanizada',
-  'lancha com toldo',
+  'lancha com bimini',
 ] as const

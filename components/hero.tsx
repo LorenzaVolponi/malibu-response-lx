@@ -136,7 +136,7 @@ export function Hero() {
         </p>
         <div
           data-hero-reveal
-          className="mx-auto mt-10 grid max-w-2xl grid-cols-1 overflow-hidden rounded-3xl border border-cream/10 bg-navy-deep/35 text-left backdrop-blur-md sm:grid-cols-4"
+          className="mx-auto mt-10 grid max-w-2xl grid-cols-2 overflow-hidden rounded-3xl border border-cream/10 bg-navy-deep/35 text-left backdrop-blur-md sm:grid-cols-4"
         >
           {heroFacts.map(([label, value]) => (
             <div key={label} className="border-b border-cream/10 p-4 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">

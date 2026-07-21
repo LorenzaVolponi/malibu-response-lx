@@ -161,14 +161,14 @@ export function AiChatWidget() {
                   }
                 }}
                 placeholder="Escreva sua pergunta..."
-                className="min-w-0 flex-1 bg-transparent py-3 text-sm text-cream placeholder:text-cream/40 focus:outline-none"
+                className="min-w-0 flex-1 bg-transparent py-3 text-base text-cream sm:text-sm placeholder:text-cream/40 focus:outline-none"
                 aria-label="Sua pergunta"
               />
               <button
                 type="submit"
                 disabled={busy || !input.trim()}
                 aria-label="Enviar"
-                className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
+                className="flex h-11 w-11 flex-shrink-0 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
               >
                 <SendIcon />
               </button>

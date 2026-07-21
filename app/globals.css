@@ -260,3 +260,12 @@
     scroll-padding-top: calc(5rem + env(safe-area-inset-top));
   }
 }
+
+@layer base {
+  a,
+  button,
+  input,
+  textarea {
+    touch-action: manipulation;
+  }
+}
