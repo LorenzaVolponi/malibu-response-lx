@@ -6,8 +6,8 @@ export const boat = {
   priceLabel: 'R$ 175.000',
   currency: 'BRL',
   // Contato — ajuste o número do WhatsApp aqui
-  whatsapp: '5511999999999',
-  whatsappLabel: '(11) 99999-9999',
+  whatsapp: '5531998654328',
+  whatsappLabel: '(31) 99865-4328',
   location: 'Brasil',
   year: 2013,
   engineHours: 940,

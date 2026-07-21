@@ -68,7 +68,7 @@ export function EngineSound() {
     <button
       type="button"
       onClick={() => (playing ? stop() : start())}
-      className="group fixed bottom-24 right-4 z-50 flex items-center gap-2 rounded-full border border-gold/30 bg-navy-deep/85 px-4 py-3 text-sm font-semibold text-cream shadow-2xl shadow-black/30 backdrop-blur-md transition hover:-translate-y-0.5 hover:border-gold"
+      className="group fixed bottom-[calc(5.25rem+env(safe-area-inset-bottom))] right-4 z-50 flex items-center gap-2 rounded-full border border-gold/30 bg-navy-deep/85 px-4 py-3 text-sm font-semibold text-cream shadow-2xl shadow-black/30 backdrop-blur-md transition hover:-translate-y-0.5 hover:border-gold sm:bottom-24"
       aria-pressed={playing}
       aria-label={playing ? 'Desligar ronco do motor V8' : 'Ligar ronco do motor V8'}
     >

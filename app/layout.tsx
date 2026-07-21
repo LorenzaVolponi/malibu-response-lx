@@ -7,7 +7,7 @@ const SITE_URL = 'https://malibu-response-lx.vercel.app'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Malibu Response LX à Venda | Lancha Esqui/Wakeboard V8 350HP',
+    default: 'Comprar Barco Malibu Response LX 2013 | Lancha V8 350HP à Venda',
     template: '%s | Malibu Response LX',
   },
   description:
@@ -17,6 +17,7 @@ export const metadata: Metadata = {
     'Malibu Response LX à venda',
     'lancha à venda',
     'barco à venda',
+    'barcos à venda',
     'lancha usada',
     'barco usado',
     'lancha de esqui aquático',
@@ -32,6 +33,10 @@ export const metadata: Metadata = {
     'Malibu Response LX 2013',
     'lancha 350 HP usada',
     'lancha esqui aquático à venda',
+    'Malibu Response LX preço',
+    'Malibu Response LX horas de motor',
+    'comprar barco wakeboard',
+    'barco para esqui aquático',
     'lancha represa Guarapiranga',
     'venda de barcos',
     'lancha seminova',
@@ -46,7 +51,11 @@ export const metadata: Metadata = {
   referrer: 'origin-when-cross-origin',
   alternates: {
     canonical: '/',
+    languages: {
+      'pt-BR': '/',
+    },
   },
+  classification: 'classified listing, boat listing, nautical sales',
   category: 'Náutica',
   classification: 'Classificado náutico premium',
   openGraph: {

@@ -25,9 +25,16 @@ export function SiteNav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [open])
+
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-40 transition-all duration-500 ${
+      className={`fixed inset-x-0 top-[env(safe-area-inset-top)] z-40 transition-all duration-500 ${
         scrolled ? 'py-2' : 'py-4'
       }`}
     >
@@ -83,7 +90,7 @@ export function SiteNav() {
         </nav>
 
         {open && (
-          <div className="mt-2 rounded-3xl glass-strong p-4 md:hidden">
+          <div className="fixed inset-x-4 top-[calc(env(safe-area-inset-top)+4.75rem)] z-50 max-h-[calc(100dvh-6rem-env(safe-area-inset-top))] overflow-y-auto rounded-3xl glass-strong p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-2xl shadow-black/40 md:hidden">
             <ul className="flex flex-col gap-1">
               {links.map((l) => (
                 <li key={l.href}>
@@ -96,6 +103,20 @@ export function SiteNav() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a
+                  href={wa(
+                    'Olá! Tenho interesse na Malibu Response LX anunciada por R$ 175.000. Podemos conversar?',
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                  className="mt-2 flex items-center justify-center gap-2 rounded-2xl bg-gold px-4 py-3 text-sm font-semibold text-primary-foreground"
+                >
+                  <MessageCircle className="size-4" aria-hidden="true" />
+                  WhatsApp do vendedor
+                </a>
+              </li>
             </ul>
           </div>
         )}
