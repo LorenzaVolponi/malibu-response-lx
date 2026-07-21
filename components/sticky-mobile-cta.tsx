@@ -17,11 +17,11 @@ export function StickyMobileCta() {
   return (
     <a
       href={`https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-        `Olá! Tenho interesse na ${boat.brand} ${boat.model} anunciada por ${boat.priceLabel}. Quero agendar uma visita.`,
+        `Oi vim do site, tenho interesse no barco`,
       )}`}
       target="_blank"
       rel="noopener noreferrer"
-      className={`fixed bottom-5 left-4 right-24 z-40 flex items-center justify-between gap-3 rounded-full border border-gold/30 bg-navy-deep/85 px-4 py-3 text-cream shadow-2xl shadow-black/35 backdrop-blur-xl transition-all duration-300 sm:hidden ${
+      className={`fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-4 right-24 z-40 flex items-center justify-between gap-3 rounded-full border border-gold/30 bg-navy-deep/85 px-4 py-3 text-cream shadow-2xl shadow-black/35 backdrop-blur-xl transition-all duration-300 sm:hidden ${
         visible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-6 opacity-0'
       }`}
       aria-label="Agendar visita pelo WhatsApp"
