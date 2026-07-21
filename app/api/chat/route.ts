@@ -56,7 +56,7 @@ function answerWithBoatFacts(question: string) {
 
   if (/preco|valor|quanto|negoci/.test(q)) sections.push(facts.price)
   if (/ano|fabric|hora|horimetro/.test(q)) sections.push(facts.yearHours)
-  if (/motor|v8|indmar|monsoon|potencia|hp|ronco/.test(q)) sections.push(facts.motor)
+  if (/motor|v8|indmar|monsoon|potencia|hp/.test(q)) sections.push(facts.motor)
   if (/direct|eixo|transmiss|esqui|wake|wakeboard/.test(q)) sections.push(facts.transmission, facts.zeroOff)
   if (/zero|gps|controle|velocidade/.test(q)) sections.push(facts.zeroOff)
   if (/carreta|bimini|toldo|acompanha|inclus/.test(q)) sections.push(facts.includes)
