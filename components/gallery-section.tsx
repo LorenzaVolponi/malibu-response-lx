@@ -90,7 +90,7 @@ export function GallerySection() {
 
         <div
           data-gal-grid
-          className="grid auto-rows-[220px] grid-cols-1 gap-4 sm:grid-cols-3"
+          className="grid auto-rows-[180px] grid-cols-1 gap-4 sm:auto-rows-[220px] sm:grid-cols-3"
         >
           {gallery.map((item, index) => (
             <button
@@ -106,6 +106,7 @@ export function GallerySection() {
                 src={item.src || '/placeholder.svg'}
                 alt={item.alt}
                 loading="lazy"
+                decoding="async"
                 className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/70 via-transparent to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
@@ -131,7 +132,7 @@ export function GallerySection() {
           <div className="mx-auto flex h-full max-w-6xl flex-col justify-center gap-5">
             <div className="relative min-h-0 flex-1 overflow-hidden rounded-4xl border border-cream/10 bg-black/20">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={current.src} alt={current.alt} className="size-full object-contain" />
+              <img src={current.src} alt={current.alt} decoding="async" className="size-full object-contain" />
             </div>
             <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-cream/75">
               <p>{current.alt}</p>

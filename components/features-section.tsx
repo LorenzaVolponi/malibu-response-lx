@@ -78,22 +78,24 @@ export function FeaturesSection() {
               >
                 <div
                   data-feature-img-wrap
-                  className="relative aspect-[4/3] overflow-hidden rounded-4xl [direction:ltr]"
+                  className="relative aspect-[4/3] overflow-hidden rounded-3xl [direction:ltr] sm:rounded-4xl"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     data-feature-img
                     src={f.image || '/placeholder.svg'}
                     alt={f.alt}
+                    loading="lazy"
+                    decoding="async"
                     className="size-full object-cover will-change-transform"
                   />
-                  <div className="absolute inset-0 rounded-4xl ring-1 ring-inset ring-cream/10" />
+                  <div className="absolute inset-0 rounded-3xl ring-1 ring-inset ring-cream/10 sm:rounded-4xl" />
                 </div>
 
                 <div className="[direction:ltr]">
                   <span
                     data-feature-text
-                    className="font-serif text-6xl text-cream/10"
+                    className="font-serif text-5xl text-cream/10 sm:text-6xl"
                   >
                     0{i + 1}
                   </span>

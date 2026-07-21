@@ -85,6 +85,8 @@ export function JourneyScroll() {
             <img
               src={step.image || '/placeholder.svg'}
               alt={step.alt}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              decoding="async"
               className="size-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/40 to-navy-deep/20" />
