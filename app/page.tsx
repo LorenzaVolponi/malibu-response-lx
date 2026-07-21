@@ -13,6 +13,7 @@ import { ConditionSection } from '@/components/condition-section'
 import { GallerySection } from '@/components/gallery-section'
 import { BuyerGuideSection } from '@/components/buyer-guide-section'
 import { PricingCta } from '@/components/pricing-cta'
+import { SeoTrustSection } from '@/components/seo-trust-section'
 import { FaqSection } from '@/components/faq-section'
 import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
 import { SiteFooter } from '@/components/site-footer'
@@ -22,6 +23,8 @@ import { EngineSound } from '@/components/engine-sound'
 import { SeoGrowthSection } from '@/components/seo-growth-section'
 import { MarketProofSection } from '@/components/market-proof-section'
 import { boat, cinematic, faqs, gallery } from '@/lib/boat-data'
+
+const SITE_URL = 'https://malibu-response-lx.vercel.app'
 
 const SITE_URL = 'https://malibu-response-lx.vercel.app'
 
