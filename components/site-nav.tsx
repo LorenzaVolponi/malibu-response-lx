@@ -96,31 +96,31 @@ export function SiteNav() {
               className="fixed inset-0 z-40 bg-navy-deep/55 backdrop-blur-sm md:hidden"
             />
             <div className="fixed inset-x-4 top-[calc(env(safe-area-inset-top)+4.75rem)] z-50 max-h-[calc(100dvh-6rem-env(safe-area-inset-top))] overscroll-contain overflow-y-auto rounded-3xl glass-strong p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-2xl shadow-black/40 md:hidden">
-            <ul className="flex flex-col gap-1">
-              {links.map((l) => (
-                <li key={l.href}>
+              <ul className="flex flex-col gap-1">
+                {links.map((l) => (
+                  <li key={l.href}>
+                    <a
+                      href={l.href}
+                      onClick={() => setOpen(false)}
+                      className="block rounded-xl px-3 py-3 text-cream/90 transition-colors hover:bg-white/5"
+                    >
+                      {l.label}
+                    </a>
+                  </li>
+                ))}
+                <li>
                   <a
-                    href={l.href}
+                    href={whatsappUrl('secondary')}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     onClick={() => setOpen(false)}
-                    className="block rounded-xl px-3 py-3 text-cream/90 transition-colors hover:bg-white/5"
+                    className="mt-2 flex items-center justify-center gap-2 rounded-2xl bg-gold px-4 py-3 text-center text-sm font-semibold text-primary-foreground"
                   >
-                    {l.label}
+                    <MessageCircle className="size-4" aria-hidden="true" />
+                    WhatsApp do vendedor
                   </a>
                 </li>
-              ))}
-              <li>
-                <a
-                  href={whatsappUrl('secondary')}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setOpen(false)}
-                  className="mt-2 flex items-center justify-center gap-2 rounded-2xl bg-gold px-4 py-3 text-sm font-semibold text-primary-foreground"
-                >
-                  <MessageCircle className="size-4" aria-hidden="true" />
-                  WhatsApp do vendedor
-                </a>
-              </li>
-            </ul>
+              </ul>
             </div>
           </>
         )}

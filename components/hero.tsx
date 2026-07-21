@@ -78,6 +78,7 @@ export function Hero() {
           alt="Lancha Malibu Response LX de perfil na represa, casco branco com faixa azul-marinho"
           className="size-full object-cover saturate-110 contrast-105"
           fetchPriority="high"
+          decoding="async"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-navy-deep/70 via-navy-deep/30 to-background" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/60 to-transparent" />

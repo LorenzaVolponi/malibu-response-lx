@@ -91,7 +91,7 @@ export function GallerySection() {
 
         <div
           data-gal-grid
-          className="grid auto-rows-[220px] grid-cols-1 gap-4 sm:grid-cols-3"
+          className="grid auto-rows-[180px] grid-cols-1 gap-4 sm:auto-rows-[220px] sm:grid-cols-3"
         >
           {gallery.map((item, index) => (
             <button
@@ -105,9 +105,9 @@ export function GallerySection() {
               <Image
                 src={item.src}
                 alt={item.alt}
-                fill
-                sizes={item.span === 'wide' ? '(max-width: 640px) 100vw, 720px' : '(max-width: 640px) 100vw, 360px'}
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                loading="lazy"
+                decoding="async"
+                className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/70 via-transparent to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
               <span className="absolute inset-x-0 bottom-0 translate-y-2 p-4 text-sm text-cream opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
@@ -131,13 +131,8 @@ export function GallerySection() {
           </button>
           <div className="mx-auto flex h-full max-w-6xl flex-col justify-center gap-5">
             <div className="relative min-h-0 flex-1 overflow-hidden rounded-4xl border border-cream/10 bg-black/20">
-              <Image
-                src={current.src}
-                alt={current.alt}
-                fill
-                sizes="100vw"
-                className="object-contain"
-              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={current.src} alt={current.alt} decoding="async" className="size-full object-contain" />
             </div>
             <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-cream/75">
               <p>{current.alt}</p>

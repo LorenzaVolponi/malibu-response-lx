@@ -68,9 +68,9 @@ export function PricingCta() {
           src="/images/exterior-front.jpeg"
           alt=""
           aria-hidden="true"
-          fill
-          sizes="100vw"
-          className="scale-110 object-cover"
+          loading="lazy"
+          decoding="async"
+          className="size-full scale-110 object-cover"
         />
         <div className="absolute inset-0 bg-navy-deep/80" />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
@@ -107,14 +107,14 @@ export function PricingCta() {
                   href={whatsappUrl('primary')}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 rounded-full bg-gold px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-gold px-7 py-3.5 text-center text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03] sm:w-auto"
                 >
                   <MessageCircle className="size-5" aria-hidden="true" />
                   Receber vídeos e documentação
                 </a>
                 <a
                   href={`tel:+${boat.whatsapp}`}
-                  className="flex items-center justify-center gap-2 rounded-full border border-cream/20 px-7 py-3.5 text-sm font-semibold text-cream transition-colors hover:bg-white/5"
+                  className="flex w-full items-center justify-center gap-2 rounded-full border border-cream/20 px-7 py-3.5 text-center text-sm font-semibold text-cream transition-colors hover:bg-white/5 sm:w-auto"
                 >
                   <Phone className="size-5" aria-hidden="true" />
                   {boat.whatsappLabel}

@@ -79,7 +79,7 @@ export default function ComprarBarcoMalibuPage() {
       <section className="relative overflow-hidden px-5 py-20 sm:py-28">
         <div className="absolute inset-0 -z-10 opacity-30">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/hero-side.jpeg" alt="" className="size-full object-cover" />
+          <img src="/images/hero-side.jpeg" alt="" fetchPriority="high" decoding="async" className="size-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-navy-deep/80 to-background" />
         </div>
         <div className="mx-auto max-w-5xl">
