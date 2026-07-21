@@ -221,3 +221,42 @@
   background: color-mix(in oklch, var(--gold) 55%, var(--navy));
   border-radius: 999px;
 }
+
+@layer utilities {
+  .water-surface::before,
+  .water-surface::after {
+    content: "";
+    position: absolute;
+    inset: auto -10% -12% -10%;
+    height: 34%;
+    pointer-events: none;
+    z-index: 1;
+    background:
+      radial-gradient(70% 42% at 50% 100%, color-mix(in oklch, var(--gold) 22%, transparent), transparent 62%),
+      repeating-radial-gradient(ellipse at 50% 100%, color-mix(in oklch, var(--cream) 16%, transparent) 0 2px, transparent 3px 18px);
+    opacity: 0.42;
+    filter: blur(0.2px);
+    animation: water-drift 9s ease-in-out infinite alternate;
+  }
+
+  .water-surface::after {
+    inset: auto -18% -16% -18%;
+    height: 42%;
+    opacity: 0.26;
+    animation-duration: 13s;
+    animation-direction: alternate-reverse;
+  }
+}
+
+@keyframes water-drift {
+  0% { transform: translate3d(-2%, 0, 0) scaleX(1); }
+  50% { transform: translate3d(1%, -2%, 0) scaleX(1.04); }
+  100% { transform: translate3d(3%, 1%, 0) scaleX(0.98); }
+}
+
+@supports (height: 100dvh) {
+  html {
+    min-height: 100dvh;
+    scroll-padding-top: calc(5rem + env(safe-area-inset-top));
+  }
+}

@@ -5,6 +5,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
+import { whatsappUrl } from '@/lib/contact'
 import { MessageCircle, Phone, Check } from 'lucide-react'
 
 if (typeof window !== 'undefined') {
@@ -17,11 +18,11 @@ const includes = [
   'Controle de velocidade Zero Off GPS',
   'Toldo bimini',
   'Carreta rodoviária galvanizada inclusa',
+  'Ano de fabricação 2013',
+  '940 horas de motor',
   'Estofamento conservado creme/azul',
 ]
 
-const wa = (msg: string) =>
-  `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(msg)}`
 
 export function PricingCta() {
   const root = useRef<HTMLElement>(null)
@@ -101,15 +102,13 @@ export function PricingCta() {
                 className="mt-8 flex flex-col gap-3 sm:flex-row"
               >
                 <a
-                  href={wa(
-                    'Olá! Tenho interesse na Malibu Response LX por R$ 150.000. Gostaria de mais informações e agendar uma visita.',
-                  )}
+                  href={whatsappUrl('primary')}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 rounded-full bg-gold px-7 py-3.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
                 >
                   <MessageCircle className="size-5" aria-hidden="true" />
-                  Agendar visita
+                  Receber vídeos e documentação
                 </a>
                 <a
                   href={`tel:+${boat.whatsapp}`}
