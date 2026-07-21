@@ -13,6 +13,7 @@ import { ConditionSection } from '@/components/condition-section'
 import { GallerySection } from '@/components/gallery-section'
 import { BuyerGuideSection } from '@/components/buyer-guide-section'
 import { PricingCta } from '@/components/pricing-cta'
+import { SeoTrustSection } from '@/components/seo-trust-section'
 import { FaqSection } from '@/components/faq-section'
 import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
 import { SiteFooter } from '@/components/site-footer'
@@ -42,6 +43,8 @@ const jsonLd = {
     itemCondition: 'https://schema.org/UsedCondition',
     areaServed: 'BR',
   },
+  url: '/',
+  sku: 'malibu-response-lx-wonder-women',
   additionalProperty: [
     { '@type': 'PropertyValue', name: 'Motor', value: 'Indmar Monsoon 350 SS' },
     { '@type': 'PropertyValue', name: 'Potência', value: '350 HP' },
@@ -50,6 +53,39 @@ const jsonLd = {
   ],
 }
 
+
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Malibu Response LX à Venda',
+  url: 'https://malibu-response-lx.vercel.app',
+  inLanguage: 'pt-BR',
+  potentialAction: {
+    '@type': 'ContactAction',
+    target: `https://wa.me/${boat.whatsapp}`,
+    name: 'Agendar visita pelo WhatsApp',
+  },
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Início',
+      item: 'https://malibu-response-lx.vercel.app',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Malibu Response LX à venda',
+      item: 'https://malibu-response-lx.vercel.app/#negociar',
+    },
+  ],
+}
 
 const faqJsonLd = {
   '@context': 'https://schema.org',
@@ -75,6 +111,14 @@ export default function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <Preloader />
       <SmoothScroll>
         <ScrollProgress />
@@ -84,7 +128,6 @@ export default function Page() {
           <BrandStorySection />
           <CinematicSection {...cinematic[0]} priority />
           <JourneyScroll />
-          <BrandStorySection />
           <CinematicSection {...cinematic[1]} />
           <Boat360 />
           <SpecsSection />
@@ -93,6 +136,7 @@ export default function Page() {
           <CinematicSection {...cinematic[2]} />
           <GallerySection />
           <BuyerGuideSection />
+          <SeoTrustSection />
           <PricingCta />
         </main>
         <SiteFooter />
