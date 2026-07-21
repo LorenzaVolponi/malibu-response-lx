@@ -95,6 +95,7 @@ export function Boat360() {
               src={f.src || '/placeholder.svg'}
               alt={f.alt}
               fill
+              priority={i === 0}
               draggable={false}
               sizes="(max-width: 768px) 100vw, 1152px"
               className={`pointer-events-none object-cover transition-opacity duration-300 ${

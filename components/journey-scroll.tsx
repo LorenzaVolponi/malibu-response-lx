@@ -69,9 +69,42 @@ export function JourneyScroll() {
 
   return (
     <section ref={root} id="experiencia" className="relative">
+      <div className="bg-navy-deep px-5 py-16 md:hidden">
+        <div className="mx-auto max-w-md">
+          <p className="mb-3 text-xs tracking-luxe text-gold uppercase">
+            Experiência a bordo
+          </p>
+          <h2 className="font-serif text-4xl leading-tight text-cream">
+            Veja a lancha por dentro em leitura leve no celular
+          </h2>
+          <div className="mt-8 flex flex-col gap-5">
+            {journey.map((step, i) => (
+              <article key={step.id} className="overflow-hidden rounded-3xl border border-cream/10 bg-cream/[0.035]">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={step.image || '/placeholder.svg'}
+                    alt={step.alt}
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    fetchPriority={i === 0 ? 'high' : 'auto'}
+                    className="size-full object-cover"
+                  />
+                </div>
+                <div className="p-5">
+                  <p className="text-xs tracking-luxe text-gold uppercase">{step.kicker}</p>
+                  <h3 className="mt-2 font-serif text-2xl text-cream">{step.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-cream/70">{step.copy}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div
         ref={pin}
-        className="relative h-[100svh] w-full overflow-hidden bg-navy-deep"
+        className="relative hidden h-[100svh] w-full overflow-hidden bg-navy-deep md:block"
       >
         {journey.map((step, i) => (
           <article

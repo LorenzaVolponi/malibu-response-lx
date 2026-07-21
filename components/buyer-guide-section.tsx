@@ -24,7 +24,7 @@ export function BuyerGuideSection() {
     () => {
       const mm = gsap.matchMedia()
 
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
+      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
         gsap.from('[data-buyer-guide]', {
           y: 34,
           opacity: 0,
@@ -80,7 +80,7 @@ export function BuyerGuideSection() {
             <p className="mt-5 text-sm leading-relaxed text-cream/75">
               Peça os detalhes de visita, documentação, combine visita e tire dúvidas diretamente com o vendedor.
             </p>
-            <a href={wa} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]">
+            <a href={wa} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex w-full justify-center rounded-full bg-gold px-5 py-2.5 text-center text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03] sm:w-auto">
               Receber vídeos e documentação
             </a>
           </article>
