@@ -6,14 +6,13 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat, faqs } from '@/lib/boat-data'
+import { whatsappUrl } from '@/lib/contact'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP)
 }
 
-const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-  `Olá! Tenho interesse na ${boat.brand} ${boat.model}. Gostaria de confirmar alguns detalhes antes da visita.`,
-)}`
+const wa = whatsappUrl('primary')
 
 export function FaqSection() {
   const root = useRef<HTMLElement>(null)
@@ -50,7 +49,7 @@ export function FaqSection() {
           </p>
           <a href={wa} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]">
             <MessageCircle className="size-4" aria-hidden="true" />
-            Confirmar detalhes
+            Receber vídeos e documentação
           </a>
         </div>
 

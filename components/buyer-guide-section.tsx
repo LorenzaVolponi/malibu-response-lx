@@ -6,17 +6,16 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
+import { whatsappUrl } from '@/lib/contact'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP)
 }
 
-const confirmed = ['Motor Indmar Monsoon 350 SS', 'Zero Off GPS', 'Bimini e carreta inclusos']
-const toConfirm = ['Ano', 'Horas de motor', 'Local de visita', 'Histórico de manutenção']
+const confirmed = ['Ano 2013', '940 horas de motor', 'Motor Indmar Monsoon 350 SS', 'Zero Off GPS', 'Bimini e carreta inclusos']
+const toConfirm = ['Local de visita', 'Documentação', 'Histórico de manutenção', 'Condições para teste na água']
 
-const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-  `Olá! Tenho interesse na ${boat.brand} ${boat.model} anunciada por ${boat.priceLabel}. Gostaria de confirmar os dados pendentes e agendar uma visita.`,
-)}`
+const wa = whatsappUrl('primary')
 
 export function BuyerGuideSection() {
   const root = useRef<HTMLElement>(null)
@@ -79,10 +78,10 @@ export function BuyerGuideSection() {
             </div>
             <h3 className="font-serif text-2xl text-cream">Próximo passo</h3>
             <p className="mt-5 text-sm leading-relaxed text-cream/75">
-              Peça os dados pendentes, combine visita e tire dúvidas diretamente com o vendedor.
+              Peça os detalhes de visita, documentação, combine visita e tire dúvidas diretamente com o vendedor.
             </p>
             <a href={wa} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]">
-              Chamar no WhatsApp
+              Receber vídeos e documentação
             </a>
           </article>
         </div>
