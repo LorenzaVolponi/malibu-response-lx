@@ -9,7 +9,7 @@ const SITE_URL = 'https://malibu-response-lx.vercel.app'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Barco Malibu Response LX 2013 | Lancha V8 350HP à Venda',
+    default: 'Comprar Barco Malibu Response LX 2013 | Lancha V8 350HP à Venda',
     template: '%s | Malibu Response LX',
   },
   description:

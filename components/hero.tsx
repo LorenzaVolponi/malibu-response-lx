@@ -85,7 +85,7 @@ export function Hero() {
 
       <div
         data-hero-content
-        className="relative mx-auto max-w-4xl px-4 pt-20 text-center will-change-transform sm:pt-0"
+        className="relative mx-auto max-w-4xl px-5 pt-16 text-center will-change-transform sm:pt-0"
       >
         <p
           data-hero-reveal
@@ -113,7 +113,7 @@ export function Hero() {
         >
           <a
             href="#experiencia"
-            className="rounded-full bg-gold px-7 py-3.5 text-center text-sm font-semibold text-primary-foreground shadow-lg shadow-gold/10 transition-all hover:scale-[1.04] hover:shadow-gold/20"
+            className="w-full max-w-xs rounded-full bg-gold px-7 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-gold/10 transition-all hover:scale-[1.04] hover:shadow-gold/20 sm:w-auto"
           >
             Explorar embarcação
           </a>
@@ -121,7 +121,7 @@ export function Hero() {
             href={whatsappUrl('secondary')}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-cream/20 px-7 py-3.5 text-sm font-semibold text-cream transition-colors hover:bg-white/5"
+            className="inline-flex w-full max-w-xs items-center justify-center gap-2 rounded-full border border-cream/20 px-7 py-3 text-sm font-semibold text-cream transition-colors hover:bg-white/5 sm:w-auto"
           >
             <MessageCircle className="size-4" aria-hidden="true" />
             Agendar avaliação
@@ -136,10 +136,10 @@ export function Hero() {
         </p>
         <div
           data-hero-reveal
-          className="mx-auto mt-10 grid max-w-2xl grid-cols-2 overflow-hidden rounded-3xl border border-cream/10 bg-navy-deep/35 text-left backdrop-blur-md sm:grid-cols-4"
+          className="mx-auto mt-8 grid max-w-xl grid-cols-2 overflow-hidden rounded-3xl border border-cream/10 bg-navy-deep/35 text-left backdrop-blur-md sm:grid-cols-4"
         >
           {heroFacts.map(([label, value]) => (
-            <div key={label} className="border-b border-cream/10 p-4 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0">
+            <div key={label} className="border-b border-cream/10 p-3 last:border-b-0 sm:border-b-0 sm:border-r sm:p-4 sm:last:border-r-0">
               <p className="text-[10px] tracking-[0.24em] text-gold uppercase">{label}</p>
               <p className="mt-1 font-serif text-lg text-cream">{value}</p>
             </div>
