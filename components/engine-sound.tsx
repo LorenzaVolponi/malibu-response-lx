@@ -104,11 +104,11 @@ export function EngineSound() {
       onClick={() => (playing ? stop() : start())}
       className="group fixed bottom-[calc(5.25rem+env(safe-area-inset-bottom))] right-4 z-50 flex items-center gap-2 rounded-full border border-gold/30 bg-navy-deep/85 px-4 py-3 text-sm font-semibold text-cream shadow-2xl shadow-black/30 backdrop-blur-md transition hover:-translate-y-0.5 hover:border-gold sm:bottom-24"
       aria-pressed={playing}
-      aria-label={playing ? 'Desligar ronco do motor V8' : 'Ligar ronco do motor V8'}
-      title={mode === 'real' ? 'Tocando gravação real do motor' : 'Sem gravação real publicada: tocando simulação V8'}
+      aria-label={playing ? 'Parar ronco do motor' : 'Ouvir ronco do motor'}
+      title="Ouvir ronco do motor"
     >
       {playing ? <VolumeX className="size-4 text-gold" /> : <Volume2 className="size-4 text-gold" />}
-      <span>{playing ? (mode === 'real' ? 'V8 real' : 'V8 simulado') : 'Ouvir V8'}</span>
+      <span>{playing ? 'Parar ronco' : 'Ouvir ronco'}</span>
     </button>
   )
 }

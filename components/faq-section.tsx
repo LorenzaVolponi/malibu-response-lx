@@ -12,7 +12,7 @@ if (typeof window !== 'undefined') {
 }
 
 const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-  `Olá! Tenho interesse na ${boat.brand} ${boat.model}. Gostaria de confirmar alguns detalhes antes da visita.`,
+  `Oi vim do site, tenho interesse no barco`,
 )}`
 
 export function FaqSection() {

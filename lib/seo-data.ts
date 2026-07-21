@@ -30,3 +30,27 @@ export const trustSignals = [
   'Motor Indmar Monsoon 350 SS V8 350 HP',
   'Zero Off GPS, bimini e carreta galvanizada inclusos',
 ] as const
+
+
+export const backendSearchTerms = [
+  'comprar barco',
+  'comprar barco Malibu',
+  'comprar lancha',
+  'comprar lancha Malibu',
+  'Malibu Response LX',
+  'Malibu Response LX 2013',
+  'Malibu Response LX à venda',
+  'lancha Malibu usada',
+  'barco Malibu usado',
+  'lancha de esqui aquático',
+  'barco para esqui aquático',
+  'barco de wakeboard',
+  'lancha wakeboard usada',
+  'lancha direct drive',
+  'Indmar Monsoon 350 SS',
+  'motor V8 350 HP lancha',
+  'Zero Off GPS lancha',
+  'lancha com carreta galvanizada',
+  'lancha com bimini',
+  'lancha premium usada Brasil',
+] as const

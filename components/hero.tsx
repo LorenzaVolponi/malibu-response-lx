@@ -118,7 +118,7 @@ export function Hero() {
           </a>
           <a
             href={`https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-              `Olá! Tenho interesse na ${boat.brand} ${boat.model} anunciada por ${boat.priceLabel}. Gostaria de agendar uma visita.`,
+              `Oi vim do site, tenho interesse no barco`,
             )}`}
             target="_blank"
             rel="noopener noreferrer"
