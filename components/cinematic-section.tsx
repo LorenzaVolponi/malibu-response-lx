@@ -26,7 +26,7 @@ export function CinematicSection({ id, image, alt, words, caption, priority }: P
     () => {
       const mm = gsap.matchMedia()
 
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
+      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
         // Parallax + zoom lento na imagem enquanto a seção está fixada
         gsap.fromTo(
           '.cine-img',

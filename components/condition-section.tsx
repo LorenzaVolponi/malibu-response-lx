@@ -18,7 +18,7 @@ export function ConditionSection() {
     () => {
       const mm = gsap.matchMedia()
 
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
+      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
         gsap.from('[data-condition-reveal]', {
           y: 36,
           opacity: 0,
@@ -39,26 +39,26 @@ export function ConditionSection() {
           <div>
             <p className="mb-3 text-xs tracking-luxe text-gold uppercase">Estado da embarcação</p>
             <h2 className="text-balance font-serif text-4xl leading-tight text-cream sm:text-5xl">
-              Pontos de estado em leitura rápida
+              Estado visual e itens do conjunto
             </h2>
           </div>
           <p className="max-w-2xl text-pretty leading-relaxed text-muted-foreground lg:justify-self-end">
-            Um bloco curto para estado visual e itens do conjunto; detalhes práticos ficam na ficha, FAQ e CTA.
+            O objetivo aqui é ser direto: mostrar o que aparece nas fotos e separar o que deve ser confirmado com o vendedor antes da visita.
           </p>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {conditionItems.map((item) => (
-            <article key={item.label} data-condition-reveal className="group rounded-3xl glass p-6 transition-all duration-300 hover:-translate-y-1 hover:border-gold/35">
-              <div className="mb-7 flex items-center justify-between gap-4">
-                <span className="grid size-12 place-items-center rounded-2xl bg-gold/12 text-gold transition-transform duration-300 group-hover:scale-105">
-                  <CheckCircle2 className="size-6" aria-hidden="true" />
+            <article key={item.label} data-condition-reveal className="group rounded-2xl glass p-4 transition-all duration-300 hover:-translate-y-1 hover:border-gold/35 sm:rounded-3xl sm:p-6">
+              <div className="mb-5 flex items-center justify-between gap-3 sm:mb-7 sm:gap-4">
+                <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-gold/12 text-gold transition-transform duration-300 group-hover:scale-105 sm:size-12">
+                  <CheckCircle2 className="size-5 sm:size-6" aria-hidden="true" />
                 </span>
                 <span className="rounded-full border border-cream/10 px-3 py-1 text-[10px] tracking-[0.18em] text-cream/45 uppercase">
                   {item.status}
                 </span>
               </div>
-              <h3 className="font-serif text-2xl text-cream">{item.label}</h3>
+              <h3 className="font-serif text-xl text-cream sm:text-2xl">{item.label}</h3>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.note}</p>
             </article>
           ))}
