@@ -3,8 +3,8 @@ import { boat } from '@/lib/boat-data'
 
 const decisionBlocks = [
   {
-    title: 'Para quem busca comprar barco agora',
-    copy: 'A página responde rápido: preço, ano, horas, motor, transmissão, itens inclusos, fotos reais e WhatsApp direto. O objetivo é reduzir atrito entre descoberta, confiança e contato.',
+    title: 'Para avaliação imediata',
+    copy: 'A página responde rápido: preço, ano, horas, motor, transmissão, itens inclusos, fotos reais e WhatsApp direto para reduzir atrito até a visita.',
   },
   {
     title: 'Para quem compara Malibu usada',

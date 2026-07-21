@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { MessageCircle } from 'lucide-react'
 import { boat, specs, gallery } from '@/lib/boat-data'
-import { seoKeywordClusters, trustSignals } from '@/lib/seo-data'
+import { trustSignals } from '@/lib/seo-data'
 
 const SITE_URL = 'https://malibu-response-lx.vercel.app'
 const PAGE_PATH = '/comprar-barco-malibu-response-lx'
@@ -85,10 +85,10 @@ export default function ComprarBarcoMalibuPage() {
         <div className="mx-auto max-w-5xl">
           <p className="text-xs tracking-luxe text-gold uppercase">Guia de compra · Malibu Response LX</p>
           <h1 className="mt-5 max-w-4xl font-serif text-5xl leading-tight text-cream sm:text-7xl">
-            Comprar barco Malibu Response LX 2013 com dados reais antes da visita
+            Malibu Response LX 2013 com dados reais antes da visita
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-cream/75">
-            Um guia direto para quem pesquisou “comprar barco”, “comprar lancha Malibu” ou “Malibu Response LX à venda” e quer saber se vale chamar o vendedor agora.
+            Um guia direto para avaliar preço, ano, horas, motor, itens inclusos, fotos reais e contato do vendedor antes de marcar uma visita.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full bg-gold px-7 py-3 font-semibold text-primary-foreground">
@@ -134,16 +134,16 @@ export default function ComprarBarcoMalibuPage() {
       </section>
 
       <section className="px-5 py-16">
-        <div className="mx-auto max-w-6xl">
-          <p className="text-xs tracking-luxe text-gold uppercase">Perfis de compra</p>
-          <div className="mt-6 grid gap-5 lg:grid-cols-3">
-            {seoKeywordClusters.map((cluster) => (
-              <article key={cluster.title} className="rounded-3xl glass p-6">
-                <h2 className="font-serif text-2xl text-cream">{cluster.title}</h2>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{cluster.intent}</p>
-              </article>
-            ))}
-          </div>
+        <div className="mx-auto max-w-6xl rounded-4xl border border-gold/20 bg-gold/[0.06] p-6 sm:p-9">
+          <p className="text-xs tracking-luxe text-gold uppercase">Próximo passo</p>
+          <h2 className="mt-3 font-serif text-4xl text-cream">Converse com o vendedor e valide os detalhes finais</h2>
+          <p className="mt-5 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+            Peça documentação disponível, vídeo complementar, local de visita, condições de teste na água e forma de pagamento diretamente pelo WhatsApp.
+          </p>
+          <a href={wa} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-gold px-7 py-3 font-semibold text-primary-foreground">
+            <MessageCircle className="size-5" aria-hidden="true" />
+            Chamar no WhatsApp
+          </a>
         </div>
       </section>
     </main>

@@ -6,6 +6,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
+import { whatsappUrl } from '@/lib/contact'
 import { ChevronDown, MessageCircle } from 'lucide-react'
 
 if (typeof window !== 'undefined') {
@@ -117,15 +118,13 @@ export function Hero() {
             Explorar embarcação
           </a>
           <a
-            href={`https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-              `Oi vim do site, tenho interesse no barco`,
-            )}`}
+            href={whatsappUrl('secondary')}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-full border border-cream/20 px-7 py-3.5 text-sm font-semibold text-cream transition-colors hover:bg-white/5"
           >
             <MessageCircle className="size-4" aria-hidden="true" />
-            Agendar visita
+            Agendar avaliação
           </a>
         </div>
 

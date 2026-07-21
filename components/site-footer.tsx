@@ -1,4 +1,5 @@
 import { boat } from '@/lib/boat-data'
+import { whatsappUrl } from '@/lib/contact'
 import { Anchor, MessageCircle } from 'lucide-react'
 
 const contactMessage = 'Oi vim do site, tenho interesse no barco'
@@ -40,13 +41,13 @@ export function SiteFooter() {
               Interessado? Fale direto com o vendedor.
             </p>
             <a
-              href={`https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(contactMessage)}`}
+              href={whatsappUrl('primary')}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 inline-flex max-w-full items-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
             >
               <MessageCircle className="size-4" aria-hidden="true" />
-              <span className="truncate">Chamar no WhatsApp · {boat.whatsappLabel}</span>
+              <span className="truncate">Receber vídeos e documentação · {boat.whatsappLabel}</span>
             </a>
             <p className="mt-4 font-serif text-2xl text-cream">
               {boat.priceLabel}

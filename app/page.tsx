@@ -20,7 +20,6 @@ import { SiteFooter } from '@/components/site-footer'
 import { AiChatWidget } from '@/components/ai-chat-widget'
 import { StickyMobileCta } from '@/components/sticky-mobile-cta'
 import { EngineSound } from '@/components/engine-sound'
-import { SeoGrowthSection } from '@/components/seo-growth-section'
 import { MarketProofSection } from '@/components/market-proof-section'
 import { boat, cinematic, faqs, gallery } from '@/lib/boat-data'
 import { backendSearchTerms } from '@/lib/seo-data'
@@ -242,7 +241,6 @@ export default function Page() {
           <GallerySection />
           <BuyerGuideSection />
 
-          <SeoGrowthSection />
           <MarketProofSection />
           <FaqSection />
           <BuyerConfidenceSection />

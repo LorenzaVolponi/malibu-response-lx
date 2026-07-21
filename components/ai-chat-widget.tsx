@@ -3,13 +3,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { boat } from '@/lib/boat-data'
+import { whatsappUrl } from '@/lib/contact'
 
 const SUGGESTIONS = [
   'Quero agendar uma visita',
   'O preço é negociável?',
   'Ano e horas de motor?',
   'Acompanha carreta e bimini?',
-  'Qual é o motor?',
+  'Quero falar sobre motor e manutenção',
   'Quais dados preciso confirmar?',
 ]
 
@@ -19,9 +20,7 @@ export function AiChatWidget() {
   const { messages, sendMessage, status, error } = useChat()
   const scrollRef = useRef<HTMLDivElement>(null)
   const busy = status === 'submitted' || status === 'streaming'
-  const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-    `Oi vim do site, tenho interesse no barco`,
-  )}`
+  const wa = whatsappUrl('primary')
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
@@ -55,7 +54,7 @@ export function AiChatWidget() {
 
       {/* Painel */}
       <div
-        className={`fixed bottom-[calc(6rem+env(safe-area-inset-bottom))] right-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm origin-bottom-right flex-col overflow-hidden rounded-3xl transition-all duration-300 sm:bottom-24 sm:right-6 ${
+        className={`fixed bottom-[calc(6rem+env(safe-area-inset-bottom))] inset-x-3 z-50 flex max-w-none origin-bottom-right flex-col overflow-hidden rounded-3xl transition-all duration-300 sm:inset-x-auto sm:bottom-24 sm:right-6 sm:w-[calc(100vw-2rem)] sm:max-w-sm ${
           open ? 'pointer-events-auto scale-100 opacity-100' : 'pointer-events-none scale-90 opacity-0'
         }`}
         style={{ height: 'min(70dvh, 560px)', maxHeight: 'calc(100dvh - 7rem - env(safe-area-inset-bottom))' }}

@@ -253,3 +253,10 @@
   50% { transform: translate3d(1%, -2%, 0) scaleX(1.04); }
   100% { transform: translate3d(3%, 1%, 0) scaleX(0.98); }
 }
+
+@supports (height: 100dvh) {
+  html {
+    min-height: 100dvh;
+    scroll-padding-top: calc(5rem + env(safe-area-inset-top));
+  }
+}
