@@ -11,11 +11,9 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP)
 }
 
-const icons = [Cog, Gauge, Waves, Ship, Ruler, Satellite]
+const icons = [Cog, Gauge, Waves, Ship, Ruler, Satellite, Clock, Gauge]
 
 const toConfirm = [
-  { label: 'Ano', value: 'A confirmar', icon: Clock },
-  { label: 'Horas de motor', value: 'A confirmar', icon: Gauge },
   { label: 'Local de visita', value: 'Sob consulta', icon: MapPin },
   { label: 'Histórico de manutenção', value: 'Sob consulta', icon: Wrench },
 ] as const
@@ -61,7 +59,7 @@ export function SpecsSection() {
             </h2>
           </div>
           <p className="max-w-2xl text-pretty leading-relaxed text-muted-foreground lg:justify-self-end">
-            Informações técnicas confirmadas por fotos e descrição disponível. Itens complementares ficam destacados para validação direta com o vendedor.
+            Informações técnicas e comerciais organizadas para quem busca comprar barco, comprar lancha Malibu ou comparar uma Malibu Response LX direct drive pronta para visita.
           </p>
         </div>
 
@@ -92,7 +90,7 @@ export function SpecsSection() {
           </div>
 
           <aside className="rounded-4xl border border-cream/10 bg-navy-deep/50 p-6 sm:p-7">
-            <p data-spec-card className="text-xs tracking-luxe text-gold uppercase">A confirmar</p>
+            <p data-spec-card className="text-xs tracking-luxe text-gold uppercase">Complementar</p>
             <div className="mt-6 divide-y divide-cream/10">
               {toConfirm.map(({ label, value, icon: Icon }) => (
                 <div key={label} data-spec-card className="flex items-center gap-4 py-5 first:pt-0 last:pb-0">

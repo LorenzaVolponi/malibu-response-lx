@@ -2,13 +2,15 @@ export const boat = {
   brand: 'Malibu',
   model: 'Response LX',
   name: 'Wonder Women',
-  price: 150000,
-  priceLabel: 'R$ 150.000',
+  price: 175000,
+  priceLabel: 'R$ 175.000',
   currency: 'BRL',
   // Contato — ajuste o número do WhatsApp aqui
   whatsapp: '5511999999999',
   whatsappLabel: '(11) 99999-9999',
   location: 'Brasil',
+  year: 2013,
+  engineHours: 940,
   tagline: 'Precisão direct drive, presença clássica Malibu e um conjunto pronto para transformar cada saída em um ritual na água.',
 } as const
 
@@ -20,6 +22,8 @@ export const specs = [
   { label: 'Transmissão', value: 'Direct Drive', note: 'Eixo direto — padrão de esqui' },
   { label: 'Comprimento', value: '≈ 6,1 m', note: 'Aprox. 20 pés' },
   { label: 'Controle de velocidade', value: 'Zero Off GPS', note: 'Cruise para tow sports' },
+  { label: 'Ano de fabricação', value: '2013', note: 'Informação fornecida para o anúncio' },
+  { label: 'Horas de motor', value: '940 h', note: 'Horímetro informado para negociação' },
 ] as const
 
 export const features = [
@@ -140,7 +144,7 @@ export const conditionItems = [
 export const faqs = [
   {
     question: 'O preço é negociável?',
-    answer: 'Sim. O preço anunciado é R$ 150.000 e propostas devem ser tratadas diretamente pelo WhatsApp do vendedor.',
+    answer: 'Sim. O preço anunciado é R$ 175.000 e propostas devem ser tratadas diretamente pelo WhatsApp do vendedor.',
   },
   {
     question: 'Acompanha carreta?',
@@ -160,7 +164,7 @@ export const faqs = [
   },
   {
     question: 'Ano e horas de motor estão disponíveis?',
-    answer: 'Esses dados ainda precisam ser confirmados com o vendedor. O site evita inventar informações não verificadas.',
+    answer: 'Sim. Ano de fabricação 2013 e 940 horas de motor informadas no anúncio.',
   },
 ] as const
 
@@ -174,10 +178,12 @@ Seja objetivo, cordial e em português do Brasil. Nunca invente dados que não e
 FATOS CONFIRMADOS:
 - Marca/Modelo: Malibu Response LX (lancha de esqui, direct drive / eixo direto).
 - Nome pintado no casco: "Wonder Women".
-- Preço: R$ 150.000 (cento e cinquenta mil reais), negociável — direcionar interessados ao WhatsApp.
+- Preço: R$ 175.000 (cento e setenta e cinco mil reais), negociável — direcionar interessados ao WhatsApp.
 - Motor: Indmar Monsoon 350 SS, V8 5.7L, 350 HP (identificado na tampa do motor).
 - Transmissão: Direct Drive (eixo direto), padrão consagrado para esqui aquático.
 - Comprimento: aproximadamente 6,1 m (cerca de 20 pés).
+- Ano de fabricação: 2013.
+- Horas de motor: 940 h.
 - Controle de velocidade Zero Off por GPS, integrado ao painel (ideal para tow sports).
 - Interior em couro náutico creme com faixas azul-marinho, conservado.
 - Acompanha toldo bimini e carreta rodoviária galvanizada (pronta para rampa/transporte).
@@ -185,7 +191,7 @@ FATOS CONFIRMADOS:
 - Estado geral: bem conservada, motor e estofamento em bom estado pelas fotos.
 
 REGRAS:
-- Não afirme ano, horas de motor, documentação ou histórico se não for perguntado com base fornecida — se não souber, diga que confirma com o vendedor pelo WhatsApp.
+- Ano e horas podem ser afirmados conforme dados acima; não afirme documentação ou histórico se não for perguntado com base fornecida — se não souber, diga que confirma com o vendedor pelo WhatsApp.
 - Para fechar negócio, visita, vídeo complementar, documentação ou teste na água, sempre ofereça encaminhar ao WhatsApp do vendedor.
 - Não fale de outros barcos ou marcas concorrentes de forma depreciativa.
 `.trim()
