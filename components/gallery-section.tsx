@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -101,12 +102,12 @@ export function GallerySection() {
               className={`group relative overflow-hidden rounded-3xl text-left outline-none ring-gold/0 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 ${spanClass[item.span]}`}
               aria-label={`Ampliar foto: ${item.alt}`}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={item.src || '/placeholder.svg'}
+              <Image
+                src={item.src}
                 alt={item.alt}
-                loading="lazy"
-                className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                fill
+                sizes={item.span === 'wide' ? '(max-width: 640px) 100vw, 720px' : '(max-width: 640px) 100vw, 360px'}
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/70 via-transparent to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
               <span className="absolute inset-x-0 bottom-0 translate-y-2 p-4 text-sm text-cream opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
@@ -130,8 +131,13 @@ export function GallerySection() {
           </button>
           <div className="mx-auto flex h-full max-w-6xl flex-col justify-center gap-5">
             <div className="relative min-h-0 flex-1 overflow-hidden rounded-4xl border border-cream/10 bg-black/20">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={current.src} alt={current.alt} className="size-full object-contain" />
+              <Image
+                src={current.src}
+                alt={current.alt}
+                fill
+                sizes="100vw"
+                className="object-contain"
+              />
             </div>
             <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-cream/75">
               <p>{current.alt}</p>

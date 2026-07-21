@@ -13,6 +13,7 @@ import { ConditionSection } from '@/components/condition-section'
 import { GallerySection } from '@/components/gallery-section'
 import { BuyerGuideSection } from '@/components/buyer-guide-section'
 import { PricingCta } from '@/components/pricing-cta'
+import { SeoTrustSection } from '@/components/seo-trust-section'
 import { FaqSection } from '@/components/faq-section'
 import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
 import { SiteFooter } from '@/components/site-footer'
@@ -64,6 +65,47 @@ const jsonLd = {
   ],
 }
 
+const engineVideoJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  '@id': `${SITE_URL}/#engine-sound-video`,
+  name: 'Ronco do motor da Malibu Response LX',
+  description: 'Vídeo curto associado ao ronco do motor da Malibu Response LX anunciada.',
+  url: ENGINE_VIDEO_URL,
+  embedUrl: ENGINE_VIDEO_EMBED_URL,
+  thumbnailUrl: [`https://i.ytimg.com/vi/DvjVs6ifb7Y/hqdefault.jpg`],
+  inLanguage: 'pt-BR',
+}
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE_URL}/#seller`,
+  name: 'Malibu Response LX Brasil',
+  url: SITE_URL,
+  telephone: '+55 31 99865-4328',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+55 31 99865-4328',
+    contactType: 'sales',
+    availableLanguage: 'Portuguese',
+    areaServed: 'BR',
+  },
+}
+
+
+const imageGalleryJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  '@id': `${SITE_URL}/#gallery`,
+  name: 'Fotos reais da Malibu Response LX 2013',
+  associatedMedia: gallery.map((image) => ({
+    '@type': 'ImageObject',
+    contentUrl: `${SITE_URL}${image.src}`,
+    caption: image.alt,
+    representativeOfPage: image.src === '/images/hero-side.jpeg',
+  })),
+}
 
 
 const webPageJsonLd = {
@@ -227,6 +269,7 @@ export default function Page() {
         <SiteFooter />
       </SmoothScroll>
       <StickyMobileCta />
+      <EngineSound />
       <AiChatWidget />
     </>
   )
