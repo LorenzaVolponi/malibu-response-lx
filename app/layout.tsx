@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import { WhatsAppClickTracker } from '@/components/whatsapp-click-tracker'
 
 const SITE_URL = 'https://malibu-response-lx.vercel.app'
 
@@ -122,6 +123,7 @@ export default function RootLayout({
     <html lang="pt-BR" className="bg-background">
       <body className="font-sans antialiased">
         {children}
+        <WhatsAppClickTracker />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
