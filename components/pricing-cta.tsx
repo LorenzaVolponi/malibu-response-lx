@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import Image from 'next/image'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
@@ -63,8 +64,7 @@ export function PricingCta() {
       className="relative overflow-hidden py-28 sm:py-36"
     >
       <div ref={bg} className="absolute inset-0 -z-10 will-change-transform">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src="/images/exterior-front.jpeg"
           alt=""
           aria-hidden="true"
