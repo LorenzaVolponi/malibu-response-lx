@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import Image from 'next/image'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
@@ -72,8 +73,7 @@ export function Hero() {
       className="relative water-surface flex h-[100svh] items-center justify-center overflow-hidden"
     >
       <div ref={imgRef} className="absolute inset-0 z-0 will-change-transform">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src="/images/hero-side.jpeg"
           alt="Lancha Malibu Response LX de perfil na represa, casco branco com faixa azul-marinho"
           className="size-full object-cover saturate-110 contrast-105"
@@ -96,7 +96,7 @@ export function Hero() {
         </p>
         <h1
           data-hero-reveal
-          className="text-balance font-serif text-5xl leading-[0.95] text-cream sm:text-7xl lg:text-8xl"
+          className="text-balance font-serif text-4xl leading-[0.95] text-cream sm:text-7xl lg:text-8xl"
         >
           Malibu
           <span className="block text-gradient-gold">Response LX</span>
@@ -110,7 +110,7 @@ export function Hero() {
 
         <div
           data-hero-reveal
-          className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:mt-10 sm:flex-row sm:items-center sm:gap-4"
         >
           <a
             href="#experiencia"

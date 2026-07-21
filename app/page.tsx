@@ -13,6 +13,7 @@ import { ConditionSection } from '@/components/condition-section'
 import { GallerySection } from '@/components/gallery-section'
 import { BuyerGuideSection } from '@/components/buyer-guide-section'
 import { PricingCta } from '@/components/pricing-cta'
+import { SeoTrustSection } from '@/components/seo-trust-section'
 import { FaqSection } from '@/components/faq-section'
 import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
 import { SiteFooter } from '@/components/site-footer'
@@ -64,6 +65,311 @@ const jsonLd = {
   ],
 }
 
+const engineVideoJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  '@id': `${SITE_URL}/#engine-sound-video`,
+  name: 'Ronco do motor da Malibu Response LX',
+  description: 'Vídeo curto associado ao ronco do motor da Malibu Response LX anunciada.',
+  url: ENGINE_VIDEO_URL,
+  embedUrl: ENGINE_VIDEO_EMBED_URL,
+  thumbnailUrl: [`https://i.ytimg.com/vi/DvjVs6ifb7Y/hqdefault.jpg`],
+  inLanguage: 'pt-BR',
+}
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE_URL}/#seller`,
+  name: 'Malibu Response LX Brasil',
+  url: SITE_URL,
+  telephone: '+55 31 99865-4328',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+55 31 99865-4328',
+    contactType: 'sales',
+    availableLanguage: 'Portuguese',
+    areaServed: 'BR',
+  },
+}
+
+
+const imageGalleryJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  '@id': `${SITE_URL}/#gallery`,
+  name: 'Fotos reais da Malibu Response LX 2013',
+  associatedMedia: gallery.map((image) => ({
+    '@type': 'ImageObject',
+    contentUrl: `${SITE_URL}${image.src}`,
+    caption: image.alt,
+    representativeOfPage: image.src === '/images/hero-side.jpeg',
+  })),
+}
+
+
+const webPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE_URL}/#webpage`,
+  url: SITE_URL,
+  name: 'Comprar Barco Malibu Response LX 2013',
+  description: 'Página completa para avaliar a Malibu Response LX 2013 à venda, com preço, horas, motor, fotos reais, ficha técnica, guia de compra e contato direto.',
+  inLanguage: 'pt-BR',
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  primaryImageOfPage: `${SITE_URL}/images/hero-side.jpeg`,
+  keywords: [...backendSearchTerms],
+  mentions: backendSearchTerms.map((term) => ({
+    '@type': 'DefinedTerm',
+    name: term,
+  })),
+  relatedLink: [
+    `${SITE_URL}/comprar-barco-malibu-response-lx`,
+  ],
+}
+
+
+const searchTerminologyJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  '@id': `${SITE_URL}/#search-terminology`,
+  name: 'Terminologia de busca para a Malibu Response LX 2013',
+  hasDefinedTerm: backendSearchTerms.map((term) => ({
+    '@type': 'DefinedTerm',
+    name: term,
+    inDefinedTermSet: `${SITE_URL}/#search-terminology`,
+  })),
+}
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE_URL}/#website`,
+  name: 'Malibu Response LX à venda',
+  url: SITE_URL,
+  inLanguage: 'pt-BR',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${SITE_URL}/?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Início', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Barcos à venda', item: `${SITE_URL}/#comprar-barco-malibu` },
+    { '@type': 'ListItem', position: 3, name: `${boat.brand} ${boat.model} ${boat.year}`, item: `${SITE_URL}/#product` },
+  ],
+}
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE_URL}/#seller`,
+  name: 'Malibu Response LX Brasil',
+  url: SITE_URL,
+  telephone: '+55 31 99865-4328',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+55 31 99865-4328',
+    contactType: 'sales',
+    availableLanguage: 'Portuguese',
+    areaServed: 'BR',
+  },
+}
+
+
+const imageGalleryJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  '@id': `${SITE_URL}/#gallery`,
+  name: 'Fotos reais da Malibu Response LX 2013',
+  associatedMedia: gallery.map((image) => ({
+    '@type': 'ImageObject',
+    contentUrl: `${SITE_URL}${image.src}`,
+    caption: image.alt,
+    representativeOfPage: image.src === '/images/hero-side.jpeg',
+  })),
+}
+
+
+const webPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE_URL}/#webpage`,
+  url: SITE_URL,
+  name: 'Comprar Barco Malibu Response LX 2013',
+  description: 'Página completa para avaliar a Malibu Response LX 2013 à venda, com preço, horas, motor, fotos reais, ficha técnica, guia de compra e contato direto.',
+  inLanguage: 'pt-BR',
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  primaryImageOfPage: `${SITE_URL}/images/hero-side.jpeg`,
+  keywords: [...backendSearchTerms],
+  mentions: backendSearchTerms.map((term) => ({
+    '@type': 'DefinedTerm',
+    name: term,
+  })),
+  relatedLink: [
+    `${SITE_URL}/comprar-barco-malibu-response-lx`,
+  ],
+}
+
+
+const searchTerminologyJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  '@id': `${SITE_URL}/#search-terminology`,
+  name: 'Terminologia de busca para a Malibu Response LX 2013',
+  hasDefinedTerm: backendSearchTerms.map((term) => ({
+    '@type': 'DefinedTerm',
+    name: term,
+    inDefinedTermSet: `${SITE_URL}/#search-terminology`,
+  })),
+}
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE_URL}/#website`,
+  name: 'Malibu Response LX à venda',
+  url: SITE_URL,
+  inLanguage: 'pt-BR',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${SITE_URL}/?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Início', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Barcos à venda', item: `${SITE_URL}/#comprar-barco-malibu` },
+    { '@type': 'ListItem', position: 3, name: `${boat.brand} ${boat.model} ${boat.year}`, item: `${SITE_URL}/#product` },
+  ],
+}
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE_URL}/#seller`,
+  name: 'Malibu Response LX Brasil',
+  url: SITE_URL,
+  telephone: '+55 31 99865-4328',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+55 31 99865-4328',
+    contactType: 'sales',
+    availableLanguage: 'Portuguese',
+    areaServed: 'BR',
+  },
+}
+
+
+const imageGalleryJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  '@id': `${SITE_URL}/#gallery`,
+  name: 'Fotos reais da Malibu Response LX 2013',
+  associatedMedia: gallery.map((image) => ({
+    '@type': 'ImageObject',
+    contentUrl: `${SITE_URL}${image.src}`,
+    caption: image.alt,
+    representativeOfPage: image.src === '/images/hero-side.jpeg',
+  })),
+}
+
+
+const webPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${SITE_URL}/#webpage`,
+  url: SITE_URL,
+  name: 'Comprar Barco Malibu Response LX 2013',
+  description: 'Página completa para avaliar a Malibu Response LX 2013 à venda, com preço, horas, motor, fotos reais, ficha técnica, guia de compra e contato direto.',
+  inLanguage: 'pt-BR',
+  isPartOf: { '@id': `${SITE_URL}/#website` },
+  primaryImageOfPage: `${SITE_URL}/images/hero-side.jpeg`,
+  keywords: [...backendSearchTerms],
+  mentions: backendSearchTerms.map((term) => ({
+    '@type': 'DefinedTerm',
+    name: term,
+  })),
+  relatedLink: [
+    `${SITE_URL}/comprar-barco-malibu-response-lx`,
+  ],
+}
+
+
+const searchTerminologyJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  '@id': `${SITE_URL}/#search-terminology`,
+  name: 'Terminologia de busca para a Malibu Response LX 2013',
+  hasDefinedTerm: backendSearchTerms.map((term) => ({
+    '@type': 'DefinedTerm',
+    name: term,
+    inDefinedTermSet: `${SITE_URL}/#search-terminology`,
+  })),
+}
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE_URL}/#website`,
+  name: 'Malibu Response LX à venda',
+  url: SITE_URL,
+  inLanguage: 'pt-BR',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${SITE_URL}/?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Início', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Barcos à venda', item: `${SITE_URL}/#comprar-barco-malibu` },
+    { '@type': 'ListItem', position: 3, name: `${boat.brand} ${boat.model} ${boat.year}`, item: `${SITE_URL}/#product` },
+  ],
+}
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE_URL}/#seller`,
+  name: 'Malibu Response LX Brasil',
+  url: SITE_URL,
+  telephone: '+55 31 99865-4328',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+55 31 99865-4328',
+    contactType: 'sales',
+    availableLanguage: 'Portuguese',
+    areaServed: 'BR',
+  },
+}
+
+
+const imageGalleryJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  '@id': `${SITE_URL}/#gallery`,
+  name: 'Fotos reais da Malibu Response LX 2013',
+  associatedMedia: gallery.map((image) => ({
+    '@type': 'ImageObject',
+    contentUrl: `${SITE_URL}${image.src}`,
+    caption: image.alt,
+    representativeOfPage: image.src === '/images/hero-side.jpeg',
+  })),
+}
 
 
 const webPageJsonLd = {
@@ -227,6 +533,7 @@ export default function Page() {
         <SiteFooter />
       </SmoothScroll>
       <StickyMobileCta />
+      <EngineSound />
       <AiChatWidget />
     </>
   )

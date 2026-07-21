@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -101,9 +102,8 @@ export function GallerySection() {
               className={`group relative overflow-hidden rounded-3xl text-left outline-none ring-gold/0 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 ${spanClass[item.span]}`}
               aria-label={`Ampliar foto: ${item.alt}`}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={item.src || '/placeholder.svg'}
+              <Image
+                src={item.src}
                 alt={item.alt}
                 loading="lazy"
                 decoding="async"
