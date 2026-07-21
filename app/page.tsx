@@ -22,6 +22,7 @@ import { EngineSound } from '@/components/engine-sound'
 import { SeoGrowthSection } from '@/components/seo-growth-section'
 import { MarketProofSection } from '@/components/market-proof-section'
 import { boat, cinematic, faqs, gallery } from '@/lib/boat-data'
+import { backendSearchTerms } from '@/lib/seo-data'
 
 const SITE_URL = 'https://malibu-response-lx.vercel.app'
 const ENGINE_VIDEO_URL = 'https://www.youtube.com/shorts/DvjVs6ifb7Y'
@@ -80,19 +81,28 @@ const webPageJsonLd = {
   inLanguage: 'pt-BR',
   isPartOf: { '@id': `${SITE_URL}/#website` },
   primaryImageOfPage: `${SITE_URL}/images/hero-side.jpeg`,
-  keywords: [
-    'comprar barco Malibu',
-    'comprar lancha Malibu',
-    'Malibu Response LX 2013',
-    'lancha de esqui aquático',
-    'barco de wakeboard',
-    'lancha direct drive',
-    'Indmar Monsoon 350 SS',
-  ],
+  keywords: [...backendSearchTerms],
+  mentions: backendSearchTerms.map((term) => ({
+    '@type': 'DefinedTerm',
+    name: term,
+  })),
   relatedLink: [
     `${SITE_URL}/comprar-barco-malibu-response-lx`,
     ENGINE_VIDEO_URL,
   ],
+}
+
+
+const searchTerminologyJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  '@id': `${SITE_URL}/#search-terminology`,
+  name: 'Terminologia de busca para a Malibu Response LX 2013',
+  hasDefinedTerm: backendSearchTerms.map((term) => ({
+    '@type': 'DefinedTerm',
+    name: term,
+    inDefinedTermSet: `${SITE_URL}/#search-terminology`,
+  })),
 }
 
 const websiteJsonLd = {
@@ -188,6 +198,10 @@ export default function Page() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(searchTerminologyJsonLd) }}
       />
       <script
         type="application/ld+json"

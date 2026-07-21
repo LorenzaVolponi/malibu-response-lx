@@ -20,7 +20,7 @@ export function AiChatWidget() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const busy = status === 'submitted' || status === 'streaming'
   const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-    `Olá! Tenho interesse na ${boat.brand} ${boat.model} anunciada por ${boat.priceLabel}.`,
+    `Oi vim do site, tenho interesse no barco`,
   )}`
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export function AiChatWidget() {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? 'Fechar assistente' : 'Abrir assistente virtual'}
         aria-expanded={open}
-        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-2xl shadow-navy-deep/50 transition-transform hover:scale-105 active:scale-95 sm:bottom-6 sm:right-6"
+        className="fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom))] right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-2xl shadow-navy-deep/50 transition-transform hover:scale-105 active:scale-95 sm:bottom-6 sm:right-6"
       >
         {open ? <CloseIcon /> : <ChatIcon />}
         {!open && (
@@ -55,7 +55,7 @@ export function AiChatWidget() {
 
       {/* Painel */}
       <div
-        className={`fixed bottom-24 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm origin-bottom-right flex-col overflow-hidden rounded-3xl transition-all duration-300 sm:right-6 ${
+        className={`fixed bottom-[calc(6rem+env(safe-area-inset-bottom))] right-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm origin-bottom-right flex-col overflow-hidden rounded-3xl transition-all duration-300 sm:bottom-24 sm:right-6 ${
           open ? 'pointer-events-auto scale-100 opacity-100' : 'pointer-events-none scale-90 opacity-0'
         }`}
         style={{ height: 'min(70dvh, 560px)', maxHeight: 'calc(100dvh - 7rem - env(safe-area-inset-bottom))' }}

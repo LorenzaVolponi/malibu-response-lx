@@ -15,7 +15,7 @@ const confirmed = ['Ano 2013', '940 horas de motor', 'Motor Indmar Monsoon 350 S
 const toConfirm = ['Local de visita', 'Documentação', 'Histórico de manutenção', 'Condições para teste na água']
 
 const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-  `Olá! Tenho interesse na ${boat.brand} ${boat.model} anunciada por ${boat.priceLabel}. Gostaria de confirmar os detalhes de visita, documentação e agendar uma visita.`,
+  `Oi vim do site, tenho interesse no barco`,
 )}`
 
 export function BuyerGuideSection() {

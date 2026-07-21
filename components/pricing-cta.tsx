@@ -104,7 +104,7 @@ export function PricingCta() {
               >
                 <a
                   href={wa(
-                    'Olá! Tenho interesse na Malibu Response LX por R$ 175.000. Gostaria de mais informações e agendar uma visita.',
+                    'Oi vim do site, tenho interesse no barco',
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
