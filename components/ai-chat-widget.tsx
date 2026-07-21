@@ -6,12 +6,11 @@ import { boat } from '@/lib/boat-data'
 
 const SUGGESTIONS = [
   'Quero agendar uma visita',
-  'Quais dados faltam confirmar?',
-  'Acompanha carreta e bimini?',
-  'Pode me passar vídeo completo?',
   'O preço é negociável?',
-  'Acompanha carreta?',
-  'Quais dados faltam confirmar?',
+  'Ano e horas de motor?',
+  'Acompanha carreta e bimini?',
+  'Qual é o motor?',
+  'Quais dados preciso confirmar?',
 ]
 
 export function AiChatWidget() {
@@ -21,7 +20,7 @@ export function AiChatWidget() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const busy = status === 'submitted' || status === 'streaming'
   const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-    `Olá! Tenho interesse na ${boat.brand} ${boat.model} anunciada por ${boat.priceLabel}.`,
+    `Oi vim do site, tenho interesse no barco`,
   )}`
 
   useEffect(() => {
@@ -43,7 +42,7 @@ export function AiChatWidget() {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? 'Fechar assistente' : 'Abrir assistente virtual'}
         aria-expanded={open}
-        className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-2xl shadow-navy-deep/50 transition-transform hover:scale-105 active:scale-95 sm:bottom-6 sm:right-6"
+        className="fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom))] right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-2xl shadow-navy-deep/50 transition-transform hover:scale-105 active:scale-95 sm:bottom-6 sm:right-6"
       >
         {open ? <CloseIcon /> : <ChatIcon />}
         {!open && (
@@ -56,10 +55,10 @@ export function AiChatWidget() {
 
       {/* Painel */}
       <div
-        className={`fixed bottom-24 right-4 z-50 flex w-[calc(100vw-2rem)] max-w-sm origin-bottom-right flex-col overflow-hidden rounded-3xl transition-all duration-300 sm:right-6 ${
+        className={`fixed bottom-[calc(6rem+env(safe-area-inset-bottom))] inset-x-3 z-50 flex max-w-none origin-bottom-right flex-col overflow-hidden rounded-3xl transition-all duration-300 sm:inset-x-auto sm:bottom-24 sm:right-6 sm:w-[calc(100vw-2rem)] sm:max-w-sm ${
           open ? 'pointer-events-auto scale-100 opacity-100' : 'pointer-events-none scale-90 opacity-0'
         }`}
-        style={{ height: 'min(70vh, 560px)' }}
+        style={{ height: 'min(70dvh, 560px)', maxHeight: 'calc(100dvh - 7rem - env(safe-area-inset-bottom))' }}
         role="dialog"
         aria-label="Assistente virtual do barco"
       >
@@ -73,7 +72,7 @@ export function AiChatWidget() {
               <p className="font-serif text-sm text-cream">Consultor Malibu</p>
               <p className="flex items-center gap-1.5 text-xs text-cream/60">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                Online — tire suas dúvidas
+                Responde só com dados reais
               </p>
             </div>
           </header>
@@ -84,7 +83,7 @@ export function AiChatWidget() {
               <div className="space-y-4">
                 <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-cream/10 px-4 py-3 text-sm leading-relaxed text-cream">
                   Olá! Sou o consultor virtual desta {boat.brand} {boat.model}. Posso ajudar com
-                  especificações, estado, visita e negociação. Posso te ajudar a preparar uma avaliação completa.
+                  preço, ano, horas, motor, inclusos, visita e negociação — sem inventar dados não confirmados.
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {SUGGESTIONS.map((s) => (

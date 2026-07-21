@@ -8,6 +8,7 @@ const links = [
   { href: '#experiencia', label: 'Experiência' },
   { href: '#ficha', label: 'Performance' },
   { href: '#galeria', label: 'Galeria' },
+  { href: '#comparar-malibu-response-lx', label: 'Comparar' },
   { href: '#negociar', label: 'Contato' },
 ]
 
@@ -25,9 +26,16 @@ export function SiteNav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [open])
+
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-40 transition-all duration-500 ${
+      className={`fixed inset-x-0 top-[env(safe-area-inset-top)] z-40 transition-all duration-500 ${
         scrolled ? 'py-2' : 'py-4'
       }`}
     >
@@ -38,9 +46,9 @@ export function SiteNav() {
           }`}
           aria-label="Navegação principal"
         >
-          <a href="#topo" className="flex items-center gap-3 pl-1">
-            <span className="h-px w-8 bg-gold" aria-hidden="true" />
-            <span className="text-xs font-semibold tracking-[0.28em] text-cream uppercase">
+          <a href="#topo" className="flex min-w-0 items-center gap-3 pl-1">
+            <span className="h-px w-6 shrink-0 bg-gold sm:w-8" aria-hidden="true" />
+            <span className="truncate text-xs font-semibold tracking-[0.2em] text-cream uppercase sm:tracking-[0.28em]">
               Malibu Response LX
             </span>
           </a>
@@ -61,7 +69,7 @@ export function SiteNav() {
           <div className="flex items-center gap-2">
             <a
               href={wa(
-                'Olá! Tenho interesse na Malibu Response LX anunciada por R$ 150.000. Podemos conversar?',
+                'Oi vim do site, tenho interesse no barco',
               )}
               target="_blank"
               rel="noopener noreferrer"
@@ -83,7 +91,14 @@ export function SiteNav() {
         </nav>
 
         {open && (
-          <div className="mt-2 rounded-3xl glass-strong p-4 md:hidden">
+          <>
+            <button
+              type="button"
+              aria-label="Fechar menu"
+              onClick={() => setOpen(false)}
+              className="fixed inset-0 z-40 bg-navy-deep/55 backdrop-blur-sm md:hidden"
+            />
+            <div className="fixed inset-x-4 top-[calc(env(safe-area-inset-top)+4.75rem)] z-50 max-h-[calc(100dvh-6rem-env(safe-area-inset-top))] overscroll-contain overflow-y-auto rounded-3xl glass-strong p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-2xl shadow-black/40 md:hidden">
             <ul className="flex flex-col gap-1">
               {links.map((l) => (
                 <li key={l.href}>
@@ -96,8 +111,23 @@ export function SiteNav() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a
+                  href={wa(
+                    'Oi vim do site, tenho interesse no barco',
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                  className="mt-2 flex items-center justify-center gap-2 rounded-2xl bg-gold px-4 py-3 text-sm font-semibold text-primary-foreground"
+                >
+                  <MessageCircle className="size-4" aria-hidden="true" />
+                  WhatsApp do vendedor
+                </a>
+              </li>
             </ul>
-          </div>
+            </div>
+          </>
         )}
       </div>
     </header>
