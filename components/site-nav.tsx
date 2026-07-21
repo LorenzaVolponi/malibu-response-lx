@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { boat } from '@/lib/boat-data'
+import { whatsappUrl } from '@/lib/contact'
 import { MessageCircle, Menu, X } from 'lucide-react'
 
 const links = [
@@ -12,8 +13,6 @@ const links = [
   { href: '#negociar', label: 'Contato' },
 ]
 
-const wa = (msg: string) =>
-  `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(msg)}`
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false)
@@ -68,15 +67,13 @@ export function SiteNav() {
 
           <div className="flex items-center gap-2">
             <a
-              href={wa(
-                'Oi vim do site, tenho interesse no barco',
-              )}
+              href={whatsappUrl('secondary')}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden items-center gap-2 rounded-full bg-gold px-4 py-2 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03] sm:flex"
             >
               <MessageCircle className="size-4" aria-hidden="true" />
-              Agendar visita
+              Agendar avaliação
             </a>
             <button
               type="button"
@@ -113,9 +110,7 @@ export function SiteNav() {
               ))}
               <li>
                 <a
-                  href={wa(
-                    'Oi vim do site, tenho interesse no barco',
-                  )}
+                  href={whatsappUrl('secondary')}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setOpen(false)}

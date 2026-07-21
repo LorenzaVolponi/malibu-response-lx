@@ -6,6 +6,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
+import { whatsappUrl } from '@/lib/contact'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP)
@@ -14,9 +15,7 @@ if (typeof window !== 'undefined') {
 const confirmed = ['Ano 2013', '940 horas de motor', 'Motor Indmar Monsoon 350 SS', 'Zero Off GPS', 'Bimini e carreta inclusos']
 const toConfirm = ['Local de visita', 'Documentação', 'Histórico de manutenção', 'Condições para teste na água']
 
-const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-  `Oi vim do site, tenho interesse no barco`,
-)}`
+const wa = whatsappUrl('primary')
 
 export function BuyerGuideSection() {
   const root = useRef<HTMLElement>(null)
@@ -82,7 +81,7 @@ export function BuyerGuideSection() {
               Peça os detalhes de visita, documentação, combine visita e tire dúvidas diretamente com o vendedor.
             </p>
             <a href={wa} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex rounded-full bg-gold px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]">
-              Chamar no WhatsApp
+              Receber vídeos e documentação
             </a>
           </article>
         </div>

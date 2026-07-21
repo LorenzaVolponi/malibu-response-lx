@@ -1,11 +1,12 @@
 import { createUIMessageStream, createUIMessageStreamResponse, type UIMessage } from 'ai'
 import { boat, conditionItems, specs } from '@/lib/boat-data'
+import { contactMessages } from '@/lib/contact'
 
 export const maxDuration = 10
 
 type IncomingMessage = UIMessage & { content?: string }
 
-const contactUrl = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent('Oi vim do site, tenho interesse no barco')}`
+const contactUrl = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(contactMessages.primary)}`
 
 const facts = {
   price: `Preço: ${boat.priceLabel}. Propostas e condições devem ser tratadas diretamente pelo WhatsApp do vendedor.`,

@@ -3,13 +3,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { boat } from '@/lib/boat-data'
+import { whatsappUrl } from '@/lib/contact'
 
 const SUGGESTIONS = [
   'Quero agendar uma visita',
   'O preço é negociável?',
   'Ano e horas de motor?',
   'Acompanha carreta e bimini?',
-  'Qual é o motor?',
+  'Quero falar sobre motor e manutenção',
   'Quais dados preciso confirmar?',
 ]
 
@@ -19,9 +20,7 @@ export function AiChatWidget() {
   const { messages, sendMessage, status, error } = useChat()
   const scrollRef = useRef<HTMLDivElement>(null)
   const busy = status === 'submitted' || status === 'streaming'
-  const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-    `Oi vim do site, tenho interesse no barco`,
-  )}`
+  const wa = whatsappUrl('primary')
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
