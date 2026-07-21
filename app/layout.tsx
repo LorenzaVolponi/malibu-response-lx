@@ -42,9 +42,15 @@ export const metadata: Metadata = {
     'lancha represa Guarapiranga',
     'venda de barcos',
     'lancha seminova',
+    'Malibu Response LX preço',
+    'lancha V8 350 HP',
+    'Zero Off GPS lancha',
+    'carreta rodoviária lancha',
   ],
   authors: [{ name: 'Malibu Response LX' }],
   creator: 'Malibu Response LX',
+  publisher: 'Malibu Response LX',
+  referrer: 'origin-when-cross-origin',
   alternates: {
     canonical: '/',
     languages: {
@@ -53,6 +59,7 @@ export const metadata: Metadata = {
   },
   classification: 'classified listing, boat listing, nautical sales',
   category: 'Náutica',
+  classification: 'Classificado náutico premium',
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
@@ -83,6 +90,7 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
+      'max-video-preview': -1,
       'max-image-preview': 'large',
       'max-snippet': -1,
       'max-video-preview': -1,
