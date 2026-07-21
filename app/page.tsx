@@ -26,8 +26,6 @@ import { boat, cinematic, faqs, gallery } from '@/lib/boat-data'
 
 const SITE_URL = 'https://malibu-response-lx.vercel.app'
 
-const SITE_URL = 'https://malibu-response-lx.vercel.app'
-
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
@@ -68,6 +66,35 @@ const jsonLd = {
   ],
 }
 
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE_URL}/#seller`,
+  name: 'Malibu Response LX Brasil',
+  url: SITE_URL,
+  telephone: '+55 31 99865-4328',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+55 31 99865-4328',
+    contactType: 'sales',
+    availableLanguage: 'Portuguese',
+    areaServed: 'BR',
+  },
+}
+
+
+const imageGalleryJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  '@id': `${SITE_URL}/#gallery`,
+  name: 'Fotos reais da Malibu Response LX 2013',
+  associatedMedia: gallery.map((image) => ({
+    '@type': 'ImageObject',
+    contentUrl: `${SITE_URL}${image.src}`,
+    caption: image.alt,
+    representativeOfPage: image.src === '/images/hero-side.jpeg',
+  })),
+}
 
 
 const websiteJsonLd = {

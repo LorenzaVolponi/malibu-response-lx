@@ -12,7 +12,7 @@ const decisionBlocks = [
   },
   {
     title: 'Para quem procura esqui e wakeboard',
-    copy: 'Termos técnicos como direct drive, controle de velocidade, lancha de esqui aquático e barco de wakeboard aparecem com contexto real, não como lista artificial de palavras-chave.',
+    copy: 'Direct drive, controle de velocidade, casco, motor e itens inclusos aparecem em contexto prático para quem quer entender se a lancha combina com o uso na água.',
   },
 ] as const
 
@@ -25,12 +25,12 @@ export function MarketProofSection() {
     <section id="comparar-malibu-response-lx" className="bg-background px-5 py-16 sm:py-24">
       <div className="mx-auto max-w-6xl">
         <div className="mb-10 max-w-3xl">
-          <p className="mb-3 text-xs tracking-luxe text-gold uppercase">Intenção de compra real</p>
+          <p className="mb-3 text-xs tracking-luxe text-gold uppercase">Comparação clara</p>
           <h2 className="font-serif text-4xl leading-tight text-cream sm:text-5xl">
-            Conteúdo feito para ranquear porque ajuda o comprador a decidir
+            Informações organizadas para o comprador decidir com segurança
           </h2>
           <p className="mt-5 text-pretty text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Em vez de esconder informação ou repetir termos sem contexto, a página organiza sinais que importam para busca e conversão: dados verificáveis, fotos, estrutura semântica, perguntas frequentes e chamada direta para negociação.
+            A página organiza dados verificáveis, fotos, ficha técnica, perguntas frequentes e chamada direta para negociação em uma experiência simples para o comprador.
           </p>
         </div>
 
@@ -56,6 +56,12 @@ export function MarketProofSection() {
           >
             <MessageCircle className="size-4" aria-hidden="true" />
             Comparar agora
+          </a>
+          <a
+            href="/comprar-barco-malibu-response-lx"
+            className="inline-flex shrink-0 items-center rounded-full border border-cream/20 px-6 py-3 text-sm font-semibold text-cream transition-colors hover:bg-white/5"
+          >
+            Abrir guia de compra
           </a>
         </div>
       </div>

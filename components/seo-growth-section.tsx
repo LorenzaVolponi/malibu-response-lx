@@ -1,6 +1,6 @@
 import { MessageCircle } from 'lucide-react'
 import { boat } from '@/lib/boat-data'
-import { offPagePlaybook, seoKeywordClusters, trustSignals } from '@/lib/seo-data'
+import { seoKeywordClusters, trustSignals } from '@/lib/seo-data'
 
 const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
   `Olá! Vim pela página da Malibu Response LX 2013 anunciada por ${boat.priceLabel}. Quero receber os próximos passos para avaliar e negociar.`,
@@ -18,7 +18,7 @@ export function SeoGrowthSection() {
                 Malibu Response LX 2013 à venda para quem procura uma lancha esportiva pronta para avaliar
               </h2>
               <p className="mt-5 max-w-3xl text-pretty text-sm leading-relaxed text-cream/75 sm:text-base">
-                Esta página foi estruturada para unir intenção de busca, prova visual e resposta comercial direta: preço, ano, horas, motor, transmissão, fotos reais, itens inclusos e WhatsApp do vendedor em uma jornada única.
+                Aqui você encontra preço, ano, horas, motor, transmissão, fotos reais, itens inclusos e WhatsApp do vendedor em uma jornada única.
               </p>
             </div>
             <a
@@ -38,37 +38,18 @@ export function SeoGrowthSection() {
             <article key={cluster.title} className="rounded-3xl glass p-6">
               <h3 className="font-serif text-2xl text-cream">{cluster.title}</h3>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{cluster.intent}</p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {cluster.terms.map((term) => (
-                  <span key={term} className="rounded-full border border-cream/10 bg-cream/[0.04] px-3 py-1 text-xs text-cream/70">
-                    {term}
-                  </span>
-                ))}
-              </div>
             </article>
           ))}
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
-          <aside className="rounded-3xl border border-cream/10 bg-navy-deep/50 p-6">
-            <p className="text-xs tracking-luxe text-gold uppercase">Sinais de confiança</p>
-            <ul className="mt-5 space-y-3 text-sm leading-relaxed text-cream/78">
-              {trustSignals.map((signal) => (
-                <li key={signal}>• {signal}</li>
-              ))}
-            </ul>
-          </aside>
-
-          <article className="rounded-3xl border border-gold/20 bg-gold/[0.06] p-6">
-            <p className="text-xs tracking-luxe text-gold uppercase">Plano off-page limpo</p>
-            <h3 className="mt-3 font-serif text-3xl text-cream">Destaque fora da página sem spam</h3>
-            <ol className="mt-5 list-decimal space-y-3 pl-5 text-sm leading-relaxed text-cream/75">
-              {offPagePlaybook.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ol>
-          </article>
-        </div>
+        <aside className="rounded-3xl border border-cream/10 bg-navy-deep/50 p-6">
+          <p className="text-xs tracking-luxe text-gold uppercase">Sinais de confiança</p>
+          <ul className="mt-5 grid gap-3 text-sm leading-relaxed text-cream/78 sm:grid-cols-2 lg:grid-cols-3">
+            {trustSignals.map((signal) => (
+              <li key={signal}>• {signal}</li>
+            ))}
+          </ul>
+        </aside>
       </div>
     </section>
   )
