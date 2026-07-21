@@ -61,7 +61,7 @@ export function SiteNav() {
           <div className="flex items-center gap-2">
             <a
               href={wa(
-                'Olá! Tenho interesse na Malibu Response LX anunciada por R$ 150.000. Podemos conversar?',
+                'Olá! Tenho interesse na Malibu Response LX anunciada por R$ 175.000. Podemos conversar?',
               )}
               target="_blank"
               rel="noopener noreferrer"

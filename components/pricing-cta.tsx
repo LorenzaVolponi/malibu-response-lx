@@ -18,6 +18,8 @@ const includes = [
   'Controle de velocidade Zero Off GPS',
   'Toldo bimini',
   'Carreta rodoviária galvanizada inclusa',
+  'Ano de fabricação 2013',
+  '940 horas de motor',
   'Estofamento conservado creme/azul',
 ]
 
@@ -104,7 +106,7 @@ export function PricingCta() {
               >
                 <a
                   href={wa(
-                    'Olá! Tenho interesse na Malibu Response LX por R$ 150.000. Gostaria de mais informações e agendar uma visita.',
+                    'Olá! Tenho interesse na Malibu Response LX por R$ 175.000. Gostaria de mais informações e agendar uma visita.',
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
