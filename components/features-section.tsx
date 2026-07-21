@@ -17,7 +17,7 @@ export function FeaturesSection() {
     () => {
       const mm = gsap.matchMedia()
 
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
+      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
         const rows = gsap.utils.toArray<HTMLElement>('[data-feature-row]')
         rows.forEach((row) => {
           const img = row.querySelector('[data-feature-img]')

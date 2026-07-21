@@ -49,7 +49,7 @@ export function GallerySection() {
     () => {
       const mm = gsap.matchMedia()
 
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
+      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
         gsap.from('[data-gal-head]', {
           y: 30,
           opacity: 0,
@@ -105,8 +105,9 @@ export function GallerySection() {
               <Image
                 src={item.src}
                 alt={item.alt}
-                loading="lazy"
+                loading={index < 2 ? 'eager' : 'lazy'}
                 decoding="async"
+                fetchPriority={index === 0 ? 'high' : 'auto'}
                 className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/70 via-transparent to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100" />

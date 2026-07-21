@@ -28,7 +28,7 @@ export function Hero() {
     () => {
       const mm = gsap.matchMedia()
 
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
+      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
         gsap.from('[data-hero-reveal]', {
           y: 40,
           opacity: 0,
@@ -70,13 +70,13 @@ export function Hero() {
     <section
       ref={root}
       id="topo"
-      className="relative water-surface flex h-[100svh] items-center justify-center overflow-hidden"
+      className="relative water-surface flex min-h-[100svh] items-center justify-center overflow-hidden py-24 sm:py-0"
     >
       <div ref={imgRef} className="absolute inset-0 z-0 will-change-transform">
         <Image
           src="/images/hero-side.jpeg"
           alt="Lancha Malibu Response LX de perfil na represa, casco branco com faixa azul-marinho"
-          className="size-full object-cover saturate-110 contrast-105"
+          className="size-full object-cover object-center saturate-110 contrast-105"
           fetchPriority="high"
           decoding="async"
         />
@@ -86,7 +86,7 @@ export function Hero() {
 
       <div
         data-hero-content
-        className="relative mx-auto max-w-4xl px-5 pt-16 text-center will-change-transform sm:pt-0"
+        className="relative mx-auto max-w-4xl px-5 text-center will-change-transform"
       >
         <p
           data-hero-reveal

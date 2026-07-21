@@ -20,7 +20,7 @@ export function JourneyScroll() {
       const total = slides.length
       const mm = gsap.matchMedia()
 
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
+      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
         slides.forEach((s, i) => {
           gsap.set(s, {
             opacity: i === 0 ? 1 : 0,
