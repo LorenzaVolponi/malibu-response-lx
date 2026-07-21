@@ -19,21 +19,27 @@ import { SiteFooter } from '@/components/site-footer'
 import { AiChatWidget } from '@/components/ai-chat-widget'
 import { StickyMobileCta } from '@/components/sticky-mobile-cta'
 import { EngineSound } from '@/components/engine-sound'
+import { SeoGrowthSection } from '@/components/seo-growth-section'
 import { boat, cinematic, faqs } from '@/lib/boat-data'
+
+const SITE_URL = 'https://malibu-response-lx.vercel.app'
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
-  name: `${boat.brand} ${boat.model}`,
+  '@id': `${SITE_URL}/#product`,
+  additionalType: 'https://schema.org/Boat',
+  name: `${boat.brand} ${boat.model} ${boat.year}`,
+  alternateName: ['Malibu Response LX à venda', 'Lancha Malibu Response LX 2013', 'Comprar barco Malibu'],
   description:
     'Lancha Malibu Response LX à venda. Motor Indmar Monsoon 350 SS V8 (350 HP), transmissão direct drive, controle Zero Off GPS, toldo bimini e carreta rodoviária inclusa. Ideal para esqui aquático e wakeboard.',
   brand: { '@type': 'Brand', name: 'Malibu' },
   category: 'Lancha / Embarcação esportiva',
   image: [
-    '/images/hero-side.jpeg',
-    '/images/exterior-front.jpeg',
-    '/images/engine.jpeg',
-    '/images/cockpit-dash.jpeg',
+    `${SITE_URL}/images/hero-side.jpeg`,
+    `${SITE_URL}/images/exterior-front.jpeg`,
+    `${SITE_URL}/images/engine.jpeg`,
+    `${SITE_URL}/images/cockpit-dash.jpeg`,
   ],
   offers: {
     '@type': 'Offer',
@@ -42,7 +48,12 @@ const jsonLd = {
     availability: 'https://schema.org/InStock',
     itemCondition: 'https://schema.org/UsedCondition',
     areaServed: 'BR',
+    url: SITE_URL,
+    seller: { '@type': 'Organization', name: 'Malibu Response LX Brasil' },
   },
+  sku: `malibu-response-lx-${boat.year}-${boat.engineHours}h`,
+  mpn: 'Response LX',
+  mainEntityOfPage: SITE_URL,
   additionalProperty: [
     { '@type': 'PropertyValue', name: 'Motor', value: 'Indmar Monsoon 350 SS' },
     { '@type': 'PropertyValue', name: 'Potência', value: '350 HP' },
@@ -53,6 +64,47 @@ const jsonLd = {
   ],
 }
 
+
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE_URL}/#website`,
+  name: 'Malibu Response LX à venda',
+  url: SITE_URL,
+  inLanguage: 'pt-BR',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${SITE_URL}/?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+}
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Início', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Barcos à venda', item: `${SITE_URL}/#comprar-barco-malibu` },
+    { '@type': 'ListItem', position: 3, name: `${boat.brand} ${boat.model} ${boat.year}`, item: `${SITE_URL}/#product` },
+  ],
+}
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${SITE_URL}/#seller`,
+  name: 'Malibu Response LX Brasil',
+  url: SITE_URL,
+  telephone: '+55 31 99865-4328',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+55 31 99865-4328',
+    contactType: 'sales',
+    availableLanguage: 'Portuguese',
+    areaServed: 'BR',
+  },
+}
 
 const faqJsonLd = {
   '@context': 'https://schema.org',
@@ -78,6 +130,18 @@ export default function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
       <Preloader />
       <SmoothScroll>
         <ScrollProgress />
@@ -96,25 +160,9 @@ export default function Page() {
           <GallerySection />
           <BuyerGuideSection />
 
-          <section id="comprar-barco-malibu" className="bg-background px-5 py-16">
-            <div className="mx-auto max-w-6xl rounded-4xl border border-gold/20 bg-gold/[0.06] p-6 sm:p-9">
-              <p className="text-xs tracking-luxe text-gold uppercase">Comprar barco Malibu</p>
-              <h2 className="mt-3 font-serif text-3xl text-cream sm:text-4xl">
-                Malibu Response LX 2013 à venda: resposta rápida para quem procura lancha esportiva premium
-              </h2>
-              <div className="mt-6 grid gap-4 text-sm leading-relaxed text-cream/75 md:grid-cols-3">
-                <p>
-                  Para buscas como comprar barco, comprar lancha, Malibu à venda, lancha de esqui aquático e barco de wakeboard, esta página reúne preço, fotos reais, ficha técnica e contato direto em um único lugar.
-                </p>
-                <p>
-                  O conjunto anunciado traz motor Indmar Monsoon 350 SS V8 de 350 HP, transmissão direct drive, Zero Off GPS, ano de fabricação 2013, 940 horas de motor, bimini e carreta rodoviária galvanizada inclusa.
-                </p>
-                <p>
-                  Se a intenção é decidir rápido, chame no WhatsApp, peça documentação, combine visita e avalie a sensação do V8 na água com o vendedor.
-                </p>
-              </div>
-            </div>
-          </section>
+          <SeoGrowthSection />
+          <FaqSection />
+          <BuyerConfidenceSection />
           <PricingCta />
         </main>
         <SiteFooter />
