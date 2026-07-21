@@ -59,7 +59,7 @@ export function SpecsSection() {
             </h2>
           </div>
           <p className="max-w-2xl text-pretty leading-relaxed text-muted-foreground lg:justify-self-end">
-            Informações técnicas e comerciais organizadas para avaliar a Malibu Response LX direct drive com clareza antes da visita.
+            Informações técnicas e comerciais organizadas para quem busca comprar barco, comprar lancha Malibu ou comparar uma Malibu Response LX direct drive pronta para visita.
           </p>
         </div>
 

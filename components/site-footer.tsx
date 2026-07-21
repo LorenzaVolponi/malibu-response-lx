@@ -2,6 +2,8 @@ import { boat } from '@/lib/boat-data'
 import { whatsappUrl } from '@/lib/contact'
 import { Anchor, MessageCircle } from 'lucide-react'
 
+const contactMessage = 'Oi vim do site, tenho interesse no barco'
+
 export function SiteFooter() {
   const year = new Date().getFullYear()
   return (
