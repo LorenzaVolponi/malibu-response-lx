@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: '%s | Malibu Response LX',
   },
   description:
-    'Lancha Malibu Response LX à venda no Brasil por R$ 150.000. Motor Indmar Monsoon 350 SS V8 (350 HP), transmissão direct drive, controle Zero Off, toldo bimini e carreta rodoviária inclusa. Ideal para esqui aquático e wakeboard. Agende sua visita.',
+    'Comprar barco Malibu Response LX 2013 à venda no Brasil por R$ 175.000. Lancha de esqui/wakeboard com 940 horas de motor, Indmar Monsoon 350 SS V8 350 HP, direct drive, Zero Off GPS, bimini e carreta inclusa. Agende visita pelo WhatsApp.',
   applicationName: 'Malibu Response LX',
   keywords: [
     'Malibu Response LX à venda',
@@ -25,6 +25,13 @@ export const metadata: Metadata = {
     'lancha Monsoon 350',
     'lancha direct drive',
     'comprar lancha São Paulo',
+    'comprar barco',
+    'comprar barco Malibu',
+    'comprar lancha Malibu',
+    'barco Malibu Response LX',
+    'Malibu Response LX 2013',
+    'lancha 350 HP usada',
+    'lancha esqui aquático à venda',
     'lancha represa Guarapiranga',
     'venda de barcos',
     'lancha seminova',
@@ -40,9 +47,9 @@ export const metadata: Metadata = {
     locale: 'pt_BR',
     url: SITE_URL,
     siteName: 'Malibu Response LX',
-    title: 'Malibu Response LX à Venda — V8 350HP, Direct Drive',
+    title: 'Comprar Barco Malibu Response LX 2013 — V8 350HP, Direct Drive',
     description:
-      'Lancha Malibu Response LX por R$ 150.000. Motor Monsoon 350 SS V8, Zero Off, bimini e carreta inclusa. Esqui e wakeboard de alto nível.',
+      'Lancha Malibu Response LX por R$ 175.000. 2013, 940 horas, motor Monsoon 350 SS V8, Zero Off, bimini e carreta inclusa. Esqui e wakeboard de alto nível.',
     images: [
       {
         url: '/images/hero-side.jpeg',
@@ -54,9 +61,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Malibu Response LX à Venda — V8 350HP',
+    title: 'Comprar Malibu Response LX 2013 — V8 350HP',
     description:
-      'Lancha Malibu Response LX por R$ 150.000. Motor Monsoon 350 SS, Zero Off, bimini e carreta inclusa.',
+      'Lancha Malibu Response LX por R$ 175.000. 2013, 940 horas, Motor Monsoon 350 SS, Zero Off, bimini e carreta inclusa.',
     images: ['/images/hero-side.jpeg'],
   },
   robots: {
