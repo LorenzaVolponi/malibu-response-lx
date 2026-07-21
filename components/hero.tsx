@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import Image from 'next/image'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
@@ -70,12 +71,13 @@ export function Hero() {
       className="relative flex h-[100svh] items-center justify-center overflow-hidden"
     >
       <div ref={imgRef} className="absolute inset-0 z-0 will-change-transform">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src="/images/hero-side.jpeg"
           alt="Lancha Malibu Response LX de perfil na represa, casco branco com faixa azul-marinho"
-          className="size-full object-cover"
-          fetchPriority="high"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-navy-deep/70 via-navy-deep/30 to-background" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/60 to-transparent" />
@@ -83,7 +85,7 @@ export function Hero() {
 
       <div
         data-hero-content
-        className="relative mx-auto max-w-4xl px-4 text-center will-change-transform"
+        className="relative mx-auto max-w-4xl px-4 pt-20 text-center will-change-transform sm:pt-0"
       >
         <p
           data-hero-reveal
@@ -93,7 +95,7 @@ export function Hero() {
         </p>
         <h1
           data-hero-reveal
-          className="text-balance font-serif text-5xl leading-[0.95] text-cream sm:text-7xl lg:text-8xl"
+          className="text-balance font-serif text-4xl leading-[0.95] text-cream sm:text-7xl lg:text-8xl"
         >
           Malibu
           <span className="block text-gradient-gold">Response LX</span>
@@ -107,11 +109,11 @@ export function Hero() {
 
         <div
           data-hero-reveal
-          className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
+          className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:mt-10 sm:flex-row sm:items-center sm:gap-4"
         >
           <a
             href="#experiencia"
-            className="rounded-full bg-gold px-7 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-gold/10 transition-all hover:scale-[1.04] hover:shadow-gold/20"
+            className="rounded-full bg-gold px-7 py-3.5 text-center text-sm font-semibold text-primary-foreground shadow-lg shadow-gold/10 transition-all hover:scale-[1.04] hover:shadow-gold/20"
           >
             Explorar embarcação
           </a>
@@ -121,7 +123,7 @@ export function Hero() {
             )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-cream/20 px-7 py-3 text-sm font-semibold text-cream transition-colors hover:bg-white/5"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-cream/20 px-7 py-3.5 text-sm font-semibold text-cream transition-colors hover:bg-white/5"
           >
             <MessageCircle className="size-4" aria-hidden="true" />
             Agendar visita
