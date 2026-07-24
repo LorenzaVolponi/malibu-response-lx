@@ -13,6 +13,8 @@ const ATTRIBUTION_KEYS = [
   'gbraid',
   'wbraid',
   'msclkid',
+  'fbclid',
+  'ttclid',
 ] as const
 
 function getIntent(anchor: HTMLAnchorElement) {
@@ -23,7 +25,25 @@ function getIntent(anchor: HTMLAnchorElement) {
   if (label.includes('motor') || label.includes('manutenção') || label.includes('manutencao')) return 'motor_manutencao'
   if (label.includes('agendar') || label.includes('avaliar') || label.includes('visitar')) return 'agendar_avaliacao'
   if (label.includes('vídeo') || label.includes('video') || label.includes('document')) return 'video_documentacao'
+  if (label.includes('oferta') || label.includes('proposta') || label.includes('negociar')) return 'proposta_comercial'
   return 'whatsapp_generico'
+}
+
+function persistLandingContext() {
+  const params = new URLSearchParams(window.location.search)
+
+  ATTRIBUTION_KEYS.forEach((key) => {
+    const value = params.get(key)
+    if (value) window.localStorage.setItem(key, value)
+  })
+
+  if (!window.localStorage.getItem('first_landing_page')) {
+    window.localStorage.setItem('first_landing_page', `${window.location.pathname}${window.location.search}`)
+  }
+
+  if (document.referrer && !window.localStorage.getItem('first_referrer')) {
+    window.localStorage.setItem('first_referrer', document.referrer)
+  }
 }
 
 function getAttribution() {
@@ -32,16 +52,15 @@ function getAttribution() {
     ATTRIBUTION_KEYS.map((key) => [key, params.get(key) ?? window.localStorage.getItem(key) ?? '']).filter(([, value]) => value),
   )
 
-  ATTRIBUTION_KEYS.forEach((key) => {
-    const value = params.get(key)
-    if (value) window.localStorage.setItem(key, value)
-  })
-
-  return attribution
+  return {
+    ...attribution,
+    landing_page: window.localStorage.getItem('first_landing_page') ?? window.location.pathname,
+    referrer: window.localStorage.getItem('first_referrer') ?? document.referrer ?? '',
+  }
 }
 
 function appendAttribution(anchor: HTMLAnchorElement, attribution: Record<string, string>) {
-  const attributionLines = Object.entries(attribution)
+  const attributionLines = Object.entries(attribution).filter(([, value]) => value)
   if (attributionLines.length === 0) return anchor.href
 
   const url = new URL(anchor.href, window.location.origin)
@@ -61,6 +80,8 @@ function appendAttribution(anchor: HTMLAnchorElement, attribution: Record<string
 
 export function WhatsAppClickTracker() {
   useEffect(() => {
+    persistLandingContext()
+
     const onClick = (event: MouseEvent) => {
       const anchor = (event.target as Element | null)?.closest?.('a[href*="wa.me"], a[href^="/api/whatsapp"]') as HTMLAnchorElement | null
       if (!anchor) return
