@@ -39,5 +39,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }))
 
-  return [...corePages, ...intentPages]
+  const machineReadablePages: MetadataRoute.Sitemap = [
+    {
+      url: `${siteConfig.url}/boat.json`,
+      lastModified: updatedAt,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${siteConfig.url}/llms.txt`,
+      lastModified: updatedAt,
+      changeFrequency: 'weekly',
+      priority: 0.6,
+    },
+    {
+      url: `${siteConfig.url}/ai.txt`,
+      lastModified: updatedAt,
+      changeFrequency: 'weekly',
+      priority: 0.6,
+    },
+    {
+      url: `${siteConfig.url}/feed.xml`,
+      lastModified: updatedAt,
+      changeFrequency: 'weekly',
+      priority: 0.5,
+    },
+  ]
+
+  return [...corePages, ...intentPages, ...machineReadablePages]
 }
