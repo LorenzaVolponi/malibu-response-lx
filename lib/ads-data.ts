@@ -77,6 +77,5 @@ export const googleAdsConversionPlan = [
   { event: 'pricing_section_view', meaning: 'Usuário visualizou preço/negociação.' },
   { event: 'gallery_section_view', meaning: 'Usuário analisou fotos reais.' },
   { event: 'buyer_guide_view', meaning: 'Usuário visualizou guia do comprador.' },
-  { event: 'chat_message_submit', meaning: 'Usuário enviou pergunta no consultor virtual.' },
   { event: 'generate_lead', meaning: 'Clique em WhatsApp direto; usar como conversão primária no Google Ads.' },
 ] as const

@@ -18,10 +18,8 @@ import { SeoTrustSection } from '@/components/seo-trust-section'
 import { SeoGrowthSection } from '@/components/seo-growth-section'
 import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
 import { SiteFooter } from '@/components/site-footer'
-import { AiChatWidget } from '@/components/ai-chat-widget'
 import { StickyMobileCta } from '@/components/sticky-mobile-cta'
 import { MarketProofSection } from '@/components/market-proof-section'
-import { EngineSound } from '@/components/engine-sound'
 import { boat, cinematic, faqs, gallery } from '@/lib/boat-data'
 import { backendSearchTerms, trendResearchTopics } from '@/lib/seo-data'
 import { siteConfig } from '@/lib/site-config'
@@ -66,18 +64,6 @@ const jsonLd = {
     { '@type': 'PropertyValue', name: 'Ano de fabricação', value: String(boat.year) },
     { '@type': 'PropertyValue', name: 'Horas de motor', value: `${boat.engineHours} h` },
   ],
-}
-
-const engineVideoJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'VideoObject',
-  '@id': `${SITE_URL}/#engine-sound-video`,
-  name: 'Ronco do motor da Malibu Response LX',
-  description: 'Vídeo curto associado ao ronco do motor da Malibu Response LX anunciada.',
-  url: siteConfig.engineVideo.url,
-  embedUrl: siteConfig.engineVideo.embedUrl,
-  thumbnailUrl: [siteConfig.engineVideo.thumbnailUrl],
-  inLanguage: 'pt-BR',
 }
 
 const organizationJsonLd = {
@@ -202,10 +188,6 @@ export default function Page() {
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(engineVideoJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <script
@@ -264,8 +246,6 @@ export default function Page() {
         <SiteFooter />
       </SmoothScroll>
       <StickyMobileCta />
-      <EngineSound />
-      <AiChatWidget />
     </>
   )
 }
