@@ -14,16 +14,35 @@ export const metadata: Metadata = {
   description:
     `Guia para comprar barco ${siteConfig.listingName}: preço ${boat.priceLabel}, ${boat.engineHours} horas, motor Indmar Monsoon 350 SS V8 350 HP, Zero Off GPS, bimini, carreta e WhatsApp do vendedor.`,
   alternates: {
-    canonical: PAGE_PATH,
+    canonical: PAGE_URL,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
   },
   openGraph: {
     type: 'article',
     locale: 'pt_BR',
     url: PAGE_URL,
+    siteName: siteConfig.name,
     title: `Comprar Barco ${siteConfig.listingName} — Guia direto para avaliar`,
     description:
       'Dados reais, fotos, ficha técnica, preço e contato para avaliar a Malibu Response LX 2013 à venda no Brasil.',
-    images: ['/images/hero-side.jpeg'],
+    publishedTime: siteConfig.updatedAt,
+    modifiedTime: siteConfig.updatedAt,
+    images: [{
+      url: '/images/hero-side.jpeg',
+      width: 1600,
+      height: 900,
+      alt: `${siteConfig.listingName} ${boat.year} de perfil na água`,
+    }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -35,45 +54,64 @@ export const metadata: Metadata = {
 
 const guideJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'Article',
-  '@id': `${PAGE_URL}/#article`,
-  headline: `Comprar Barco ${siteConfig.listingName}`,
-  description: metadata.description,
-  image: gallery.slice(0, 4).map((image) => `${siteConfig.url}${image.src}`),
-  inLanguage: 'pt-BR',
-  mainEntityOfPage: PAGE_URL,
-  about: {
-    '@type': 'Product',
-    name: `${boat.brand} ${boat.model} ${boat.year}`,
-    brand: { '@type': 'Brand', name: boat.brand },
-    offers: {
-      '@type': 'Offer',
-      price: boat.price,
-      priceCurrency: boat.currency,
-      availability: 'https://schema.org/InStock',
-      itemCondition: 'https://schema.org/UsedCondition',
-      url: siteConfig.url,
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': `${PAGE_URL}#webpage`,
+      url: PAGE_URL,
+      name: `Comprar Barco ${siteConfig.listingName}`,
+      description: metadata.description,
+      inLanguage: 'pt-BR',
+      datePublished: siteConfig.updatedAt,
+      dateModified: siteConfig.updatedAt,
+      isPartOf: { '@id': `${siteConfig.url}/#website` },
+      mainEntity: { '@id': `${PAGE_URL}#article` },
+      primaryImageOfPage: { '@id': `${siteConfig.url}/#image-1` },
+      breadcrumb: { '@id': `${PAGE_URL}#breadcrumb` },
     },
-  },
-}
-
-const howToJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'HowTo',
-  '@id': `${PAGE_URL}/#how-to-buy`,
-  name: 'Como avaliar a Malibu Response LX 2013 antes de comprar',
-  step: [
-    { '@type': 'HowToStep', name: 'Verifique os dados do anúncio', text: `Confirme preço ${boat.priceLabel}, ano ${boat.year}, ${boat.engineHours} horas, motor e itens inclusos.` },
-    { '@type': 'HowToStep', name: 'Analise fotos reais e ficha técnica', text: 'Compare casco, estofamento, painel, motor, carreta, bimini e configuração direct drive.' },
-    { '@type': 'HowToStep', name: 'Fale com o vendedor', text: 'Solicite documentação, histórico disponível, vídeo complementar, visita e condições de teste na água pelo WhatsApp.' },
+    {
+      '@type': 'Article',
+      '@id': `${PAGE_URL}#article`,
+      headline: `Comprar Barco ${siteConfig.listingName}`,
+      description: metadata.description,
+      image: gallery.slice(0, 4).map((image) => `${siteConfig.url}${image.src}`),
+      inLanguage: 'pt-BR',
+      datePublished: siteConfig.updatedAt,
+      dateModified: siteConfig.updatedAt,
+      mainEntityOfPage: { '@id': `${PAGE_URL}#webpage` },
+      author: { '@id': `${siteConfig.url}/#seller` },
+      publisher: { '@id': `${siteConfig.url}/#seller` },
+      about: { '@id': `${siteConfig.url}/#product` },
+      isPartOf: { '@id': `${siteConfig.url}/#website` },
+    },
+    {
+      '@type': 'HowTo',
+      '@id': `${PAGE_URL}#how-to-buy`,
+      name: 'Como avaliar a Malibu Response LX 2013 antes de comprar',
+      inLanguage: 'pt-BR',
+      mainEntityOfPage: { '@id': `${PAGE_URL}#webpage` },
+      about: { '@id': `${siteConfig.url}/#product` },
+      step: [
+        { '@type': 'HowToStep', name: 'Verifique os dados do anúncio', text: `Confirme preço ${boat.priceLabel}, ano ${boat.year}, ${boat.engineHours} horas, motor e itens inclusos.` },
+        { '@type': 'HowToStep', name: 'Analise fotos reais e ficha técnica', text: 'Compare casco, estofamento, painel, motor, carreta, bimini e configuração direct drive.' },
+        { '@type': 'HowToStep', name: 'Fale com o vendedor', text: 'Solicite documentação, histórico disponível, vídeo complementar, visita e condições de teste na água pelo WhatsApp.' },
+      ],
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${PAGE_URL}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: siteConfig.listingName, item: siteConfig.url },
+        { '@type': 'ListItem', position: 2, name: 'Guia de compra', item: PAGE_URL },
+      ],
+    },
   ],
 }
 
 export default function ComprarBarcoMalibuPage() {
   return (
-    <main className="min-h-screen bg-background text-cream">
+    <main id="conteudo" className="min-h-screen bg-background text-cream">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(guideJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
 
       <section className="relative overflow-hidden px-5 py-20 sm:py-28">
         <div className="absolute inset-0 -z-10 opacity-30">
