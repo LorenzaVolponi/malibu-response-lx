@@ -14,6 +14,7 @@ import { GallerySection } from '@/components/gallery-section'
 import { BuyerGuideSection } from '@/components/buyer-guide-section'
 import { PricingCta } from '@/components/pricing-cta'
 import { FaqSection } from '@/components/faq-section'
+import { SeoTrustSection } from '@/components/seo-trust-section'
 import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
 import { SiteFooter } from '@/components/site-footer'
 import { AiChatWidget } from '@/components/ai-chat-widget'
@@ -236,6 +237,7 @@ export default function Page() {
           <BuyerGuideSection />
 
           <MarketProofSection />
+          <SeoTrustSection />
           <FaqSection />
           <BuyerConfidenceSection />
           <PricingCta />

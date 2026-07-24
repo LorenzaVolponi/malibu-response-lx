@@ -76,7 +76,10 @@ export function Hero() {
         <Image
           src="/images/hero-side.jpeg"
           alt="Lancha Malibu Response LX de perfil na represa, casco branco com faixa azul-marinho"
-          className="size-full object-cover object-center saturate-110 contrast-105"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center saturate-110 contrast-105"
           fetchPriority="high"
           decoding="async"
         />

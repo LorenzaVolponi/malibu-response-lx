@@ -11,4 +11,8 @@ export function pushDataLayerEvent(event: DataLayerEvent) {
 
   window.dataLayer = window.dataLayer ?? []
   window.dataLayer.push({ page_path: window.location.pathname, ...event })
+
+  if (event.event === 'generate_lead') {
+    window.dispatchEvent(new CustomEvent('whatsapp_conversion', { detail: event }))
+  }
 }

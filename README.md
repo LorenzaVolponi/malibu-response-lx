@@ -31,6 +31,8 @@ pnpm build
 
 - `NEXT_PUBLIC_SITE_URL`: URL pública canônica do site. Se não for definida, o projeto usa `https://malibu-response-lx.vercel.app`.
 - `NEXT_PUBLIC_GTM_ID`: ID opcional do Google Tag Manager.
+- `NEXT_PUBLIC_GOOGLE_ADS_ID`: ID opcional do Google Ads/gtag, como `AW-000000000`.
+- `NEXT_PUBLIC_GOOGLE_ADS_WHATSAPP_LABEL`: label opcional da conversão de clique no WhatsApp.
 
 ## Onde editar dados do anúncio
 
@@ -51,6 +53,14 @@ Evite repetir palavras-chave artificialmente. Prefira descrições naturais com 
 - `NEXT_PUBLIC_SITE_URL` mantém canonical, sitemap, robots e JSON-LD alinhados ao domínio final.
 - Cliques de WhatsApp são enviados para `window.dataLayer`.
 - Eventos de seção e chat também são registrados no `dataLayer` para medir intenção de compra.
+- Cliques no WhatsApp disparam `generate_lead` e preservam UTMs, `gclid`, `gbraid`, `wbraid` e `msclkid` no texto da conversa.
+
+## Google Ads e off-page
+
+- Use `utm_source=google&utm_medium=cpc&utm_campaign=malibu_response_lx_sale&utm_content=whatsapp_lead&utm_term={keyword}` nas campanhas.
+- Configure `generate_lead` como conversão primária para cliques no WhatsApp.
+- Distribua a URL canônica em marketplaces náuticos, marinas, YouTube Shorts, Reels e comunidades de wake/esqui com UTMs por canal.
+- Evite compra de links e cadastros irrelevantes; priorize citações reais em ambientes náuticos.
 
 ## Deploy
 

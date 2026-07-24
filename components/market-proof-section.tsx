@@ -53,6 +53,7 @@ export function MarketProofSection() {
             href={wa}
             target="_blank"
             rel="noopener noreferrer"
+            data-whatsapp-intent="video_documentacao"
             className="inline-flex shrink-0 items-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
           >
             <MessageCircle className="size-4" aria-hidden="true" />

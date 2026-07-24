@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
 import { whatsappUrl } from '@/lib/contact'
-import { MessageCircle, Phone, Check } from 'lucide-react'
+import { MessageCircle, Check } from 'lucide-react'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP)
@@ -68,9 +68,11 @@ export function PricingCta() {
           src="/images/exterior-front.jpeg"
           alt=""
           aria-hidden="true"
+          fill
+          sizes="100vw"
           loading="lazy"
           decoding="async"
-          className="size-full scale-110 object-cover"
+          className="scale-110 object-cover"
         />
         <div className="absolute inset-0 bg-navy-deep/80" />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
@@ -113,11 +115,14 @@ export function PricingCta() {
                   Receber vídeos e documentação
                 </a>
                 <a
-                  href={`tel:+${boat.whatsapp}`}
+                  href={whatsappUrl('technical')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-whatsapp-intent="motor_manutencao"
                   className="flex w-full items-center justify-center gap-2 rounded-full border border-cream/20 px-7 py-3.5 text-center text-sm font-semibold text-cream transition-colors hover:bg-white/5 sm:w-auto"
                 >
-                  <Phone className="size-5" aria-hidden="true" />
-                  {boat.whatsappLabel}
+                  <MessageCircle className="size-5" aria-hidden="true" />
+                  Falar sobre motor e manutenção
                 </a>
               </div>
               <p data-cta-reveal className="mt-4 text-xs text-muted-foreground">

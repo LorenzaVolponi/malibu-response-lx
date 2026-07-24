@@ -1,4 +1,5 @@
 import { Anchor, Camera, SearchCheck, Share2 } from 'lucide-react'
+import { offPageChannels, offPagePlaybook } from '@/lib/seo-data'
 
 const seoHighlights = [
   {
@@ -14,12 +15,12 @@ const seoHighlights = [
   {
     icon: Anchor,
     title: 'Confiança para visita',
-    copy: 'Motor, acessórios inclusos, itens a confirmar e perguntas frequentes reduzem atrito antes do contato com o vendedor.',
+    copy: 'Motor, acessórios inclusos, itens a confirmar e perguntas frequentes reduzem atrito antes do contato pelo WhatsApp.',
   },
   {
     icon: Share2,
     title: 'Pronto para off-page',
-    copy: 'Título, descrição, Open Graph, canonical, sitemap e dados estruturados melhoram o compartilhamento em redes, classificados e links externos.',
+    copy: 'Título, descrição, Open Graph, canonical, sitemap, UTMs e dados estruturados melhoram compartilhamento em redes, classificados e links externos.',
   },
 ] as const
 
@@ -31,14 +32,14 @@ export function SeoTrustSection() {
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
           <div>
             <p className="mb-3 text-xs tracking-luxe text-gold uppercase">
-              Visibilidade orgânica
+              Visibilidade orgânica e off-page
             </p>
             <h2 className="text-balance font-serif text-4xl leading-tight text-cream sm:text-5xl">
-              Anúncio preparado para compradores e buscadores
+              Anúncio preparado para compradores, buscadores e tráfego pago
             </h2>
           </div>
           <p className="text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-            A página combina UX premium com SEO on-page para captar intenção de compra: quem procura uma lancha Malibu Response LX à venda, uma embarcação direct drive para esqui aquático ou uma lancha V8 com carreta encontra informações claras antes de chamar no WhatsApp.
+            A página combina UX premium, SEO on-page, plano de distribuição externa e marcação de conversão para captar intenção de compra antes do clique direto no WhatsApp.
           </p>
         </div>
 
@@ -52,6 +53,29 @@ export function SeoTrustSection() {
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{copy}</p>
             </article>
           ))}
+        </div>
+
+        <div className="mt-10 grid gap-5 lg:grid-cols-[1fr_1fr]">
+          <article className="rounded-3xl border border-cream/10 bg-cream/[0.035] p-6">
+            <p className="text-xs tracking-luxe text-gold uppercase">Checklist off-page</p>
+            <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">
+              {offPagePlaybook.slice(0, 4).map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
+          </article>
+          <article className="rounded-3xl border border-gold/20 bg-gold/[0.06] p-6">
+            <p className="text-xs tracking-luxe text-gold uppercase">Canais com UTM</p>
+            <div className="mt-5 grid gap-3">
+              {offPageChannels.slice(0, 3).map((channel) => (
+                <div key={channel.channel} className="rounded-2xl bg-navy-deep/35 p-4">
+                  <p className="font-serif text-lg text-cream">{channel.channel}</p>
+                  <p className="mt-1 text-xs text-gold">utm_source={channel.utm_source} · utm_medium={channel.utm_medium}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{channel.action}</p>
+                </div>
+              ))}
+            </div>
+          </article>
         </div>
       </div>
     </section>
