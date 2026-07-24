@@ -147,14 +147,6 @@ const globalEntityGraph = {
         { '@id': `${siteConfig.url}/dossie-tecnico#webpage` },
         { '@id': entityIds.dataset },
       ],
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: {
-          '@type': 'EntryPoint',
-          urlTemplate: `${siteConfig.url}/guias?q={search_term_string}`,
-        },
-        'query-input': 'required name=search_term_string',
-      },
     },
     {
       '@type': 'Person',
