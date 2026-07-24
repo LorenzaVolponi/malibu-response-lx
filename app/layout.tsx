@@ -7,47 +7,36 @@ import { WhatsAppClickTracker } from '@/components/whatsapp-click-tracker'
 import { AnalyticsTags } from '@/components/analytics-tags'
 import { ConversionEventTracker } from '@/components/conversion-event-tracker'
 
-
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `Comprar Barco ${siteConfig.listingName} | Lancha V8 350HP à Venda`,
+    default: `${siteConfig.listingName} à venda | V8 350 HP, Direct Drive e Zero Off`,
     template: `%s | ${siteConfig.name}`,
   },
-  description:
-    `Comprar barco ${siteConfig.listingName} à venda no Brasil por ${boat.priceLabel}. Lancha de esqui/wakeboard com ${boat.engineHours} horas de motor, Indmar Monsoon 350 SS V8 350 HP, direct drive, Zero Off GPS, bimini e carreta inclusa. Agende visita pelo WhatsApp.`,
+  description: `${siteConfig.listingName} ${boat.year} à venda por ${boat.priceLabel}. Lancha esportiva com ${boat.engineHours} horas, motor Indmar Monsoon 350 SS V8 350 HP, direct drive, Zero Off GPS, bimini e carreta inclusa. Fale diretamente pelo WhatsApp.`,
   applicationName: siteConfig.name,
   keywords: [
     'Malibu Response LX à venda',
-    'lancha à venda',
-    'barco à venda',
-    'barcos à venda',
-    'lancha usada',
-    'barco usado',
-    'lancha de esqui aquático',
-    'barco de wakeboard',
-    'Malibu boats Brasil',
-    'lancha Monsoon 350',
-    'lancha direct drive',
-    'comprar lancha São Paulo',
-    'comprar barco',
-    'comprar barco Malibu',
-    'comprar lancha Malibu',
-    'barco Malibu Response LX',
     'Malibu Response LX 2013',
-    'lancha 350 HP usada',
-    'lancha esqui aquático à venda',
     'Malibu Response LX preço',
-    'Malibu Response LX horas de motor',
-    'comprar barco wakeboard',
+    'Malibu Response LX usada',
+    'comprar Malibu Response LX',
+    'lancha Malibu à venda',
+    'barco Malibu à venda',
+    'Malibu Boats Brasil',
+    'lancha esportiva usada',
+    'lancha para esqui aquático',
     'barco para esqui aquático',
-    'lancha represa Guarapiranga',
-    'venda de barcos',
-    'lancha seminova',
-    'Malibu Response LX preço',
+    'lancha para wakeboard',
+    'ski boat usada',
+    'wake boat usada',
+    'lancha direct drive',
+    'barco direct drive',
+    'Indmar Monsoon 350 SS',
     'lancha V8 350 HP',
-    'Zero Off GPS lancha',
-    'carreta rodoviária lancha',
+    'Zero Off GPS',
+    'lancha com carreta',
+    'lancha premium usada',
   ],
   authors: [{ name: siteConfig.name }],
   creator: siteConfig.name,
@@ -55,42 +44,38 @@ export const metadata: Metadata = {
   referrer: 'origin-when-cross-origin',
   alternates: {
     canonical: '/',
-    languages: {
-      'pt-BR': '/',
-    },
+    languages: { 'pt-BR': '/' },
   },
   category: 'Náutica',
-  classification: 'Classificado náutico premium',
+  classification: 'Anúncio de embarcação esportiva usada',
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
     url: siteConfig.url,
     siteName: siteConfig.name,
-    title: `Comprar Barco ${siteConfig.listingName} — V8 350HP, Direct Drive`,
-    description:
-      `Lancha ${boat.brand} ${boat.model} por ${boat.priceLabel}. ${boat.year}, ${boat.engineHours} horas, motor Monsoon 350 SS V8, Zero Off, bimini e carreta inclusa. Esqui e wakeboard de alto nível.`,
-    images: [
-      {
-        url: '/images/hero-side.jpeg',
-        width: 1600,
-        height: 900,
-        alt: 'Malibu Response LX na água, casco branco com faixa azul-marinho',
-      },
-    ],
+    title: `${siteConfig.listingName} ${boat.year} à venda — V8 350 HP`,
+    description: `${boat.engineHours} horas, Indmar Monsoon 350 SS, direct drive, Zero Off GPS, bimini e carreta inclusa. Veja fotos reais e fale pelo WhatsApp.`,
+    images: [{
+      url: '/images/hero-side.jpeg',
+      width: 1600,
+      height: 900,
+      alt: `${siteConfig.listingName} ${boat.year}, casco branco com faixa azul-marinho`,
+    }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: `Comprar ${siteConfig.listingName} — V8 350HP`,
-    description:
-      `Lancha ${boat.brand} ${boat.model} por ${boat.priceLabel}. ${boat.year}, ${boat.engineHours} horas, Motor Monsoon 350 SS, Zero Off, bimini e carreta inclusa.`,
+    title: `${siteConfig.listingName} ${boat.year} à venda`,
+    description: `V8 350 HP, ${boat.engineHours} horas, direct drive, Zero Off, bimini e carreta inclusa.`,
     images: ['/images/hero-side.jpeg'],
   },
   robots: {
     index: true,
     follow: true,
+    nocache: false,
     googleBot: {
       index: true,
       follow: true,
+      noimageindex: false,
       'max-video-preview': -1,
       'max-image-preview': 'large',
       'max-snippet': -1,
@@ -107,19 +92,14 @@ export const metadata: Metadata = {
     title: siteConfig.name,
     statusBarStyle: 'black-translucent',
   },
-  formatDetection: {
-    telephone: false,
-  },
+  formatDetection: { telephone: false },
   other: {
     'geo.region': 'BR',
-    'geo.placename': 'Brasil',
-    'product:brand': 'Malibu',
+    'product:brand': boat.brand,
     'product:condition': 'used',
     'product:price:amount': String(boat.price),
     'product:price:currency': boat.currency,
-    'og:see_also': `${siteConfig.url}${siteConfig.guidePath}`,
   },
-  generator: 'v0.app',
 }
 
 export const viewport: Viewport = {
@@ -127,17 +107,16 @@ export const viewport: Viewport = {
   themeColor: '#0b1526',
   width: 'device-width',
   initialScale: 1,
+  viewportFit: 'cover',
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR" className="bg-background">
       <body className="font-sans antialiased">
-        <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-foreground">Pular para o conteúdo</a>
+        <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-foreground">
+          Pular para o conteúdo
+        </a>
         {children}
         <AnalyticsTags />
         <WhatsAppClickTracker />
