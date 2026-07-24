@@ -6,12 +6,16 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
+        allow: ['/', '/images/', '/llms.txt', '/ai.txt', '/boat.json'],
         disallow: ['/api/', '/_next/static/chunks/'],
       },
       {
         userAgent: 'Googlebot-Image',
         allow: ['/images/', '/'],
+      },
+      {
+        userAgent: ['GPTBot', 'ChatGPT-User', 'OAI-SearchBot', 'ClaudeBot', 'PerplexityBot'],
+        allow: ['/', '/llms.txt', '/ai.txt', '/boat.json', '/dossie-tecnico', '/guias/'],
       },
     ],
     sitemap: [
