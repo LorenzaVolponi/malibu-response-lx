@@ -17,10 +17,9 @@ import { FaqSection } from '@/components/faq-section'
 import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
 import { ValueProofSection } from '@/components/value-proof-section'
 import { SiteFooter } from '@/components/site-footer'
-import { AiChatWidget } from '@/components/ai-chat-widget'
 import { StickyMobileCta } from '@/components/sticky-mobile-cta'
 import { MarketProofSection } from '@/components/market-proof-section'
-import { EngineSound } from '@/components/engine-sound'
+import { DeferredWidgets } from '@/components/deferred-widgets'
 import { boat, cinematic, faqs, gallery } from '@/lib/boat-data'
 import { siteConfig } from '@/lib/site-config'
 
@@ -83,7 +82,7 @@ const videoJsonLd = {
   '@type': 'VideoObject',
   '@id': `${SITE_URL}/#engine-video`,
   name: 'Motor da Malibu Response LX 2013',
-  description: 'Vídeo associado ao motor Indmar Monsoon 350 SS da Malibu Response LX anunciada.',
+  description: 'Vídeo real associado ao motor Indmar Monsoon 350 SS da Malibu Response LX anunciada.',
   url: siteConfig.engineVideo.url,
   embedUrl: siteConfig.engineVideo.embedUrl,
   thumbnailUrl: [siteConfig.engineVideo.thumbnailUrl],
@@ -144,8 +143,7 @@ export default function Page() {
         <SiteFooter />
       </SmoothScroll>
       <StickyMobileCta />
-      <EngineSound />
-      <AiChatWidget />
+      <DeferredWidgets />
     </>
   )
 }
