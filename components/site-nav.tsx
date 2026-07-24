@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { whatsappUrl } from '@/lib/contact'
+import { whatsappLeadUrl } from '@/lib/contact'
 import { MessageCircle, Menu, X } from 'lucide-react'
 
 const links = [
@@ -66,7 +66,7 @@ export function SiteNav() {
 
           <div className="flex items-center justify-end gap-2">
             <a
-              href={whatsappUrl('secondary')}
+              href={whatsappLeadUrl('secondary')}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden items-center gap-2 whitespace-nowrap rounded-full bg-gold px-4 py-2 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03] lg:flex"
@@ -110,7 +110,7 @@ export function SiteNav() {
                 ))}
                 <li>
                   <a
-                    href={whatsappUrl('secondary')}
+                    href={whatsappLeadUrl('secondary')}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setOpen(false)}

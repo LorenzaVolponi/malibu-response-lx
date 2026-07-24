@@ -40,11 +40,17 @@ function getAttribution() {
   return attribution
 }
 
-function appendAttributionToWhatsAppText(anchor: HTMLAnchorElement, attribution: Record<string, string>) {
+function appendAttribution(anchor: HTMLAnchorElement, attribution: Record<string, string>) {
   const attributionLines = Object.entries(attribution)
   if (attributionLines.length === 0) return anchor.href
 
-  const url = new URL(anchor.href)
+  const url = new URL(anchor.href, window.location.origin)
+
+  if (url.pathname === '/api/whatsapp') {
+    attributionLines.forEach(([key, value]) => url.searchParams.set(key, value))
+    return url.pathname + url.search
+  }
+
   const currentText = url.searchParams.get('text') ?? ''
   const attributionText = attributionLines.map(([key, value]) => `${key}: ${value}`).join(' | ')
   const separator = currentText.includes('Origem do clique:') ? '' : `\n\nOrigem do clique: ${attributionText}`
@@ -56,12 +62,12 @@ function appendAttributionToWhatsAppText(anchor: HTMLAnchorElement, attribution:
 export function WhatsAppClickTracker() {
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
-      const anchor = (event.target as Element | null)?.closest?.('a[href*="wa.me"]') as HTMLAnchorElement | null
+      const anchor = (event.target as Element | null)?.closest?.('a[href*="wa.me"], a[href^="/api/whatsapp"]') as HTMLAnchorElement | null
       if (!anchor) return
 
       const intent = getIntent(anchor)
       const attribution = getAttribution()
-      const destinationUrl = appendAttributionToWhatsAppText(anchor, attribution)
+      const destinationUrl = appendAttribution(anchor, attribution)
       anchor.href = destinationUrl
 
       const payload = {

@@ -85,10 +85,9 @@ const organizationJsonLd = {
   '@id': `${SITE_URL}/#seller`,
   name: 'Malibu Response LX Brasil',
   url: SITE_URL,
-  telephone: `+${boat.whatsapp}`,
   contactPoint: {
     '@type': 'ContactPoint',
-    telephone: `+${boat.whatsapp}`,
+    url: `${SITE_URL}${siteConfig.guidePath}`,
     contactType: 'sales',
     availableLanguage: 'Portuguese',
     areaServed: 'BR',

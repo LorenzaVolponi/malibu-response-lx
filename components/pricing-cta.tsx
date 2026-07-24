@@ -6,7 +6,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
-import { whatsappUrl } from '@/lib/contact'
+import { whatsappLeadUrl } from '@/lib/contact'
 import { MessageCircle, Check } from 'lucide-react'
 
 if (typeof window !== 'undefined') {
@@ -106,7 +106,7 @@ export function PricingCta() {
                 className="mt-8 flex flex-col gap-3 sm:flex-row"
               >
                 <a
-                  href={whatsappUrl('primary')}
+                  href={whatsappLeadUrl('primary')}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex w-full items-center justify-center gap-2 rounded-full bg-gold px-7 py-3.5 text-center text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03] sm:w-auto"
@@ -115,7 +115,7 @@ export function PricingCta() {
                   Receber vídeos e documentação
                 </a>
                 <a
-                  href={whatsappUrl('technical')}
+                  href={whatsappLeadUrl('technical')}
                   target="_blank"
                   rel="noopener noreferrer"
                   data-whatsapp-intent="motor_manutencao"

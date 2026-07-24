@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { MessageCircle } from 'lucide-react'
 import { boat } from '@/lib/boat-data'
-import { whatsappUrl } from '@/lib/contact'
+import { whatsappLeadUrl } from '@/lib/contact'
 
 export function StickyMobileCta() {
   const [visible, setVisible] = useState(false)
@@ -17,7 +17,7 @@ export function StickyMobileCta() {
 
   return (
     <a
-      href={whatsappUrl('primary')}
+      href={whatsappLeadUrl('primary')}
       target="_blank"
       rel="noopener noreferrer"
       data-whatsapp-intent="video_documentacao"

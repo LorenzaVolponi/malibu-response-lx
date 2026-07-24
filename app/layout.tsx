@@ -103,7 +103,7 @@ export const metadata: Metadata = {
     'product:condition': 'used',
     'product:price:amount': String(boat.price),
     'product:price:currency': boat.currency,
-    'og:see_also': `https://wa.me/${boat.whatsapp}`,
+    'og:see_also': `${siteConfig.url}${siteConfig.guidePath}`,
   },
   generator: 'v0.app',
 }

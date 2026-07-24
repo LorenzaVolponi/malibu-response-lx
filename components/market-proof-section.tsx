@@ -1,5 +1,6 @@
 import { MessageCircle } from 'lucide-react'
 import { boat } from '@/lib/boat-data'
+import { whatsappLeadUrl } from '@/lib/contact'
 import { siteConfig } from '@/lib/site-config'
 
 const decisionBlocks = [
@@ -17,9 +18,7 @@ const decisionBlocks = [
   },
 ] as const
 
-const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-  `Olá! Estou comparando barcos e quero avaliar a Malibu Response LX ${boat.year} com ${boat.engineHours} horas por ${boat.priceLabel}.`,
-)}`
+const wa = whatsappLeadUrl('primary')
 
 export function MarketProofSection() {
   return (

@@ -6,7 +6,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
-import { whatsappUrl } from '@/lib/contact'
+import { whatsappLeadUrl } from '@/lib/contact'
 import { ChevronDown, MessageCircle } from 'lucide-react'
 
 if (typeof window !== 'undefined') {
@@ -122,7 +122,7 @@ export function Hero() {
             Explorar embarcação
           </a>
           <a
-            href={whatsappUrl('secondary')}
+            href={whatsappLeadUrl('secondary')}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex w-full max-w-xs items-center justify-center gap-2 rounded-full border border-cream/20 px-7 py-3 text-sm font-semibold text-cream transition-colors hover:bg-white/5 sm:w-auto"

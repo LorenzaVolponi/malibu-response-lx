@@ -1,5 +1,5 @@
 import { boat } from '@/lib/boat-data'
-import { whatsappUrl } from '@/lib/contact'
+import { whatsappLeadUrl } from '@/lib/contact'
 import { Anchor, MessageCircle } from 'lucide-react'
 
 export function SiteFooter() {
@@ -39,7 +39,7 @@ export function SiteFooter() {
               Interessado? Fale direto com o vendedor.
             </p>
             <a
-              href={whatsappUrl('primary')}
+              href={whatsappLeadUrl('primary')}
               target="_blank"
               rel="noopener noreferrer"
               data-whatsapp-intent="video_documentacao"
