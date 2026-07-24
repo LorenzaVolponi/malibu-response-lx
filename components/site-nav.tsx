@@ -9,9 +9,15 @@ const links = [
   { href: '#ficha', label: 'Performance' },
   { href: '#galeria', label: 'Galeria' },
   { href: '#comparar-malibu-response-lx', label: 'Comparar' },
+  { href: '#seo', label: 'SEO' },
   { href: '#negociar', label: 'Contato' },
 ]
 
+const guideLinks = [
+  { href: '/guias/malibu-response-lx-preco', label: 'Preço' },
+  { href: '/guias/malibu-response-lx-ficha-tecnica', label: 'Ficha técnica' },
+  { href: '/guias/lancha-direct-drive-esqui-aquatico', label: 'Direct drive' },
+]
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false)
@@ -102,19 +108,30 @@ export function SiteNav() {
                     <a
                       href={l.href}
                       onClick={() => setOpen(false)}
-                      className="block rounded-xl px-3 py-3 text-cream/90 transition-colors hover:bg-white/5"
+                      className="block min-h-12 rounded-xl px-3 py-3 text-cream/90 transition-colors hover:bg-white/5"
                     >
                       {l.label}
                     </a>
                   </li>
                 ))}
+
+                <li className="pt-3">
+                  <p className="px-3 text-[10px] tracking-luxe text-gold uppercase">Guias rápidos</p>
+                  <div className="mt-2 grid grid-cols-1 gap-2">
+                    {guideLinks.map((l) => (
+                      <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="rounded-xl border border-cream/10 bg-cream/[0.035] px-3 py-2.5 text-sm text-cream/85">
+                        {l.label}
+                      </a>
+                    ))}
+                  </div>
+                </li>
                 <li>
                   <a
                     href={whatsappLeadUrl('secondary')}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setOpen(false)}
-                    className="mt-2 flex items-center justify-center gap-2 rounded-2xl bg-gold px-4 py-3 text-center text-sm font-semibold text-primary-foreground"
+                    className="mt-2 flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-gold px-4 py-3 text-center text-sm font-semibold text-primary-foreground"
                   >
                     <MessageCircle className="size-4" aria-hidden="true" />
                     WhatsApp do vendedor

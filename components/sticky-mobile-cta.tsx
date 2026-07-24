@@ -22,14 +22,14 @@ export function StickyMobileCta() {
       target="_blank"
       rel="noopener noreferrer"
       data-whatsapp-intent="video_documentacao"
-      className={`fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-3 right-[5.25rem] min-h-14 z-40 flex items-center justify-between gap-3 rounded-full border border-gold/30 bg-navy-deep/85 px-4 py-3 text-cream shadow-2xl shadow-black/35 backdrop-blur-xl transition-all duration-300 sm:hidden ${
+      className={`fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-3 right-[5.15rem] min-h-14 z-40 flex items-center justify-between gap-3 rounded-full border border-gold/30 bg-navy-deep/85 px-3.5 py-3 text-cream shadow-2xl shadow-black/35 backdrop-blur-xl transition-all duration-300 sm:hidden ${
         visible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-6 opacity-0'
       }`}
       aria-label="Vídeos e docs pelo WhatsApp"
     >
       <span className="min-w-0">
-        <span className="block text-[10px] tracking-[0.2em] text-gold uppercase">{siteConfig.mobileCtaLabel}</span>
-        <span className="block truncate font-serif text-lg">{boat.priceLabel}</span>
+        <span className="block truncate text-[10px] tracking-[0.18em] text-gold uppercase">{siteConfig.mobileCtaLabel}</span>
+        <span className="block truncate font-serif text-base min-[380px]:text-lg">{boat.priceLabel}</span>
       </span>
       <span className="grid size-10 shrink-0 place-items-center rounded-full bg-gold text-primary-foreground">
         <MessageCircle className="size-5" aria-hidden="true" />

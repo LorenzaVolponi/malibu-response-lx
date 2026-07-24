@@ -9,7 +9,7 @@ export const siteConfig = {
   url: configuredSiteUrl || DEFAULT_SITE_URL,
   guidePath: '/comprar-barco-malibu-response-lx',
   updatedAt: '2026-07-24',
-  mobileCtaLabel: 'Receber vídeos e documentação',
+  mobileCtaLabel: 'Vídeos + docs',
   searchConsoleVerification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
   bingVerification: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION,
   engineVideo: {

@@ -61,7 +61,7 @@ export function PricingCta() {
     <section
       ref={root}
       id="negociar"
-      className="relative overflow-hidden py-28 sm:py-36"
+      className="relative overflow-hidden py-20 sm:py-36"
     >
       <div ref={bg} className="absolute inset-0 -z-10 will-change-transform">
         <Image
@@ -79,7 +79,7 @@ export function PricingCta() {
       </div>
 
       <div className="mx-auto max-w-5xl px-5">
-        <div className="overflow-hidden rounded-4xl glass-strong p-8 sm:p-12">
+        <div className="overflow-hidden rounded-4xl glass-strong p-5 sm:p-12">
           <div className="grid gap-10 lg:grid-cols-2">
             <div>
               <p
@@ -90,13 +90,13 @@ export function PricingCta() {
               </p>
               <h2
                 data-cta-reveal
-                className="text-balance font-serif text-4xl leading-tight text-cream sm:text-5xl"
+                className="text-balance font-serif text-3xl leading-tight text-cream sm:text-5xl"
               >
                 Agende uma avaliação privada da embarcação
               </h2>
-              <div data-cta-reveal className="mt-8 flex items-end gap-3">
+              <div data-cta-reveal className="mt-7 flex flex-wrap items-end gap-2 sm:gap-3">
                 <span className="text-sm text-muted-foreground">Valor</span>
-                <span className="font-serif text-5xl text-gradient-gold">
+                <span className="font-serif text-4xl text-gradient-gold sm:text-5xl">
                   {boat.priceLabel}
                 </span>
               </div>
@@ -109,7 +109,7 @@ export function PricingCta() {
                   href={whatsappLeadUrl('primary')}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex w-full items-center justify-center gap-2 rounded-full bg-gold px-7 py-3.5 text-center text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03] sm:w-auto"
+                  className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-gold px-7 py-3.5 text-center text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03] sm:w-auto"
                 >
                   <MessageCircle className="size-5" aria-hidden="true" />
                   Receber vídeos e documentação
@@ -119,7 +119,7 @@ export function PricingCta() {
                   target="_blank"
                   rel="noopener noreferrer"
                   data-whatsapp-intent="motor_manutencao"
-                  className="flex w-full items-center justify-center gap-2 rounded-full border border-cream/20 px-7 py-3.5 text-center text-sm font-semibold text-cream transition-colors hover:bg-white/5 sm:w-auto"
+                  className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-cream/20 px-7 py-3.5 text-center text-sm font-semibold text-cream transition-colors hover:bg-white/5 sm:w-auto"
                 >
                   <MessageCircle className="size-5" aria-hidden="true" />
                   Falar sobre motor e manutenção
