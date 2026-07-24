@@ -1,17 +1,10 @@
 'use client'
 
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import Image from 'next/image'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
 import { whatsappLeadUrl } from '@/lib/contact'
 import { ChevronDown, MessageCircle } from 'lucide-react'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, useGSAP)
-}
 
 const heroFacts = [
   ['Motor', 'Indmar Monsoon 350 SS'],
@@ -24,11 +17,24 @@ export function Hero() {
   const root = useRef<HTMLElement>(null)
   const imgRef = useRef<HTMLDivElement>(null)
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 768px) and (prefers-reduced-motion: no-preference)')
+    if (!media.matches || !root.current || !imgRef.current) return
 
-      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
+    let cleanup: (() => void) | undefined
+    let cancelled = false
+
+    void Promise.all([
+      import('gsap'),
+      import('gsap/ScrollTrigger'),
+    ]).then(([gsapModule, scrollTriggerModule]) => {
+      if (cancelled || !root.current || !imgRef.current) return
+
+      const gsap = gsapModule.gsap
+      const ScrollTrigger = scrollTriggerModule.ScrollTrigger
+      gsap.registerPlugin(ScrollTrigger)
+
+      const context = gsap.context(() => {
         gsap.from('[data-hero-reveal]', {
           y: 40,
           opacity: 0,
@@ -61,10 +67,16 @@ export function Hero() {
             scrub: true,
           },
         })
-      })
-    },
-    { scope: root },
-  )
+      }, root)
+
+      cleanup = () => context.revert()
+    })
+
+    return () => {
+      cancelled = true
+      cleanup?.()
+    }
+  }, [])
 
   return (
     <section
@@ -72,7 +84,7 @@ export function Hero() {
       id="topo"
       className="relative water-surface flex min-h-[100svh] items-center justify-center overflow-hidden py-24 sm:py-0"
     >
-      <div ref={imgRef} className="absolute inset-0 z-0 will-change-transform">
+      <div ref={imgRef} className="absolute inset-0 z-0 md:will-change-transform">
         <Image
           src="/images/hero-side.jpeg"
           alt="Lancha Malibu Response LX de perfil na represa, casco branco com faixa azul-marinho"
@@ -81,7 +93,6 @@ export function Hero() {
           sizes="100vw"
           className="object-cover object-center saturate-110 contrast-105"
           fetchPriority="high"
-          decoding="async"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-navy-deep/70 via-navy-deep/30 to-background" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/60 to-transparent" />
@@ -89,7 +100,7 @@ export function Hero() {
 
       <div
         data-hero-content
-        className="relative mx-auto max-w-4xl px-5 text-center will-change-transform"
+        className="relative mx-auto max-w-4xl px-5 text-center md:will-change-transform"
       >
         <p
           data-hero-reveal
@@ -149,7 +160,6 @@ export function Hero() {
             </div>
           ))}
         </div>
-
       </div>
 
       <a
