@@ -1,33 +1,57 @@
-# malibu-response-lx
+# Malibu Response LX
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+Landing page em Next.js para venda da lancha **Malibu Response LX 2013**, com foco em SEO, dados reais do anúncio, CTAs para WhatsApp, galeria, ficha técnica, guia de compra e assistente virtual baseado em fatos.
 
-## Built with v0
+## Stack
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+- Next.js 16 com App Router
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Vercel Analytics e integração opcional com Google Tag Manager
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_zZuVy2vW7v19Xmc9blr4nOsiJiy4)
-
-## Getting Started
-
-First, run the development server:
+## Como rodar localmente
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Checks antes de publicar
 
-## Learn More
+```bash
+npm run lint
+npm run typecheck
+npm run build
+```
 
-To learn more, take a look at the following resources:
+## Variáveis de ambiente
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+- `NEXT_PUBLIC_SITE_URL`: URL pública canônica do site. Se não for definida, o projeto usa `https://malibu-response-lx.vercel.app`.
+- `NEXT_PUBLIC_GTM_ID`: ID opcional do Google Tag Manager.
+
+## Onde editar dados do anúncio
+
+- Dados principais do barco: `lib/boat-data.ts`
+- Mensagens e links de WhatsApp: `lib/contact.ts`
+- URL, nome público e data de atualização do site: `lib/site-config.ts`
+- Termos e estratégia SEO: `lib/seo-data.ts`
+
+## SEO e conteúdo estruturado
+
+A home renderiza JSON-LD de produto, vídeo, FAQ, website, breadcrumb, organização e galeria. A página `/comprar-barco-malibu-response-lx` funciona como guia complementar de intenção transacional.
+
+Evite repetir palavras-chave artificialmente. Prefira descrições naturais com preço, ano, motor, horas, fotos reais e contato direto.
+
+## Analytics e conversão
+
+- `NEXT_PUBLIC_GTM_ID` ativa Google Tag Manager.
+- `NEXT_PUBLIC_SITE_URL` mantém canonical, sitemap, robots e JSON-LD alinhados ao domínio final.
+- Cliques de WhatsApp são enviados para `window.dataLayer`.
+- Eventos de seção e chat também são registrados no `dataLayer` para medir intenção de compra.
+
+## Deploy
+
+O projeto pode ser publicado na Vercel. Antes de abrir merge para produção, rode lint, typecheck e build localmente ou valide pelo workflow de CI.

@@ -1,18 +1,18 @@
 import type { MetadataRoute } from 'next'
+import { siteConfig } from '@/lib/site-config'
 
-const SITE_URL = 'https://malibu-response-lx.vercel.app'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: SITE_URL,
-      lastModified: new Date(),
+      url: siteConfig.url,
+      lastModified: new Date(siteConfig.updatedAt),
       changeFrequency: 'weekly',
       priority: 1,
     },
     {
-      url: `${SITE_URL}/comprar-barco-malibu-response-lx`,
-      lastModified: new Date(),
+      url: `${siteConfig.url}${siteConfig.guidePath}`,
+      lastModified: new Date(siteConfig.updatedAt),
       changeFrequency: 'weekly',
       priority: 0.9,
     },
