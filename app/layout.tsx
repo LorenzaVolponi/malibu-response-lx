@@ -110,10 +110,66 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 }
 
+const globalEntityGraph = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${siteConfig.url}/#website`,
+      url: siteConfig.url,
+      name: siteConfig.name,
+      alternateName: `${siteConfig.listingName} à venda`,
+      description: `Site oficial do anúncio da ${siteConfig.listingName} ${boat.year}.`,
+      inLanguage: 'pt-BR',
+      publisher: { '@id': `${siteConfig.url}/#seller` },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: `${siteConfig.url}/guias?q={search_term_string}`,
+        'query-input': 'required name=search_term_string',
+      },
+    },
+    {
+      '@type': 'Person',
+      '@id': `${siteConfig.url}/#seller`,
+      name: 'Vendedor particular',
+      url: siteConfig.url,
+      knowsAbout: [
+        'Malibu Response LX',
+        'Lancha direct drive',
+        'Esqui aquático',
+        'Indmar Monsoon 350 SS',
+        'Zero Off GPS',
+      ],
+    },
+    {
+      '@type': 'Dataset',
+      '@id': `${siteConfig.url}/boat.json#dataset`,
+      name: `Dados estruturados da ${siteConfig.listingName} ${boat.year}`,
+      description: 'Dados publicados do anúncio, incluindo preço, ano, horas, motor, transmissão, equipamentos e imagens.',
+      url: `${siteConfig.url}/boat.json`,
+      contentUrl: `${siteConfig.url}/boat.json`,
+      encodingFormat: 'application/json',
+      inLanguage: 'pt-BR',
+      creator: { '@id': `${siteConfig.url}/#seller` },
+      isBasedOn: `${siteConfig.url}/dossie-tecnico`,
+      dateModified: siteConfig.updatedAt,
+      license: `${siteConfig.url}/dossie-tecnico`,
+      keywords: [
+        'Malibu Response LX 2013',
+        'Indmar Monsoon 350 SS',
+        'Zero Off GPS',
+        'lancha direct drive',
+        'lancha usada à venda',
+      ],
+    },
+  ],
+}
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR" className="bg-background">
       <body className="font-sans antialiased">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(globalEntityGraph) }} />
         <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-foreground">
           Pular para o conteúdo
         </a>
