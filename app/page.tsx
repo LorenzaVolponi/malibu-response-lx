@@ -24,6 +24,18 @@ import { boat, cinematic, faqs, gallery } from '@/lib/boat-data'
 import { siteConfig } from '@/lib/site-config'
 
 const SITE_URL = siteConfig.url
+const entityIds = {
+  website: `${SITE_URL}/#website`,
+  webpage: `${SITE_URL}/#webpage`,
+  product: `${SITE_URL}/#product`,
+  offer: `${SITE_URL}/#offer`,
+  seller: `${SITE_URL}/#seller`,
+  brand: `${SITE_URL}/#malibu-boats`,
+  model: `${SITE_URL}/#response-lx`,
+  engine: `${SITE_URL}/#indmar-monsoon-350-ss`,
+  zeroOff: `${SITE_URL}/#zero-off-gps`,
+  directDrive: `${SITE_URL}/#direct-drive`,
+}
 
 const imageObjects = gallery.map((image, index) => ({
   '@type': 'ImageObject',
@@ -37,30 +49,36 @@ const imageObjects = gallery.map((image, index) => ({
 }))
 
 const productJsonLd = {
-  '@context': 'https://schema.org',
   '@type': 'Product',
-  '@id': `${SITE_URL}/#product`,
+  '@id': entityIds.product,
   additionalType: 'https://schema.org/Boat',
   name: `${boat.brand} ${boat.model} ${boat.year}`,
   alternateName: ['Malibu Response LX à venda', 'Lancha Malibu Response LX 2013', boat.name],
   description: 'Malibu Response LX 2013 à venda, com motor Indmar Monsoon 350 SS V8 de 350 HP, transmissão direct drive, Zero Off GPS, bimini e carreta rodoviária inclusa.',
-  brand: { '@type': 'Brand', name: boat.brand },
+  brand: { '@id': entityIds.brand },
+  model: { '@id': entityIds.model },
   category: 'Embarcação esportiva usada',
   image: imageObjects.map((image) => ({ '@id': image['@id'] })),
   offers: {
     '@type': 'Offer',
-    '@id': `${SITE_URL}/#offer`,
+    '@id': entityIds.offer,
     priceCurrency: boat.currency,
     price: boat.price,
     availability: 'https://schema.org/InStock',
     itemCondition: 'https://schema.org/UsedCondition',
     areaServed: { '@type': 'Country', name: 'Brasil' },
     url: SITE_URL,
-    seller: { '@type': 'Person', name: 'Vendedor particular' },
+    seller: { '@id': entityIds.seller },
+    itemOffered: { '@id': entityIds.product },
   },
   sku: `malibu-response-lx-${boat.year}-${boat.engineHours}h`,
   mpn: 'Response LX',
-  mainEntityOfPage: { '@id': `${SITE_URL}/#webpage` },
+  mainEntityOfPage: { '@id': entityIds.webpage },
+  isRelatedTo: [
+    { '@id': entityIds.engine },
+    { '@id': entityIds.zeroOff },
+    { '@id': entityIds.directDrive },
+  ],
   additionalProperty: [
     { '@type': 'PropertyValue', name: 'Motor', value: 'Indmar Monsoon 350 SS' },
     { '@type': 'PropertyValue', name: 'Potência', value: '350 HP' },
@@ -73,38 +91,27 @@ const productJsonLd = {
   ],
 }
 
-const websiteJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  '@id': `${SITE_URL}/#website`,
-  url: SITE_URL,
-  name: siteConfig.name,
-  alternateName: `${siteConfig.listingName} à venda`,
-  inLanguage: 'pt-BR',
-  publisher: { '@type': 'Person', name: 'Vendedor particular' },
-}
-
 const webPageJsonLd = {
-  '@context': 'https://schema.org',
   '@type': 'WebPage',
-  '@id': `${SITE_URL}/#webpage`,
+  '@id': entityIds.webpage,
   url: SITE_URL,
   name: `Comprar ${boat.brand} ${boat.model} ${boat.year}`,
   description: `Página de venda da ${boat.brand} ${boat.model} ${boat.year}, com fotos reais, ficha técnica, preço, motor, horas, FAQ e contato direto pelo WhatsApp.`,
   inLanguage: 'pt-BR',
-  isPartOf: { '@id': `${SITE_URL}/#website` },
+  isPartOf: { '@id': entityIds.website },
   primaryImageOfPage: { '@id': `${SITE_URL}/#image-1` },
-  mainEntity: { '@id': `${SITE_URL}/#product` },
+  mainEntity: { '@id': entityIds.product },
+  breadcrumb: { '@id': `${SITE_URL}/#breadcrumb` },
   dateModified: siteConfig.updatedAt,
   relatedLink: [
     `${SITE_URL}/dossie-tecnico`,
     `${SITE_URL}${siteConfig.guidePath}`,
+    `${SITE_URL}/guias`,
     `${SITE_URL}/boat.json`,
   ],
 }
 
 const videoJsonLd = {
-  '@context': 'https://schema.org',
   '@type': 'VideoObject',
   '@id': `${SITE_URL}/#engine-video`,
   name: 'Vídeo de referência do motor e da Malibu Response LX',
@@ -114,10 +121,10 @@ const videoJsonLd = {
   thumbnailUrl: [siteConfig.engineVideo.thumbnailUrl],
   inLanguage: 'pt-BR',
   isFamilyFriendly: true,
+  about: { '@id': entityIds.product },
 }
 
 const galleryJsonLd = {
-  '@context': 'https://schema.org',
   '@type': 'ItemList',
   '@id': `${SITE_URL}/#gallery`,
   name: `Galeria da ${siteConfig.listingName} ${boat.year}`,
@@ -130,9 +137,9 @@ const galleryJsonLd = {
 }
 
 const faqJsonLd = {
-  '@context': 'https://schema.org',
   '@type': 'FAQPage',
   '@id': `${SITE_URL}/#faq`,
+  isPartOf: { '@id': entityIds.webpage },
   mainEntity: faqs.map((item) => ({
     '@type': 'Question',
     name: item.question,
@@ -141,17 +148,26 @@ const faqJsonLd = {
 }
 
 const breadcrumbJsonLd = {
-  '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   '@id': `${SITE_URL}/#breadcrumb`,
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Início', item: SITE_URL },
-    { '@type': 'ListItem', position: 2, name: `${boat.brand} ${boat.model} ${boat.year}`, item: SITE_URL },
   ],
 }
 
 export default function Page() {
-  const structuredData = [websiteJsonLd, webPageJsonLd, productJsonLd, galleryJsonLd, videoJsonLd, faqJsonLd, breadcrumbJsonLd]
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      webPageJsonLd,
+      productJsonLd,
+      galleryJsonLd,
+      videoJsonLd,
+      faqJsonLd,
+      breadcrumbJsonLd,
+      ...imageObjects,
+    ],
+  }
 
   return (
     <>
