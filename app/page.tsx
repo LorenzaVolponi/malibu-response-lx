@@ -1,5 +1,4 @@
 import { SmoothScroll } from '@/components/smooth-scroll'
-import { Preloader } from '@/components/preloader'
 import { ScrollProgress } from '@/components/scroll-progress'
 import { SiteNav } from '@/components/site-nav'
 import { Hero } from '@/components/hero'
@@ -172,7 +171,6 @@ export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
-      <Preloader />
       <SmoothScroll>
         <ScrollProgress />
         <SiteNav />
