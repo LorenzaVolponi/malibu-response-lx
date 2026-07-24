@@ -4,12 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { boat } from '@/lib/boat-data'
 import { whatsappUrl } from '@/lib/contact'
-
-declare global {
-  interface Window {
-    dataLayer?: Array<Record<string, unknown>>
-  }
-}
+import { pushDataLayerEvent } from '@/lib/analytics'
 
 const SUGGESTIONS = [
   'Quero agendar uma visita',
@@ -35,11 +30,9 @@ export function AiChatWidget() {
   const submit = (text: string) => {
     const value = text.trim().slice(0, 500)
     if (!value || busy) return
-    window.dataLayer = window.dataLayer ?? []
-    window.dataLayer.push({
+    pushDataLayerEvent({
       event: 'chat_message_submit',
       chat_suggestion: SUGGESTIONS.includes(value),
-      page_path: window.location.pathname,
     })
     sendMessage({ text: value })
     setInput('')
@@ -52,8 +45,7 @@ export function AiChatWidget() {
         type="button"
         onClick={() => {
           const nextOpen = !open
-          window.dataLayer = window.dataLayer ?? []
-          window.dataLayer.push({ event: nextOpen ? 'chat_open' : 'chat_close', page_path: window.location.pathname })
+          pushDataLayerEvent({ event: nextOpen ? 'chat_open' : 'chat_close' })
           setOpen(nextOpen)
         }}
         aria-label={open ? 'Fechar assistente' : 'Abrir assistente virtual'}

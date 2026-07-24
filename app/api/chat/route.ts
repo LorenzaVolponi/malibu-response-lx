@@ -31,11 +31,18 @@ function getClientKey(req: Request) {
   return forwardedFor || req.headers.get('x-real-ip') || 'anonymous'
 }
 
+function pruneExpiredRateLimitEntries(now: number) {
+  rateLimitStore.forEach((entry, key) => {
+    if (entry.resetAt <= now) rateLimitStore.delete(key)
+  })
+}
+
 function isRateLimited(key: string) {
   const now = Date.now()
+  pruneExpiredRateLimitEntries(now)
   const current = rateLimitStore.get(key)
 
-  if (!current || current.resetAt <= now) {
+  if (!current) {
     rateLimitStore.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
     return false
   }

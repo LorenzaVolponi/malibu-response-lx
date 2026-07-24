@@ -27,6 +27,11 @@ npm run typecheck
 npm run build
 ```
 
+## Variáveis de ambiente
+
+- `NEXT_PUBLIC_SITE_URL`: URL pública canônica do site. Se não for definida, o projeto usa `https://malibu-response-lx.vercel.app`.
+- `NEXT_PUBLIC_GTM_ID`: ID opcional do Google Tag Manager.
+
 ## Onde editar dados do anúncio
 
 - Dados principais do barco: `lib/boat-data.ts`
@@ -43,6 +48,7 @@ Evite repetir palavras-chave artificialmente. Prefira descrições naturais com 
 ## Analytics e conversão
 
 - `NEXT_PUBLIC_GTM_ID` ativa Google Tag Manager.
+- `NEXT_PUBLIC_SITE_URL` mantém canonical, sitemap, robots e JSON-LD alinhados ao domínio final.
 - Cliques de WhatsApp são enviados para `window.dataLayer`.
 - Eventos de seção e chat também são registrados no `dataLayer` para medir intenção de compra.
 

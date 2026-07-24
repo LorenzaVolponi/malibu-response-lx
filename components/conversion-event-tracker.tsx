@@ -1,12 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-
-declare global {
-  interface Window {
-    dataLayer?: Array<Record<string, unknown>>
-  }
-}
+import { pushDataLayerEvent } from '@/lib/analytics'
 
 const SECTION_EVENTS = [
   { selector: '#negociar', event: 'pricing_section_view' },
@@ -14,14 +9,9 @@ const SECTION_EVENTS = [
   { selector: '#guia', event: 'buyer_guide_view' },
 ] as const
 
-function pushEvent(payload: Record<string, unknown>) {
-  window.dataLayer = window.dataLayer ?? []
-  window.dataLayer.push({ page_path: window.location.pathname, ...payload })
-}
-
 export function ConversionEventTracker() {
   useEffect(() => {
-    pushEvent({ event: 'page_intent_view' })
+    pushDataLayerEvent({ event: 'page_intent_view' })
 
     const observed = SECTION_EVENTS
       .map(({ selector, event }) => {
@@ -38,7 +28,7 @@ export function ConversionEventTracker() {
           if (!entry.isIntersecting) return
           const item = observed.find(({ element }) => element === entry.target)
           if (!item) return
-          pushEvent({ event: item.event })
+          pushDataLayerEvent({ event: item.event })
           observer.unobserve(entry.target)
         })
       },

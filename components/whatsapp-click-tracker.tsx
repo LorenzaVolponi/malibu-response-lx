@@ -1,12 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-
-declare global {
-  interface Window {
-    dataLayer?: Array<Record<string, unknown>>
-  }
-}
+import { pushDataLayerEvent } from '@/lib/analytics'
 
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const
 
@@ -48,12 +43,10 @@ export function WhatsAppClickTracker() {
         cta_intent: intent,
         cta_label: anchor.textContent?.trim() ?? '',
         destination_url: anchor.href,
-        page_path: window.location.pathname,
         ...attribution,
       }
 
-      window.dataLayer = window.dataLayer ?? []
-      window.dataLayer.push(payload)
+      pushDataLayerEvent(payload)
       window.localStorage.setItem('last_whatsapp_click', JSON.stringify({ ...payload, clicked_at: new Date().toISOString() }))
     }
 
