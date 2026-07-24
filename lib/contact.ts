@@ -12,3 +12,7 @@ export type ContactIntent = keyof typeof contactMessages
 export function whatsappUrl(intent: ContactIntent = 'primary') {
   return `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(contactMessages[intent])}`
 }
+
+export function whatsappLeadUrl(intent: ContactIntent = 'primary') {
+  return `/api/whatsapp?intent=${intent}`
+}

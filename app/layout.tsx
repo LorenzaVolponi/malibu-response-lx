@@ -96,6 +96,20 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  verification: {
+    google: siteConfig.searchConsoleVerification,
+    other: {
+      ...(siteConfig.bingVerification ? { 'msvalidate.01': siteConfig.bingVerification } : {}),
+    },
+  },
+  appleWebApp: {
+    capable: true,
+    title: siteConfig.name,
+    statusBarStyle: 'black-translucent',
+  },
+  formatDetection: {
+    telephone: false,
+  },
   other: {
     'geo.region': 'BR',
     'geo.placename': 'Brasil',
@@ -103,7 +117,7 @@ export const metadata: Metadata = {
     'product:condition': 'used',
     'product:price:amount': String(boat.price),
     'product:price:currency': boat.currency,
-    'og:see_also': `https://wa.me/${boat.whatsapp}`,
+    'og:see_also': `${siteConfig.url}${siteConfig.guidePath}`,
   },
   generator: 'v0.app',
 }
@@ -123,6 +137,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="bg-background">
       <body className="font-sans antialiased">
+        <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-foreground">Pular para o conteúdo</a>
         {children}
         <AnalyticsTags />
         <WhatsAppClickTracker />

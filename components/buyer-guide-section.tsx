@@ -6,7 +6,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
-import { whatsappUrl } from '@/lib/contact'
+import { whatsappLeadUrl } from '@/lib/contact'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP)
@@ -21,7 +21,7 @@ const confirmed = [
 ]
 const toConfirm = ['Local de visita', 'Documentação', 'Histórico de manutenção', 'Condições para teste na água']
 
-const wa = whatsappUrl('primary')
+const wa = whatsappLeadUrl('primary')
 
 export function BuyerGuideSection() {
   const root = useRef<HTMLElement>(null)

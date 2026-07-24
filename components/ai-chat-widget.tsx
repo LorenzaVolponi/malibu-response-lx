@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { boat } from '@/lib/boat-data'
-import { whatsappUrl } from '@/lib/contact'
+import { whatsappLeadUrl } from '@/lib/contact'
 import { pushDataLayerEvent } from '@/lib/analytics'
 
 const SUGGESTIONS = [
@@ -21,7 +21,7 @@ export function AiChatWidget() {
   const { messages, sendMessage, status, error } = useChat()
   const scrollRef = useRef<HTMLDivElement>(null)
   const busy = status === 'submitted' || status === 'streaming'
-  const wa = whatsappUrl('primary')
+  const wa = whatsappLeadUrl('primary')
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })

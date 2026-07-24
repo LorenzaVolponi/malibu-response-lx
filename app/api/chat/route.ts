@@ -1,6 +1,7 @@
 import { createUIMessageStream, createUIMessageStreamResponse, type UIMessage } from 'ai'
 import { boat, conditionItems, specs } from '@/lib/boat-data'
-import { contactMessages } from '@/lib/contact'
+import { contactMessages, whatsappLeadUrl } from '@/lib/contact'
+import { siteConfig } from '@/lib/site-config'
 
 export const maxDuration = 10
 
@@ -11,7 +12,7 @@ const rateLimitStore = new Map<string, { count: number; resetAt: number }>()
 
 type IncomingMessage = UIMessage & { content?: string }
 
-const contactUrl = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(contactMessages.primary)}`
+const contactUrl = `${siteConfig.url}${whatsappLeadUrl('primary')}`
 
 const facts = {
   price: `Preço: ${boat.priceLabel}. Propostas e condições devem ser tratadas diretamente pelo WhatsApp do vendedor.`,

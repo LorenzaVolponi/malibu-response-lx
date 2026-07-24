@@ -3,12 +3,11 @@ import { MessageCircle } from 'lucide-react'
 import { siteConfig } from '@/lib/site-config'
 import { boat, specs, gallery } from '@/lib/boat-data'
 import { trustSignals } from '@/lib/seo-data'
+import { whatsappLeadUrl } from '@/lib/contact'
 
 const PAGE_PATH = siteConfig.guidePath
 const PAGE_URL = `${siteConfig.url}${PAGE_PATH}`
-const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-  `Olá! Acessei o guia de compra da Malibu Response LX ${boat.year} e quero avaliar a lancha anunciada por ${boat.priceLabel}.`,
-)}`
+const wa = whatsappLeadUrl('primary')
 
 export const metadata: Metadata = {
   title: `Comprar Barco ${siteConfig.listingName} | Guia de Compra e Contato`,
