@@ -4,6 +4,7 @@ import { boat, conditionItems, features, gallery, specs } from '@/lib/boat-data'
 import { siteConfig } from '@/lib/site-config'
 
 const dossierUrl = `${siteConfig.url}/dossie-tecnico`
+const heroImageUrl = `${siteConfig.url}/images/hero-side.jpeg`
 const updatedLabel = new Intl.DateTimeFormat('pt-BR', {
   day: '2-digit',
   month: 'long',
@@ -14,8 +15,11 @@ const updatedLabel = new Intl.DateTimeFormat('pt-BR', {
 export const metadata: Metadata = {
   title: `Dossiê técnico da ${siteConfig.listingName} ${boat.year}`,
   description: `Ficha técnica, evidências visuais, itens informados e checklist de validação da ${siteConfig.listingName} ${boat.year} anunciada por ${boat.priceLabel}.`,
-  alternates: { canonical: '/dossie-tecnico' },
-  authors: [{ name: siteConfig.name }],
+  alternates: {
+    canonical: dossierUrl,
+    languages: { 'pt-BR': dossierUrl },
+  },
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
   category: 'Náutica e diligência de compra',
   openGraph: {
     type: 'article',
@@ -27,7 +31,7 @@ export const metadata: Metadata = {
     publishedTime: siteConfig.updatedAt,
     modifiedTime: siteConfig.updatedAt,
     images: [{
-      url: '/images/hero-side.jpeg',
+      url: heroImageUrl,
       width: 1600,
       height: 900,
       alt: `${siteConfig.listingName} ${boat.year} de perfil na água`,
@@ -37,7 +41,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: `Dossiê técnico — ${siteConfig.listingName} ${boat.year}`,
     description: 'Ficha técnica, evidências visuais e checklist independente para avaliar a embarcação anunciada.',
-    images: ['/images/hero-side.jpeg'],
+    images: [heroImageUrl],
   },
   robots: {
     index: true,
@@ -66,8 +70,9 @@ const dossierJsonLd = {
       dateModified: siteConfig.updatedAt,
       isPartOf: { '@id': `${siteConfig.url}/#website` },
       breadcrumb: { '@id': `${dossierUrl}#breadcrumb` },
-      primaryImageOfPage: { '@id': `${siteConfig.url}/images/hero-side.jpeg#image` },
+      primaryImageOfPage: { '@id': `${dossierUrl}#primary-image` },
       mainEntity: { '@id': `${dossierUrl}#article` },
+      about: { '@id': `${siteConfig.url}/#product` },
       relatedLink: [
         `${siteConfig.url}/boat.json`,
         `${siteConfig.url}/guias`,
@@ -77,6 +82,7 @@ const dossierJsonLd = {
     {
       '@type': 'TechArticle',
       '@id': `${dossierUrl}#article`,
+      url: dossierUrl,
       headline: `Dossiê técnico da ${siteConfig.listingName} ${boat.year}`,
       description: 'Consolidação dos dados publicados no anúncio, evidências visuais e checklist de diligência para o comprador.',
       datePublished: siteConfig.updatedAt,
@@ -102,11 +108,12 @@ const dossierJsonLd = {
     },
     {
       '@type': 'ImageObject',
-      '@id': `${siteConfig.url}/images/hero-side.jpeg#image`,
-      url: `${siteConfig.url}/images/hero-side.jpeg`,
-      contentUrl: `${siteConfig.url}/images/hero-side.jpeg`,
+      '@id': `${dossierUrl}#primary-image`,
+      url: heroImageUrl,
+      contentUrl: heroImageUrl,
       caption: `${siteConfig.listingName} ${boat.year} de perfil na água`,
       representativeOfPage: true,
+      inLanguage: 'pt-BR',
     },
     {
       '@type': 'BreadcrumbList',
@@ -132,7 +139,7 @@ export default function TechnicalDossierPage() {
           <p id="resumo-dossie" className="mt-5 max-w-3xl text-lg leading-8 text-white/75">
             Consolidação transparente dos dados publicados, das evidências visuais disponíveis e dos pontos que devem ser confirmados diretamente com o vendedor antes da compra.
           </p>
-          <p className="mt-4 text-sm text-white/45">Última atualização editorial: {updatedLabel}.</p>
+          <p className="mt-4 text-sm text-white/45">Última atualização editorial: <time dateTime={siteConfig.updatedAt}>{updatedLabel}</time>.</p>
         </header>
 
         <section className="grid gap-4 py-10 sm:grid-cols-2 lg:grid-cols-4" aria-label="Resumo do anúncio">
@@ -222,7 +229,7 @@ export default function TechnicalDossierPage() {
         <nav className="flex flex-wrap gap-4 border-t border-white/15 pt-8" aria-label="Recursos relacionados">
           <Link href="/guias" className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#08111f]">Central de guias</Link>
           <Link href="/comprar-barco-malibu-response-lx" className="rounded-full border border-white/20 px-5 py-3 text-sm font-semibold">Guia completo de compra</Link>
-          <Link href="/boat.json" className="rounded-full border border-white/20 px-5 py-3 text-sm font-semibold">Dados em JSON</Link>
+          <a href="/boat.json" className="rounded-full border border-white/20 px-5 py-3 text-sm font-semibold">Dados em JSON</a>
           <Link href="/" className="rounded-full border border-white/20 px-5 py-3 text-sm font-semibold">Ver anúncio principal</Link>
         </nav>
       </article>
