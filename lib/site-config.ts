@@ -1,12 +1,15 @@
 import { boat } from '@/lib/boat-data'
 
-const DEFAULT_SITE_URL = 'https://malibu-response-lx.vercel.app'
-const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '')
+/**
+ * Single source of truth for every canonical, sitemap, structured-data and AI citation URL.
+ * Do not replace this with Vercel preview URLs or environment-dependent hosts.
+ */
+export const CANONICAL_SITE_URL = 'https://malibu-response-lx.vercel.app'
 
 export const siteConfig = {
   name: 'Malibu Response LX',
   listingName: `${boat.brand} ${boat.model} ${boat.year}`,
-  url: configuredSiteUrl || DEFAULT_SITE_URL,
+  url: CANONICAL_SITE_URL,
   guidePath: '/comprar-barco-malibu-response-lx',
   updatedAt: '2026-07-24',
   mobileCtaLabel: 'Receber vídeos e documentação',
