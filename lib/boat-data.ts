@@ -2,8 +2,8 @@ export const boat = {
   brand: 'Malibu',
   model: 'Response LX',
   name: 'Wonder Women',
-  price: 175000,
-  priceLabel: 'R$ 175.000',
+  price: 165000,
+  priceLabel: 'R$ 165.000',
   currency: 'BRL',
   // Contato — ajuste o número do WhatsApp aqui
   whatsapp: '5531998654328',
@@ -144,7 +144,7 @@ export const conditionItems = [
 export const faqs = [
   {
     question: 'O preço é negociável?',
-    answer: 'Sim. O preço anunciado é R$ 175.000 e propostas devem ser tratadas diretamente pelo WhatsApp do vendedor.',
+    answer: `Sim. O preço final anunciado é ${boat.priceLabel} e propostas devem ser tratadas diretamente pelo WhatsApp do vendedor.`,
   },
   {
     question: 'Acompanha carreta?',
@@ -178,7 +178,7 @@ Seja objetivo, cordial e em português do Brasil. Nunca invente dados que não e
 FATOS CONFIRMADOS:
 - Marca/Modelo: Malibu Response LX (lancha de esqui, direct drive / eixo direto).
 - Nome pintado no casco: "Wonder Women".
-- Preço: R$ 175.000 (cento e setenta e cinco mil reais), negociável — direcionar interessados ao WhatsApp.
+- Preço final: ${boat.priceLabel} (cento e sessenta e cinco mil reais) — direcionar interessados ao WhatsApp.
 - Motor: Indmar Monsoon 350 SS, V8 5.7L, 350 HP (identificado na tampa do motor).
 - Transmissão: Direct Drive (eixo direto), padrão consagrado para esqui aquático.
 - Comprimento: aproximadamente 6,1 m (cerca de 20 pés).
@@ -191,6 +191,7 @@ FATOS CONFIRMADOS:
 - Estado geral: bem conservada, motor e estofamento em bom estado pelas fotos.
 
 REGRAS:
+- O preço final anunciado é ${boat.priceLabel}; não informe outro valor.
 - Ano e horas podem ser afirmados conforme dados acima; não afirme documentação ou histórico se não for perguntado com base fornecida — se não souber, diga que confirma com o vendedor pelo WhatsApp.
 - Para fechar negócio, visita, vídeo complementar, documentação ou teste na água, sempre ofereça encaminhar ao WhatsApp do vendedor.
 - Não fale de outros barcos ou marcas concorrentes de forma depreciativa.
