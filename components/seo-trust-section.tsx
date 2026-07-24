@@ -1,5 +1,5 @@
 import { Anchor, Camera, SearchCheck, Share2 } from 'lucide-react'
-import { offPageChannels, offPagePlaybook } from '@/lib/seo-data'
+import { mobileSeoChecklist, offPageChannels, offPagePlaybook, trendResearchTopics } from '@/lib/seo-data'
 
 const seoHighlights = [
   {
@@ -59,7 +59,7 @@ export function SeoTrustSection() {
           <article className="rounded-3xl border border-cream/10 bg-cream/[0.035] p-6">
             <p className="text-xs tracking-luxe text-gold uppercase">Checklist off-page</p>
             <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">
-              {offPagePlaybook.slice(0, 4).map((item) => (
+              {offPagePlaybook.map((item) => (
                 <li key={item}>• {item}</li>
               ))}
             </ul>
@@ -67,11 +67,33 @@ export function SeoTrustSection() {
           <article className="rounded-3xl border border-gold/20 bg-gold/[0.06] p-6">
             <p className="text-xs tracking-luxe text-gold uppercase">Canais com UTM</p>
             <div className="mt-5 grid gap-3">
-              {offPageChannels.slice(0, 3).map((channel) => (
+              {offPageChannels.map((channel) => (
                 <div key={channel.channel} className="rounded-2xl bg-navy-deep/35 p-4">
                   <p className="font-serif text-lg text-cream">{channel.channel}</p>
                   <p className="mt-1 text-xs text-gold">utm_source={channel.utm_source} · utm_medium={channel.utm_medium}</p>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{channel.action}</p>
+                </div>
+              ))}
+            </div>
+          </article>
+        </div>
+
+        <div className="mt-5 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+          <article className="rounded-3xl border border-cream/10 bg-cream/[0.035] p-6">
+            <p className="text-xs tracking-luxe text-gold uppercase">Mobile-first</p>
+            <ul className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">
+              {mobileSeoChecklist.map((item) => (
+                <li key={item}>• {item}</li>
+              ))}
+            </ul>
+          </article>
+          <article className="rounded-3xl border border-cream/10 bg-navy-deep/45 p-6">
+            <p className="text-xs tracking-luxe text-gold uppercase">Pesquisa e tendências</p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              {trendResearchTopics.map((item) => (
+                <div key={item.topic} className="rounded-2xl border border-cream/10 bg-cream/[0.03] p-4">
+                  <h3 className="font-serif text-lg text-cream">{item.topic}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.angle}</p>
                 </div>
               ))}
             </div>

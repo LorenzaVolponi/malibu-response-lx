@@ -15,6 +15,7 @@ import { BuyerGuideSection } from '@/components/buyer-guide-section'
 import { PricingCta } from '@/components/pricing-cta'
 import { FaqSection } from '@/components/faq-section'
 import { SeoTrustSection } from '@/components/seo-trust-section'
+import { SeoGrowthSection } from '@/components/seo-growth-section'
 import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
 import { SiteFooter } from '@/components/site-footer'
 import { AiChatWidget } from '@/components/ai-chat-widget'
@@ -22,7 +23,7 @@ import { StickyMobileCta } from '@/components/sticky-mobile-cta'
 import { MarketProofSection } from '@/components/market-proof-section'
 import { EngineSound } from '@/components/engine-sound'
 import { boat, cinematic, faqs, gallery } from '@/lib/boat-data'
-import { backendSearchTerms } from '@/lib/seo-data'
+import { backendSearchTerms, trendResearchTopics } from '@/lib/seo-data'
 import { siteConfig } from '@/lib/site-config'
 
 const SITE_URL = siteConfig.url
@@ -156,6 +157,20 @@ const websiteJsonLd = {
   },
 }
 
+
+const trendResearchJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  '@id': `${SITE_URL}/#trend-research-topics`,
+  name: 'Tópicos de pesquisa orgânica para compradores de barcos e lanchas',
+  itemListElement: trendResearchTopics.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.topic,
+    description: item.angle,
+  })),
+}
+
 const breadcrumbJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
@@ -207,6 +222,10 @@ export default function Page() {
       />
       <script
         type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(trendResearchJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <script
@@ -221,7 +240,7 @@ export default function Page() {
       <SmoothScroll>
         <ScrollProgress />
         <SiteNav />
-        <main>
+        <main id="conteudo">
           <Hero />
           <BrandStorySection />
           <CinematicSection {...cinematic[0]} priority />
@@ -236,6 +255,7 @@ export default function Page() {
           <BuyerGuideSection />
 
           <MarketProofSection />
+          <SeoGrowthSection />
           <SeoTrustSection />
           <FaqSection />
           <BuyerConfidenceSection />

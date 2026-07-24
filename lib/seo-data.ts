@@ -44,6 +44,21 @@ export const trustSignals = [
   'Zero Off GPS, bimini e carreta galvanizada inclusos',
 ] as const
 
+
+export const mobileSeoChecklist = [
+  'CTA fixo aparece só após rolagem para não disputar atenção com o hero.',
+  'Menu mobile usa área segura do iOS, overlay de fechamento e rolagem interna.',
+  'Botões principais têm área de toque confortável e texto curto para conversão.',
+  'Imagens críticas usam sizes/priority para melhorar percepção de carregamento.',
+] as const
+
+export const trendResearchTopics = [
+  { topic: 'barco à venda', angle: 'capturar busca ampla e educar o comprador com ficha, preço e fotos reais' },
+  { topic: 'lancha usada', angle: 'comparar custo-benefício, horas de motor, estado e itens inclusos' },
+  { topic: 'wakeboard e esqui aquático', angle: 'conectar o modelo direct drive e Zero Off GPS à intenção esportiva' },
+  { topic: 'Malibu Response LX', angle: 'dominar a busca exata de modelo com conteúdo canônico e dados estruturados' },
+] as const
+
 export const backendSearchTerms = [
   'malibu response lx',
   'malibu response lx à venda',
