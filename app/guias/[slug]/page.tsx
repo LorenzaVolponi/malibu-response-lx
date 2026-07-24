@@ -10,6 +10,28 @@ type Props = {
   params: Promise<{ slug: string }>
 }
 
+type SeoIntentPage = (typeof seoIntentPages)[number]
+
+const normalizeTerms = (values: readonly string[]) =>
+  values
+    .flatMap((value) => value.toLocaleLowerCase('pt-BR').split(/[^a-z0-9áàâãéèêíïóôõöúç]+/i))
+    .filter((value) => value.length > 3)
+
+const relatedGuides = (page: SeoIntentPage) => {
+  const sourceTerms = new Set(normalizeTerms([page.title, page.h1, page.description, ...page.keywords]))
+
+  return seoIntentPages
+    .filter((candidate) => candidate.slug !== page.slug)
+    .map((candidate) => {
+      const candidateTerms = normalizeTerms([candidate.title, candidate.h1, candidate.description, ...candidate.keywords])
+      const score = candidateTerms.reduce((total, term) => total + (sourceTerms.has(term) ? 1 : 0), 0)
+      return { candidate, score }
+    })
+    .sort((a, b) => b.score - a.score || a.candidate.h1.localeCompare(b.candidate.h1, 'pt-BR'))
+    .slice(0, 8)
+    .map(({ candidate }) => candidate)
+}
+
 export function generateStaticParams() {
   return seoIntentPages.map((page) => ({ slug: page.slug }))
 }
@@ -68,6 +90,7 @@ export default async function SeoIntentPage({ params }: Props) {
   if (!page) notFound()
 
   const pageUrl = seoIntentPageUrl(page.slug)
+  const recommendations = relatedGuides(page)
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -84,6 +107,13 @@ export default async function SeoIntentPage({ params }: Props) {
         breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
         primaryImageOfPage: { '@id': `${siteConfig.url}/images/hero-side.jpeg#image` },
         mainEntity: { '@id': `${pageUrl}#article` },
+        about: [
+          { '@id': `${siteConfig.url}/#product` },
+          { '@id': `${siteConfig.url}/#model-response-lx` },
+          { '@id': `${siteConfig.url}/#technology-direct-drive` },
+          { '@id': `${siteConfig.url}/#technology-zero-off` },
+        ],
+        relatedLink: recommendations.map((item) => seoIntentPageUrl(item.slug)),
       },
       {
         '@type': 'Article',
@@ -94,15 +124,33 @@ export default async function SeoIntentPage({ params }: Props) {
         dateModified: siteConfig.updatedAt,
         inLanguage: 'pt-BR',
         mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
-        author: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
-        publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url },
+        author: { '@id': `${siteConfig.url}/#seller` },
+        publisher: { '@id': `${siteConfig.url}/#website` },
         image: { '@id': `${siteConfig.url}/images/hero-side.jpeg#image` },
         about: { '@id': `${siteConfig.url}/#product` },
+        mentions: [
+          { '@id': `${siteConfig.url}/#brand-malibu-boats` },
+          { '@id': `${siteConfig.url}/#engine-indmar-monsoon-350-ss` },
+          { '@id': `${siteConfig.url}/#technology-zero-off` },
+          { '@id': `${siteConfig.url}/#technology-direct-drive` },
+        ],
         keywords: [...page.keywords],
         speakable: {
           '@type': 'SpeakableSpecification',
           cssSelector: ['h1', 'article > p', 'article section h2', 'article section p'],
         },
+      },
+      {
+        '@type': 'ItemList',
+        '@id': `${pageUrl}#related-guides`,
+        name: `Guias relacionados a ${page.h1}`,
+        numberOfItems: recommendations.length,
+        itemListElement: recommendations.map((item, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: item.h1,
+          url: seoIntentPageUrl(item.slug),
+        })),
       },
       {
         '@type': 'ImageObject',
@@ -117,7 +165,7 @@ export default async function SeoIntentPage({ params }: Props) {
         '@id': `${pageUrl}#breadcrumb`,
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Malibu Response LX', item: siteConfig.url },
-          { '@type': 'ListItem', position: 2, name: 'Guia de compra', item: `${siteConfig.url}${siteConfig.guidePath}` },
+          { '@type': 'ListItem', position: 2, name: 'Guias', item: `${siteConfig.url}/guias` },
           { '@type': 'ListItem', position: 3, name: page.h1, item: pageUrl },
         ],
       },
@@ -162,17 +210,14 @@ export default async function SeoIntentPage({ params }: Props) {
           </div>
         </aside>
 
-        <nav aria-label="Outros guias" className="mt-10 rounded-3xl border border-cream/10 bg-navy-deep/45 p-6">
-          <p className="text-xs tracking-luxe text-gold uppercase">Continue pesquisando</p>
+        <nav aria-label="Guias relacionados" className="mt-10 rounded-3xl border border-cream/10 bg-navy-deep/45 p-6">
+          <p className="text-xs tracking-luxe text-gold uppercase">Continue por temas relacionados</p>
           <div className="mt-4 flex flex-wrap gap-2">
-            {seoIntentPages
-              .filter((item) => item.slug !== page.slug)
-              .slice(0, 8)
-              .map((item) => (
-                <Link key={item.slug} href={`/guias/${item.slug}`} className="rounded-full border border-cream/10 px-3 py-2 text-xs text-cream/75 transition-colors hover:border-gold/40 hover:text-gold-soft">
-                  {item.h1}
-                </Link>
-              ))}
+            {recommendations.map((item) => (
+              <Link key={item.slug} href={`/guias/${item.slug}`} className="rounded-full border border-cream/10 px-3 py-2 text-xs text-cream/75 transition-colors hover:border-gold/40 hover:text-gold-soft">
+                {item.h1}
+              </Link>
+            ))}
           </div>
         </nav>
       </article>
