@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
+import { siteConfig } from '@/lib/site-config'
 
-const SITE_URL = 'https://malibu-response-lx.vercel.app'
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
+    sitemap: `${siteConfig.url}/sitemap.xml`,
+    host: siteConfig.url,
   }
 }
