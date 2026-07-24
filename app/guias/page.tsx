@@ -4,12 +4,23 @@ import { boat } from '@/lib/boat-data'
 import { seoIntentPages } from '@/lib/seo-pages'
 import { siteConfig } from '@/lib/site-config'
 
+const PAGE_PATH = '/guias'
+const PAGE_URL = `${siteConfig.url}${PAGE_PATH}`
+const entityIds = {
+  website: `${siteConfig.url}/#website`,
+  product: `${siteConfig.url}/#product`,
+  model: `${siteConfig.url}/#response-lx`,
+  engine: `${siteConfig.url}/#indmar-monsoon-350-ss`,
+  zeroOff: `${siteConfig.url}/#zero-off-gps`,
+  directDrive: `${siteConfig.url}/#direct-drive`,
+}
+
 export const metadata: Metadata = {
   title: 'Guias sobre Malibu Response LX, direct drive e compra de lancha usada',
   description: 'Central de conteúdo sobre Malibu Response LX, motor Indmar Monsoon, Zero Off GPS, direct drive, preço, documentação, horas de motor e compra segura de lancha usada.',
   alternates: {
-    canonical: '/guias',
-    types: { 'application/rss+xml': '/feed.xml' },
+    canonical: PAGE_URL,
+    types: { 'application/rss+xml': `${siteConfig.url}/feed.xml` },
   },
   keywords: [
     'Malibu Response LX',
@@ -19,44 +30,66 @@ export const metadata: Metadata = {
     'Zero Off GPS',
     'comprar lancha usada',
   ],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
-    url: `${siteConfig.url}/guias`,
+    url: PAGE_URL,
     siteName: siteConfig.name,
     title: 'Guias da Malibu Response LX',
     description: 'Conteúdo técnico para pesquisar, comparar e validar a compra de uma Malibu Response LX usada.',
-    images: [{ url: '/images/hero-side.jpeg', width: 1600, height: 900, alt: `${siteConfig.listingName} ${boat.year}` }],
+    images: [{
+      url: '/images/hero-side.jpeg',
+      width: 1600,
+      height: 900,
+      alt: `${siteConfig.listingName} ${boat.year}, casco branco com faixa azul-marinho`,
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Guias da Malibu Response LX',
+    description: 'Conteúdo técnico para pesquisar, comparar e validar a compra de uma Malibu Response LX usada.',
+    images: ['/images/hero-side.jpeg'],
   },
 }
 
 export default function GuidesHubPage() {
-  const url = `${siteConfig.url}/guias`
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'CollectionPage',
-        '@id': `${url}#webpage`,
-        url,
+        '@id': `${PAGE_URL}#webpage`,
+        url: PAGE_URL,
         name: 'Guias sobre Malibu Response LX e compra de lancha usada',
         description: 'Central de conteúdos técnicos relacionados à embarcação anunciada e à diligência de compra.',
         inLanguage: 'pt-BR',
-        isPartOf: { '@id': `${siteConfig.url}/#website` },
-        mainEntity: { '@id': `${url}#guides` },
+        isPartOf: { '@id': entityIds.website },
+        mainEntity: { '@id': `${PAGE_URL}#guides` },
         about: [
-          { '@id': `${siteConfig.url}/#product` },
-          { '@id': `${siteConfig.url}/#model-response-lx` },
-          { '@id': `${siteConfig.url}/#engine-indmar-monsoon-350-ss` },
-          { '@id': `${siteConfig.url}/#technology-zero-off` },
-          { '@id': `${siteConfig.url}/#technology-direct-drive` },
+          { '@id': entityIds.product },
+          { '@id': entityIds.model },
+          { '@id': entityIds.engine },
+          { '@id': entityIds.zeroOff },
+          { '@id': entityIds.directDrive },
         ],
         hasPart: seoIntentPages.map((page) => ({ '@id': `${siteConfig.url}/guias/${page.slug}#article` })),
-        breadcrumb: { '@id': `${url}#breadcrumb` },
+        breadcrumb: { '@id': `${PAGE_URL}#breadcrumb` },
+        dateModified: siteConfig.updatedAt,
       },
       {
         '@type': 'ItemList',
-        '@id': `${url}#guides`,
+        '@id': `${PAGE_URL}#guides`,
         name: 'Guias técnicos e de compra',
         numberOfItems: seoIntentPages.length,
         itemListOrder: 'https://schema.org/ItemListUnordered',
@@ -70,16 +103,17 @@ export default function GuidesHubPage() {
             headline: page.h1,
             description: page.description,
             inLanguage: 'pt-BR',
-            about: { '@id': `${siteConfig.url}/#product` },
+            about: { '@id': entityIds.product },
+            isPartOf: { '@id': `${PAGE_URL}#webpage` },
           },
         })),
       },
       {
         '@type': 'BreadcrumbList',
-        '@id': `${url}#breadcrumb`,
+        '@id': `${PAGE_URL}#breadcrumb`,
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: siteConfig.listingName, item: siteConfig.url },
-          { '@type': 'ListItem', position: 2, name: 'Guias', item: url },
+          { '@type': 'ListItem', position: 2, name: 'Guias', item: PAGE_URL },
         ],
       },
     ],
@@ -129,8 +163,8 @@ export default function GuidesHubPage() {
           <div className="mt-5 flex flex-wrap gap-3">
             <Link href="/dossie-tecnico" className="rounded-full bg-gold px-5 py-3 text-sm font-semibold text-primary-foreground">Dossiê técnico</Link>
             <Link href="/comprar-barco-malibu-response-lx" className="rounded-full border border-cream/15 px-5 py-3 text-sm font-semibold">Guia de compra</Link>
-            <Link href="/boat.json" className="rounded-full border border-cream/15 px-5 py-3 text-sm font-semibold">Dados estruturados</Link>
-            <Link href="/feed.xml" className="rounded-full border border-cream/15 px-5 py-3 text-sm font-semibold">Feed editorial RSS</Link>
+            <a href="/boat.json" className="rounded-full border border-cream/15 px-5 py-3 text-sm font-semibold">Dados estruturados</a>
+            <a href="/feed.xml" className="rounded-full border border-cream/15 px-5 py-3 text-sm font-semibold">Feed editorial RSS</a>
           </div>
         </section>
       </div>
