@@ -5,6 +5,7 @@ export const boat = {
   price: 165000,
   priceLabel: 'R$ 165.000',
   currency: 'BRL',
+  // Preço final oficial do anúncio: R$ 165.000
   // Contato — ajuste o número do WhatsApp aqui
   whatsapp: '5531998654328',
   whatsappLabel: '(31) 99865-4328',
@@ -130,7 +131,6 @@ export const frames360 = [
   { src: '/images/exterior-rear.jpeg', alt: 'Malibu Response LX — três quartos de popa', label: 'Popa 3/4' },
   { src: '/images/top-water.jpeg', alt: 'Malibu Response LX — vista superior', label: 'Superior' },
 ] as const
-
 
 export const conditionItems = [
   { label: 'Casco', status: 'Apresentação conservada', note: 'Casco branco perolado com faixa azul-marinho nas fotos.' },
