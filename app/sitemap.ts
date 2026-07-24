@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteConfig.url}${siteConfig.guidePath}`,
       lastModified: updatedAt,
       changeFrequency: 'weekly',
-      priority: 0.92,
+      priority: 0.95,
     },
     {
       url: `${siteConfig.url}/dossie-tecnico`,
@@ -32,11 +32,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]
 
-  const intentPages: MetadataRoute.Sitemap = seoIntentPages.map((page, index) => ({
+  const intentPages: MetadataRoute.Sitemap = seoIntentPages.map((page) => ({
     url: `${siteConfig.url}/guias/${page.slug}`,
     lastModified: updatedAt,
     changeFrequency: 'monthly' as const,
-    priority: Math.max(0.7, 0.88 - index * 0.015),
+    priority: 0.8,
   }))
 
   return [...corePages, ...intentPages]
