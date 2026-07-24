@@ -12,6 +12,18 @@ type Props = {
 
 type SeoIntentPage = (typeof seoIntentPages)[number]
 
+const entityIds = {
+  website: `${siteConfig.url}/#website`,
+  seller: `${siteConfig.url}/#seller`,
+  product: `${siteConfig.url}/#product`,
+  brand: `${siteConfig.url}/#malibu-boats`,
+  model: `${siteConfig.url}/#response-lx`,
+  engine: `${siteConfig.url}/#indmar-monsoon-350-ss`,
+  zeroOff: `${siteConfig.url}/#zero-off-gps`,
+  directDrive: `${siteConfig.url}/#direct-drive`,
+  guides: `${siteConfig.url}/guias#webpage`,
+}
+
 const normalizeTerms = (values: readonly string[]) =>
   values
     .flatMap((value) => value.toLocaleLowerCase('pt-BR').split(/[^a-z0-9áàâãéèêíïóôõöúç]+/i))
@@ -41,24 +53,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const page = getSeoIntentPage(slug)
   if (!page) return {}
 
+  const pageUrl = seoIntentPageUrl(page.slug)
+
   return {
     title: page.title,
     description: page.description,
-    alternates: { canonical: `/guias/${page.slug}` },
+    alternates: {
+      canonical: pageUrl,
+      languages: { 'pt-BR': pageUrl },
+    },
     keywords: [...page.keywords],
-    authors: [{ name: siteConfig.name }],
+    authors: [{ name: siteConfig.name, url: siteConfig.url }],
+    creator: siteConfig.name,
+    publisher: siteConfig.name,
     category: 'Náutica e compra de embarcações',
     openGraph: {
       type: 'article',
       locale: 'pt_BR',
-      url: seoIntentPageUrl(page.slug),
+      url: pageUrl,
       siteName: siteConfig.name,
       title: page.title,
       description: page.description,
       publishedTime: siteConfig.updatedAt,
       modifiedTime: siteConfig.updatedAt,
       images: [{
-        url: '/images/hero-side.jpeg',
+        url: `${siteConfig.url}/images/hero-side.jpeg`,
         width: 1600,
         height: 900,
         alt: `${siteConfig.listingName} ${boat.year} de perfil na água`,
@@ -68,7 +87,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: 'summary_large_image',
       title: page.title,
       description: page.description,
-      images: ['/images/hero-side.jpeg'],
+      images: [`${siteConfig.url}/images/hero-side.jpeg`],
     },
     robots: {
       index: true,
@@ -91,6 +110,7 @@ export default async function SeoIntentPage({ params }: Props) {
 
   const pageUrl = seoIntentPageUrl(page.slug)
   const recommendations = relatedGuides(page)
+  const imageId = `${pageUrl}#primary-image`
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -103,36 +123,39 @@ export default async function SeoIntentPage({ params }: Props) {
         inLanguage: 'pt-BR',
         datePublished: siteConfig.updatedAt,
         dateModified: siteConfig.updatedAt,
-        isPartOf: { '@id': `${siteConfig.url}/#website` },
+        isPartOf: { '@id': entityIds.guides },
         breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
-        primaryImageOfPage: { '@id': `${siteConfig.url}/images/hero-side.jpeg#image` },
+        primaryImageOfPage: { '@id': imageId },
         mainEntity: { '@id': `${pageUrl}#article` },
         about: [
-          { '@id': `${siteConfig.url}/#product` },
-          { '@id': `${siteConfig.url}/#model-response-lx` },
-          { '@id': `${siteConfig.url}/#technology-direct-drive` },
-          { '@id': `${siteConfig.url}/#technology-zero-off` },
+          { '@id': entityIds.product },
+          { '@id': entityIds.model },
+          { '@id': entityIds.directDrive },
+          { '@id': entityIds.zeroOff },
         ],
         relatedLink: recommendations.map((item) => seoIntentPageUrl(item.slug)),
       },
       {
         '@type': 'Article',
         '@id': `${pageUrl}#article`,
+        url: pageUrl,
         headline: page.title,
         description: page.description,
         datePublished: siteConfig.updatedAt,
         dateModified: siteConfig.updatedAt,
         inLanguage: 'pt-BR',
         mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
-        author: { '@id': `${siteConfig.url}/#seller` },
-        publisher: { '@id': `${siteConfig.url}/#website` },
-        image: { '@id': `${siteConfig.url}/images/hero-side.jpeg#image` },
-        about: { '@id': `${siteConfig.url}/#product` },
+        isPartOf: { '@id': entityIds.guides },
+        author: { '@id': entityIds.seller },
+        publisher: { '@id': entityIds.seller },
+        image: { '@id': imageId },
+        about: { '@id': entityIds.product },
         mentions: [
-          { '@id': `${siteConfig.url}/#brand-malibu-boats` },
-          { '@id': `${siteConfig.url}/#engine-indmar-monsoon-350-ss` },
-          { '@id': `${siteConfig.url}/#technology-zero-off` },
-          { '@id': `${siteConfig.url}/#technology-direct-drive` },
+          { '@id': entityIds.brand },
+          { '@id': entityIds.model },
+          { '@id': entityIds.engine },
+          { '@id': entityIds.zeroOff },
+          { '@id': entityIds.directDrive },
         ],
         keywords: [...page.keywords],
         speakable: {
@@ -154,11 +177,12 @@ export default async function SeoIntentPage({ params }: Props) {
       },
       {
         '@type': 'ImageObject',
-        '@id': `${siteConfig.url}/images/hero-side.jpeg#image`,
+        '@id': imageId,
         url: `${siteConfig.url}/images/hero-side.jpeg`,
         contentUrl: `${siteConfig.url}/images/hero-side.jpeg`,
         caption: `${siteConfig.listingName} ${boat.year} de perfil na água`,
         representativeOfPage: true,
+        inLanguage: 'pt-BR',
       },
       {
         '@type': 'BreadcrumbList',
@@ -205,7 +229,7 @@ export default async function SeoIntentPage({ params }: Props) {
           <p className="text-xs tracking-luxe text-gold uppercase">Dados verificáveis do anúncio</p>
           <div className="mt-4 flex flex-wrap gap-2">
             <Link href="/dossie-tecnico" className="rounded-full border border-gold/30 px-4 py-2 text-xs text-gold-soft hover:border-gold">Dossiê técnico</Link>
-            <Link href="/boat.json" className="rounded-full border border-cream/10 px-4 py-2 text-xs text-cream/75 hover:border-gold/40">Ficha em JSON</Link>
+            <a href="/boat.json" className="rounded-full border border-cream/10 px-4 py-2 text-xs text-cream/75 hover:border-gold/40">Ficha em JSON</a>
             <Link href="/comprar-barco-malibu-response-lx" className="rounded-full border border-cream/10 px-4 py-2 text-xs text-cream/75 hover:border-gold/40">Guia completo</Link>
           </div>
         </aside>
