@@ -1,14 +1,19 @@
 'use client'
 
 import { useEffect } from 'react'
+import { pushDataLayerEvent } from '@/lib/analytics'
 
-declare global {
-  interface Window {
-    dataLayer?: Array<Record<string, unknown>>
-  }
-}
-
-const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'] as const
+const ATTRIBUTION_KEYS = [
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
+  'gclid',
+  'gbraid',
+  'wbraid',
+  'msclkid',
+] as const
 
 function getIntent(anchor: HTMLAnchorElement) {
   const explicit = anchor.dataset.whatsappIntent
@@ -24,10 +29,10 @@ function getIntent(anchor: HTMLAnchorElement) {
 function getAttribution() {
   const params = new URLSearchParams(window.location.search)
   const attribution = Object.fromEntries(
-    UTM_KEYS.map((key) => [key, params.get(key) ?? window.localStorage.getItem(key) ?? '']).filter(([, value]) => value),
+    ATTRIBUTION_KEYS.map((key) => [key, params.get(key) ?? window.localStorage.getItem(key) ?? '']).filter(([, value]) => value),
   )
 
-  UTM_KEYS.forEach((key) => {
+  ATTRIBUTION_KEYS.forEach((key) => {
     const value = params.get(key)
     if (value) window.localStorage.setItem(key, value)
   })
@@ -35,25 +40,46 @@ function getAttribution() {
   return attribution
 }
 
+function appendAttribution(anchor: HTMLAnchorElement, attribution: Record<string, string>) {
+  const attributionLines = Object.entries(attribution)
+  if (attributionLines.length === 0) return anchor.href
+
+  const url = new URL(anchor.href, window.location.origin)
+
+  if (url.pathname === '/api/whatsapp') {
+    attributionLines.forEach(([key, value]) => url.searchParams.set(key, value))
+    return url.pathname + url.search
+  }
+
+  const currentText = url.searchParams.get('text') ?? ''
+  const attributionText = attributionLines.map(([key, value]) => `${key}: ${value}`).join(' | ')
+  const separator = currentText.includes('Origem do clique:') ? '' : `\n\nOrigem do clique: ${attributionText}`
+
+  if (separator) url.searchParams.set('text', `${currentText}${separator}`)
+  return url.toString()
+}
+
 export function WhatsAppClickTracker() {
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
-      const anchor = (event.target as Element | null)?.closest?.('a[href*="wa.me"]') as HTMLAnchorElement | null
+      const anchor = (event.target as Element | null)?.closest?.('a[href*="wa.me"], a[href^="/api/whatsapp"]') as HTMLAnchorElement | null
       if (!anchor) return
 
       const intent = getIntent(anchor)
       const attribution = getAttribution()
+      const destinationUrl = appendAttribution(anchor, attribution)
+      anchor.href = destinationUrl
+
       const payload = {
         event: 'whatsapp_click',
         cta_intent: intent,
         cta_label: anchor.textContent?.trim() ?? '',
-        destination_url: anchor.href,
-        page_path: window.location.pathname,
+        destination_url: destinationUrl,
         ...attribution,
       }
 
-      window.dataLayer = window.dataLayer ?? []
-      window.dataLayer.push(payload)
+      pushDataLayerEvent(payload)
+      pushDataLayerEvent({ event: 'generate_lead', lead_channel: 'whatsapp', cta_intent: intent, ...attribution })
       window.localStorage.setItem('last_whatsapp_click', JSON.stringify({ ...payload, clicked_at: new Date().toISOString() }))
     }
 

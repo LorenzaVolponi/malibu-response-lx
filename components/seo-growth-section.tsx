@@ -1,10 +1,9 @@
 import { MessageCircle } from 'lucide-react'
 import { boat } from '@/lib/boat-data'
+import { whatsappLeadUrl } from '@/lib/contact'
 import { trustSignals } from '@/lib/seo-data'
 
-const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-  `Oi vim do site, tenho interesse no barco`,
-)}`
+const wa = whatsappLeadUrl('primary')
 
 export function SeoGrowthSection() {
   return (

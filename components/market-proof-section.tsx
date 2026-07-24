@@ -1,5 +1,7 @@
 import { MessageCircle } from 'lucide-react'
 import { boat } from '@/lib/boat-data'
+import { whatsappLeadUrl } from '@/lib/contact'
+import { siteConfig } from '@/lib/site-config'
 
 const decisionBlocks = [
   {
@@ -16,9 +18,7 @@ const decisionBlocks = [
   },
 ] as const
 
-const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
-  `Olá! Estou comparando barcos e quero avaliar a Malibu Response LX ${boat.year} com ${boat.engineHours} horas por ${boat.priceLabel}.`,
-)}`
+const wa = whatsappLeadUrl('primary')
 
 export function MarketProofSection() {
   return (
@@ -52,13 +52,14 @@ export function MarketProofSection() {
             href={wa}
             target="_blank"
             rel="noopener noreferrer"
+            data-whatsapp-intent="video_documentacao"
             className="inline-flex shrink-0 items-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03]"
           >
             <MessageCircle className="size-4" aria-hidden="true" />
             Comparar agora
           </a>
           <a
-            href="/comprar-barco-malibu-response-lx"
+            href={siteConfig.guidePath}
             className="inline-flex shrink-0 items-center rounded-full border border-cream/20 px-6 py-3 text-sm font-semibold text-cream transition-colors hover:bg-white/5"
           >
             Abrir guia de compra

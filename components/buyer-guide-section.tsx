@@ -6,16 +6,22 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
-import { whatsappUrl } from '@/lib/contact'
+import { whatsappLeadUrl } from '@/lib/contact'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP)
 }
 
-const confirmed = ['Ano 2013', '940 horas de motor', 'Motor Indmar Monsoon 350 SS', 'Zero Off GPS', 'Bimini e carreta inclusos']
+const confirmed = [
+  `Ano ${boat.year}`,
+  `${boat.engineHours} horas de motor`,
+  'Motor Indmar Monsoon 350 SS',
+  'Zero Off GPS',
+  'Bimini e carreta inclusos',
+]
 const toConfirm = ['Local de visita', 'Documentação', 'Histórico de manutenção', 'Condições para teste na água']
 
-const wa = whatsappUrl('primary')
+const wa = whatsappLeadUrl('primary')
 
 export function BuyerGuideSection() {
   const root = useRef<HTMLElement>(null)

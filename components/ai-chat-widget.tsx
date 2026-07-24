@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useChat } from '@ai-sdk/react'
 import { boat } from '@/lib/boat-data'
-import { whatsappUrl } from '@/lib/contact'
+import { whatsappLeadUrl } from '@/lib/contact'
+import { pushDataLayerEvent } from '@/lib/analytics'
 
 const SUGGESTIONS = [
   'Quero agendar uma visita',
@@ -20,15 +21,19 @@ export function AiChatWidget() {
   const { messages, sendMessage, status, error } = useChat()
   const scrollRef = useRef<HTMLDivElement>(null)
   const busy = status === 'submitted' || status === 'streaming'
-  const wa = whatsappUrl('primary')
+  const wa = whatsappLeadUrl('primary')
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
   }, [messages, open])
 
   const submit = (text: string) => {
-    const value = text.trim()
+    const value = text.trim().slice(0, 500)
     if (!value || busy) return
+    pushDataLayerEvent({
+      event: 'chat_message_submit',
+      chat_suggestion: SUGGESTIONS.includes(value),
+    })
     sendMessage({ text: value })
     setInput('')
   }
@@ -38,7 +43,11 @@ export function AiChatWidget() {
       {/* Botão flutuante */}
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          const nextOpen = !open
+          pushDataLayerEvent({ event: nextOpen ? 'chat_open' : 'chat_close' })
+          setOpen(nextOpen)
+        }}
         aria-label={open ? 'Fechar assistente' : 'Abrir assistente virtual'}
         aria-expanded={open}
         className="fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom))] right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-2xl shadow-navy-deep/50 transition-transform hover:scale-105 active:scale-95 sm:bottom-6 sm:right-6"
@@ -160,6 +169,7 @@ export function AiChatWidget() {
                     submit(input)
                   }
                 }}
+                maxLength={500}
                 placeholder="Escreva sua pergunta..."
                 className="min-w-0 flex-1 bg-transparent py-3 text-base text-cream sm:text-sm placeholder:text-cream/40 focus:outline-none"
                 aria-label="Sua pergunta"

@@ -1,20 +1,22 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { siteConfig } from '@/lib/site-config'
+import { boat } from '@/lib/boat-data'
 import './globals.css'
 import { WhatsAppClickTracker } from '@/components/whatsapp-click-tracker'
 import { AnalyticsTags } from '@/components/analytics-tags'
+import { ConversionEventTracker } from '@/components/conversion-event-tracker'
 
-const SITE_URL = 'https://malibu-response-lx.vercel.app'
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: 'Comprar Barco Malibu Response LX 2013 | Lancha V8 350HP à Venda',
-    template: '%s | Malibu Response LX',
+    default: `Comprar Barco ${siteConfig.listingName} | Lancha V8 350HP à Venda`,
+    template: `%s | ${siteConfig.name}`,
   },
   description:
-    'Comprar barco Malibu Response LX 2013 à venda no Brasil por R$ 175.000. Lancha de esqui/wakeboard com 940 horas de motor, Indmar Monsoon 350 SS V8 350 HP, direct drive, Zero Off GPS, bimini e carreta inclusa. Agende visita pelo WhatsApp.',
-  applicationName: 'Malibu Response LX',
+    `Comprar barco ${siteConfig.listingName} à venda no Brasil por ${boat.priceLabel}. Lancha de esqui/wakeboard com ${boat.engineHours} horas de motor, Indmar Monsoon 350 SS V8 350 HP, direct drive, Zero Off GPS, bimini e carreta inclusa. Agende visita pelo WhatsApp.`,
+  applicationName: siteConfig.name,
   keywords: [
     'Malibu Response LX à venda',
     'lancha à venda',
@@ -47,9 +49,9 @@ export const metadata: Metadata = {
     'Zero Off GPS lancha',
     'carreta rodoviária lancha',
   ],
-  authors: [{ name: 'Malibu Response LX' }],
-  creator: 'Malibu Response LX',
-  publisher: 'Malibu Response LX',
+  authors: [{ name: siteConfig.name }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
   referrer: 'origin-when-cross-origin',
   alternates: {
     canonical: '/',
@@ -57,17 +59,16 @@ export const metadata: Metadata = {
       'pt-BR': '/',
     },
   },
-  classification: 'classified listing, boat listing, nautical sales',
   category: 'Náutica',
   classification: 'Classificado náutico premium',
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
-    url: SITE_URL,
-    siteName: 'Malibu Response LX',
-    title: 'Comprar Barco Malibu Response LX 2013 — V8 350HP, Direct Drive',
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: `Comprar Barco ${siteConfig.listingName} — V8 350HP, Direct Drive`,
     description:
-      'Lancha Malibu Response LX por R$ 175.000. 2013, 940 horas, motor Monsoon 350 SS V8, Zero Off, bimini e carreta inclusa. Esqui e wakeboard de alto nível.',
+      `Lancha ${boat.brand} ${boat.model} por ${boat.priceLabel}. ${boat.year}, ${boat.engineHours} horas, motor Monsoon 350 SS V8, Zero Off, bimini e carreta inclusa. Esqui e wakeboard de alto nível.`,
     images: [
       {
         url: '/images/hero-side.jpeg',
@@ -79,9 +80,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Comprar Malibu Response LX 2013 — V8 350HP',
+    title: `Comprar ${siteConfig.listingName} — V8 350HP`,
     description:
-      'Lancha Malibu Response LX por R$ 175.000. 2013, 940 horas, Motor Monsoon 350 SS, Zero Off, bimini e carreta inclusa.',
+      `Lancha ${boat.brand} ${boat.model} por ${boat.priceLabel}. ${boat.year}, ${boat.engineHours} horas, Motor Monsoon 350 SS, Zero Off, bimini e carreta inclusa.`,
     images: ['/images/hero-side.jpeg'],
   },
   robots: {
@@ -93,17 +94,30 @@ export const metadata: Metadata = {
       'max-video-preview': -1,
       'max-image-preview': 'large',
       'max-snippet': -1,
-      'max-video-preview': -1,
     },
+  },
+  verification: {
+    google: siteConfig.searchConsoleVerification,
+    other: {
+      ...(siteConfig.bingVerification ? { 'msvalidate.01': siteConfig.bingVerification } : {}),
+    },
+  },
+  appleWebApp: {
+    capable: true,
+    title: siteConfig.name,
+    statusBarStyle: 'black-translucent',
+  },
+  formatDetection: {
+    telephone: false,
   },
   other: {
     'geo.region': 'BR',
     'geo.placename': 'Brasil',
     'product:brand': 'Malibu',
     'product:condition': 'used',
-    'product:price:amount': '175000',
-    'product:price:currency': 'BRL',
-    'og:see_also': 'https://wa.me/5531998654328',
+    'product:price:amount': String(boat.price),
+    'product:price:currency': boat.currency,
+    'og:see_also': `${siteConfig.url}${siteConfig.guidePath}`,
   },
   generator: 'v0.app',
 }
@@ -123,9 +137,11 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="bg-background">
       <body className="font-sans antialiased">
+        <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-foreground">Pular para o conteúdo</a>
         {children}
         <AnalyticsTags />
         <WhatsAppClickTracker />
+        <ConversionEventTracker />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

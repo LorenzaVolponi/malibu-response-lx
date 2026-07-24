@@ -6,7 +6,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
-import { whatsappUrl } from '@/lib/contact'
+import { whatsappLeadUrl } from '@/lib/contact'
 import { ChevronDown, MessageCircle } from 'lucide-react'
 
 if (typeof window !== 'undefined') {
@@ -16,8 +16,8 @@ if (typeof window !== 'undefined') {
 const heroFacts = [
   ['Motor', 'Indmar Monsoon 350 SS'],
   ['Potência', '350 HP'],
-  ['Ano', '2013'],
-  ['Horas', '940 h'],
+  ['Ano', String(boat.year)],
+  ['Horas', `${boat.engineHours} h`],
 ] as const
 
 export function Hero() {
@@ -76,7 +76,10 @@ export function Hero() {
         <Image
           src="/images/hero-side.jpeg"
           alt="Lancha Malibu Response LX de perfil na represa, casco branco com faixa azul-marinho"
-          className="size-full object-cover object-center saturate-110 contrast-105"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center saturate-110 contrast-105"
           fetchPriority="high"
           decoding="async"
         />
@@ -119,7 +122,7 @@ export function Hero() {
             Explorar embarcação
           </a>
           <a
-            href={whatsappUrl('secondary')}
+            href={whatsappLeadUrl('secondary')}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex w-full max-w-xs items-center justify-center gap-2 rounded-full border border-cream/20 px-7 py-3 text-sm font-semibold text-cream transition-colors hover:bg-white/5 sm:w-auto"

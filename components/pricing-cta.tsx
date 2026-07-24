@@ -6,8 +6,8 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
-import { whatsappUrl } from '@/lib/contact'
-import { MessageCircle, Phone, Check } from 'lucide-react'
+import { whatsappLeadUrl } from '@/lib/contact'
+import { MessageCircle, Check } from 'lucide-react'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP)
@@ -19,8 +19,8 @@ const includes = [
   'Controle de velocidade Zero Off GPS',
   'Toldo bimini',
   'Carreta rodoviária galvanizada inclusa',
-  'Ano de fabricação 2013',
-  '940 horas de motor',
+  `Ano de fabricação ${boat.year}`,
+  `${boat.engineHours} horas de motor`,
   'Estofamento conservado creme/azul',
 ]
 
@@ -68,9 +68,11 @@ export function PricingCta() {
           src="/images/exterior-front.jpeg"
           alt=""
           aria-hidden="true"
+          fill
+          sizes="100vw"
           loading="lazy"
           decoding="async"
-          className="size-full scale-110 object-cover"
+          className="scale-110 object-cover"
         />
         <div className="absolute inset-0 bg-navy-deep/80" />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
@@ -104,7 +106,7 @@ export function PricingCta() {
                 className="mt-8 flex flex-col gap-3 sm:flex-row"
               >
                 <a
-                  href={whatsappUrl('primary')}
+                  href={whatsappLeadUrl('primary')}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex w-full items-center justify-center gap-2 rounded-full bg-gold px-7 py-3.5 text-center text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03] sm:w-auto"
@@ -113,11 +115,14 @@ export function PricingCta() {
                   Receber vídeos e documentação
                 </a>
                 <a
-                  href={`tel:+${boat.whatsapp}`}
+                  href={whatsappLeadUrl('technical')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-whatsapp-intent="motor_manutencao"
                   className="flex w-full items-center justify-center gap-2 rounded-full border border-cream/20 px-7 py-3.5 text-center text-sm font-semibold text-cream transition-colors hover:bg-white/5 sm:w-auto"
                 >
-                  <Phone className="size-5" aria-hidden="true" />
-                  {boat.whatsappLabel}
+                  <MessageCircle className="size-5" aria-hidden="true" />
+                  Falar sobre motor e manutenção
                 </a>
               </div>
               <p data-cta-reveal className="mt-4 text-xs text-muted-foreground">
