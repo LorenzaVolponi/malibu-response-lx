@@ -1,5 +1,6 @@
 import { Anchor, Camera, SearchCheck, Share2 } from 'lucide-react'
 import { mobileSeoChecklist, offPageChannels, offPagePlaybook, trendResearchTopics } from '@/lib/seo-data'
+import { seoIntentPages } from '@/lib/seo-pages'
 
 const seoHighlights = [
   {
@@ -76,6 +77,19 @@ export function SeoTrustSection() {
               ))}
             </div>
           </article>
+        </div>
+
+
+        <div className="mt-5 rounded-3xl border border-gold/20 bg-gold/[0.06] p-6">
+          <p className="text-xs tracking-luxe text-gold uppercase">Páginas de apoio indexáveis</p>
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            {seoIntentPages.map((page) => (
+              <a key={page.slug} href={`/guias/${page.slug}`} className="rounded-2xl border border-cream/10 bg-navy-deep/40 p-4 transition-colors hover:border-gold/40 hover:bg-gold/[0.08]">
+                <h3 className="font-serif text-lg text-cream">{page.title}</h3>
+                <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">{page.description}</p>
+              </a>
+            ))}
+          </div>
         </div>
 
         <div className="mt-5 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
