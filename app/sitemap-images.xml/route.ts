@@ -1,4 +1,4 @@
-import { gallery } from '@/lib/boat-data'
+import { cinematic, features, frames360, gallery, journey } from '@/lib/boat-data'
 import { siteConfig } from '@/lib/site-config'
 
 export const dynamic = 'force-static'
@@ -13,13 +13,24 @@ function escapeXml(value: string) {
 }
 
 export function GET() {
-  const images = gallery
+  const allImages = [
+    ...gallery.map(({ src, alt }) => ({ src, alt })),
+    ...features.map(({ image: src, alt }) => ({ src, alt })),
+    ...journey.map(({ image: src, alt }) => ({ src, alt })),
+    ...cinematic.map(({ image: src, alt }) => ({ src, alt })),
+    ...frames360.map(({ src, alt }) => ({ src, alt })),
+  ]
+
+  const uniqueImages = Array.from(new Map(allImages.map((image) => [image.src, image])).values())
+
+  const images = uniqueImages
     .map(
       (image) => `
     <image:image>
       <image:loc>${escapeXml(`${siteConfig.url}${image.src}`)}</image:loc>
       <image:title>${escapeXml(image.alt)}</image:title>
       <image:caption>${escapeXml(image.alt)}</image:caption>
+      <image:license>${escapeXml(`${siteConfig.url}/dossie-tecnico`)}</image:license>
     </image:image>`,
     )
     .join('')
