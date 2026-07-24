@@ -1,5 +1,6 @@
 import { MessageCircle } from 'lucide-react'
 import { boat } from '@/lib/boat-data'
+import { siteConfig } from '@/lib/site-config'
 
 const decisionBlocks = [
   {
@@ -58,7 +59,7 @@ export function MarketProofSection() {
             Comparar agora
           </a>
           <a
-            href="/comprar-barco-malibu-response-lx"
+            href={siteConfig.guidePath}
             className="inline-flex shrink-0 items-center rounded-full border border-cream/20 px-6 py-3 text-sm font-semibold text-cream transition-colors hover:bg-white/5"
           >
             Abrir guia de compra

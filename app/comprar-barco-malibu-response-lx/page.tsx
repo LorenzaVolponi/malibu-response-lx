@@ -1,19 +1,19 @@
 import type { Metadata } from 'next'
 import { MessageCircle } from 'lucide-react'
+import { siteConfig } from '@/lib/site-config'
 import { boat, specs, gallery } from '@/lib/boat-data'
 import { trustSignals } from '@/lib/seo-data'
 
-const SITE_URL = 'https://malibu-response-lx.vercel.app'
-const PAGE_PATH = '/comprar-barco-malibu-response-lx'
-const PAGE_URL = `${SITE_URL}${PAGE_PATH}`
+const PAGE_PATH = siteConfig.guidePath
+const PAGE_URL = `${siteConfig.url}${PAGE_PATH}`
 const wa = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(
   `Olá! Acessei o guia de compra da Malibu Response LX ${boat.year} e quero avaliar a lancha anunciada por ${boat.priceLabel}.`,
 )}`
 
 export const metadata: Metadata = {
-  title: 'Comprar Barco Malibu Response LX 2013 | Guia de Compra e Contato',
+  title: `Comprar Barco ${siteConfig.listingName} | Guia de Compra e Contato`,
   description:
-    'Guia para comprar barco Malibu Response LX 2013: preço R$ 175.000, 940 horas, motor Indmar Monsoon 350 SS V8 350 HP, Zero Off GPS, bimini, carreta e WhatsApp do vendedor.',
+    `Guia para comprar barco ${siteConfig.listingName}: preço ${boat.priceLabel}, ${boat.engineHours} horas, motor Indmar Monsoon 350 SS V8 350 HP, Zero Off GPS, bimini, carreta e WhatsApp do vendedor.`,
   alternates: {
     canonical: PAGE_PATH,
   },
@@ -21,14 +21,14 @@ export const metadata: Metadata = {
     type: 'article',
     locale: 'pt_BR',
     url: PAGE_URL,
-    title: 'Comprar Barco Malibu Response LX 2013 — Guia direto para avaliar',
+    title: `Comprar Barco ${siteConfig.listingName} — Guia direto para avaliar`,
     description:
       'Dados reais, fotos, ficha técnica, preço e contato para avaliar a Malibu Response LX 2013 à venda no Brasil.',
     images: ['/images/hero-side.jpeg'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Comprar Malibu Response LX 2013',
+    title: `Comprar ${siteConfig.listingName}`,
     description: 'Preço, ano, horas, motor, fotos reais e WhatsApp do vendedor em um guia direto.',
     images: ['/images/hero-side.jpeg'],
   },
@@ -38,9 +38,9 @@ const guideJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   '@id': `${PAGE_URL}/#article`,
-  headline: 'Comprar Barco Malibu Response LX 2013',
+  headline: `Comprar Barco ${siteConfig.listingName}`,
   description: metadata.description,
-  image: gallery.slice(0, 4).map((image) => `${SITE_URL}${image.src}`),
+  image: gallery.slice(0, 4).map((image) => `${siteConfig.url}${image.src}`),
   inLanguage: 'pt-BR',
   mainEntityOfPage: PAGE_URL,
   about: {
@@ -53,7 +53,7 @@ const guideJsonLd = {
       priceCurrency: boat.currency,
       availability: 'https://schema.org/InStock',
       itemCondition: 'https://schema.org/UsedCondition',
-      url: SITE_URL,
+      url: siteConfig.url,
     },
   },
 }

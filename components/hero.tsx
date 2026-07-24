@@ -16,8 +16,8 @@ if (typeof window !== 'undefined') {
 const heroFacts = [
   ['Motor', 'Indmar Monsoon 350 SS'],
   ['Potência', '350 HP'],
-  ['Ano', '2013'],
-  ['Horas', '940 h'],
+  ['Ano', String(boat.year)],
+  ['Horas', `${boat.engineHours} h`],
 ] as const
 
 export function Hero() {

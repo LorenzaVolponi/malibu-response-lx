@@ -19,8 +19,8 @@ const includes = [
   'Controle de velocidade Zero Off GPS',
   'Toldo bimini',
   'Carreta rodoviária galvanizada inclusa',
-  'Ano de fabricação 2013',
-  '940 horas de motor',
+  `Ano de fabricação ${boat.year}`,
+  `${boat.engineHours} horas de motor`,
   'Estofamento conservado creme/azul',
 ]
 

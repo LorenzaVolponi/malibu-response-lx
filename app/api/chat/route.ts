@@ -4,6 +4,11 @@ import { contactMessages } from '@/lib/contact'
 
 export const maxDuration = 10
 
+const MAX_MESSAGE_LENGTH = 500
+const RATE_LIMIT_WINDOW_MS = 60_000
+const RATE_LIMIT_MAX_REQUESTS = 20
+const rateLimitStore = new Map<string, { count: number; resetAt: number }>()
+
 type IncomingMessage = UIMessage & { content?: string }
 
 const contactUrl = `https://wa.me/${boat.whatsapp}?text=${encodeURIComponent(contactMessages.primary)}`
@@ -21,6 +26,31 @@ const facts = {
 
 const unknownDetails = 'Documentação, histórico de manutenção, local exato de visita e laudos precisam ser validados diretamente com o vendedor.'
 
+function getClientKey(req: Request) {
+  const forwardedFor = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+  return forwardedFor || req.headers.get('x-real-ip') || 'anonymous'
+}
+
+function pruneExpiredRateLimitEntries(now: number) {
+  rateLimitStore.forEach((entry, key) => {
+    if (entry.resetAt <= now) rateLimitStore.delete(key)
+  })
+}
+
+function isRateLimited(key: string) {
+  const now = Date.now()
+  pruneExpiredRateLimitEntries(now)
+  const current = rateLimitStore.get(key)
+
+  if (!current) {
+    rateLimitStore.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
+    return false
+  }
+
+  current.count += 1
+  return current.count > RATE_LIMIT_MAX_REQUESTS
+}
+
 function normalize(text: string) {
   return text
     .normalize('NFD')
@@ -35,7 +65,7 @@ function getLastUserText(messages: IncomingMessage[]) {
     .map((part) => part.text)
     .join(' ')
 
-  return (partsText || lastUser?.content || '').trim()
+  return (partsText || lastUser?.content || '').trim().slice(0, MAX_MESSAGE_LENGTH)
 }
 
 function formatAnswer(sections: string[], includeContact: boolean, includeUnknowns: boolean) {
@@ -74,6 +104,10 @@ function answerWithBoatFacts(question: string) {
 }
 
 export async function POST(req: Request) {
+  if (isRateLimited(getClientKey(req))) {
+    return new Response('Muitas mensagens em pouco tempo. Tente novamente em instantes.', { status: 429 })
+  }
+
   const body = await req.json().catch(() => ({ messages: [] }))
   const messages = Array.isArray(body.messages) ? body.messages as IncomingMessage[] : []
   const text = answerWithBoatFacts(getLastUserText(messages))
