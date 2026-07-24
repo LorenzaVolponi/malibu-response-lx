@@ -81,6 +81,71 @@ export const seoIntentPages = [
       { heading: 'Qual faz sentido', text: 'A escolha depende do esporte prioritário, perfil de uso, número de ocupantes, armazenamento e comportamento desejado na água.' },
     ],
   },
+  {
+    slug: 'malibu-response-lx-2013-ficha-tecnica',
+    title: 'Malibu Response LX 2013: ficha técnica e itens do anúncio',
+    description: `Ficha técnica da Malibu Response LX 2013 anunciada com motor V8 350 HP, direct drive, Zero Off GPS, ${boat.engineHours} horas, bimini e carreta.`,
+    h1: 'Ficha técnica da Malibu Response LX 2013 anunciada',
+    intro: 'Resumo técnico indexável para compradores que pesquisam ano, motor, potência, transmissão, horas e equipamentos da embarcação.',
+    keywords: ['Malibu Response LX 2013 ficha técnica', 'Malibu Response LX especificações', 'Malibu Response LX 350 HP', 'Malibu Response LX Zero Off'],
+    sections: [
+      { heading: 'Conjunto mecânico', text: 'Motor Indmar Monsoon 350 SS V8 5.7L de 350 HP com transmissão direct drive.' },
+      { heading: 'Dados de uso publicados', text: `Ano ${boat.year} e ${boat.engineHours} horas informadas no anúncio, sujeitos à validação presencial e documental.` },
+      { heading: 'Equipamentos apresentados', text: 'Controle Zero Off GPS, toldo bimini e carreta rodoviária galvanizada.' },
+    ],
+  },
+  {
+    slug: 'lancha-com-carreta-inclusa',
+    title: 'Lancha com carreta inclusa: o que avaliar antes da compra',
+    description: 'Veja o que avaliar em uma lancha usada com carreta inclusa, incluindo estrutura, pneus, rolamentos, documentação, elétrica e uso em rampa.',
+    h1: 'Lancha usada com carreta inclusa: checklist essencial',
+    intro: 'A carreta agrega praticidade e valor, mas precisa ser avaliada separadamente da embarcação para evitar custos inesperados.',
+    keywords: ['lancha com carreta inclusa', 'lancha usada com carreta', 'carreta galvanizada para lancha', 'comprar barco com carreta'],
+    sections: [
+      { heading: 'Estrutura e corrosão', text: 'Verifique chassi, soldas, galvanização, pontos de corrosão, guincho, cintas e roletes.' },
+      { heading: 'Rodagem e segurança', text: 'Avalie pneus, estepe, cubos, rolamentos, freios quando aplicáveis, iluminação e engate.' },
+      { heading: 'Neste anúncio', text: 'A Malibu Response LX anunciada informa carreta rodoviária galvanizada inclusa, cuja condição deve ser confirmada presencialmente.' },
+    ],
+  },
+  {
+    slug: 'quantas-horas-motor-lancha-usada',
+    title: 'Horas de motor em lancha usada: como interpretar o horímetro',
+    description: 'Entenda como avaliar horas de motor em uma lancha usada e por que manutenção, tipo de uso e inspeção pesam mais que o número isolado.',
+    h1: 'Como interpretar as horas de motor de uma lancha usada',
+    intro: 'O horímetro é importante, mas não deve ser analisado sozinho. Histórico de manutenção, frequência de uso e conservação mudam completamente a leitura.',
+    keywords: ['horas de motor lancha usada', 'quantas horas motor barco', 'horímetro lancha', '940 horas lancha'],
+    sections: [
+      { heading: 'Número não conta toda a história', text: 'Uso frequente com manutenção correta pode ser melhor que longos períodos parado sem cuidados preventivos.' },
+      { heading: 'O que confirmar', text: 'Solicite registros de revisão, verifique partida a frio, ruídos, fumaça, vazamentos, temperatura e sistema de arrefecimento.' },
+      { heading: 'Dado deste anúncio', text: `O anúncio informa ${boat.engineHours} horas de motor. A leitura deve ser validada no painel e em inspeção técnica.` },
+    ],
+  },
+  {
+    slug: 'checklist-documentacao-lancha-usada',
+    title: 'Documentação de lancha usada: checklist antes de comprar',
+    description: 'Checklist de documentação, titularidade, débitos, identificação e contrato para reduzir riscos na compra de uma lancha usada.',
+    h1: 'Checklist documental para comprar uma lancha usada',
+    intro: 'Antes de qualquer pagamento, confirme identidade do vendedor, titularidade da embarcação e documentação disponível com apoio profissional quando necessário.',
+    keywords: ['documentação lancha usada', 'como comprar lancha usada', 'transferência embarcação usada', 'checklist compra barco usado'],
+    sections: [
+      { heading: 'Titularidade e identificação', text: 'Confirme dados do proprietário, identificação da embarcação e correspondência entre documentos e características físicas.' },
+      { heading: 'Pendências e contrato', text: 'Verifique débitos, restrições, responsabilidades, forma de pagamento e condições de entrega em contrato.' },
+      { heading: 'Transparência deste site', text: 'O anúncio não presume documentação validada. Esses dados devem ser solicitados e conferidos diretamente com o vendedor.' },
+    ],
+  },
+  {
+    slug: 'malibu-response-lx-preco',
+    title: `Malibu Response LX preço: anúncio por ${boat.priceLabel}`,
+    description: `Veja o preço anunciado da Malibu Response LX ${boat.year}, os itens inclusos e os fatores que devem ser comparados antes de negociar uma lancha esportiva usada.`,
+    h1: `Preço da Malibu Response LX ${boat.year} anunciada`,
+    intro: `A embarcação está anunciada por ${boat.priceLabel}. O valor deve ser analisado junto com ano, horas, motor, equipamentos, carreta, conservação e documentação.`,
+    keywords: ['Malibu Response LX preço', 'preço Malibu Response LX usada', 'Malibu Response LX 2013 valor', 'lancha Malibu 175 mil'],
+    sections: [
+      { heading: 'Preço publicado', text: `O valor anunciado é ${boat.priceLabel}, com negociação tratada diretamente com o vendedor.` },
+      { heading: 'O que está informado', text: `Ano ${boat.year}, ${boat.engineHours} horas, V8 350 HP, Zero Off GPS, bimini e carreta inclusa.` },
+      { heading: 'Como comparar', text: 'Compare estado, manutenção, acessórios, documentação, custo de transporte e eventual necessidade de revisão.' },
+    ],
+  },
 ] as const
 
 export type SeoIntentPage = (typeof seoIntentPages)[number]
