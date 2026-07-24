@@ -29,10 +29,10 @@ export function Preloader() {
     let finishTimer = 0
 
     const finish = () => {
-      setDone(true)
-      document.body.style.overflow = ''
       window.sessionStorage.setItem(PRELOADER_KEY, '1')
+      document.body.style.overflow = ''
       window.dispatchEvent(new Event('preloader:done'))
+      setDone(true)
     }
 
     const tick = (now: number) => {
@@ -61,6 +61,7 @@ export function Preloader() {
   return (
     <div
       ref={rootRef}
+      data-site-preloader="active"
       aria-hidden="true"
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-navy-deep transition-opacity duration-300"
     >
