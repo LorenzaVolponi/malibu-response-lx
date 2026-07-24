@@ -106,10 +106,10 @@ export function GallerySection() {
                 src={item.src}
                 alt={item.alt}
                 fill
-                sizes="(max-width: 640px) 100vw, 33vw"
-                loading={index < 2 ? 'eager' : 'lazy'}
+                sizes="(max-width: 640px) calc(100vw - 2.5rem), (max-width: 1024px) 33vw, 360px"
+                loading="lazy"
                 decoding="async"
-                fetchPriority={index === 0 ? 'high' : 'auto'}
+                fetchPriority="low"
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/70 via-transparent to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
@@ -134,8 +134,14 @@ export function GallerySection() {
           </button>
           <div className="mx-auto flex h-full max-w-6xl flex-col justify-center gap-5">
             <div className="relative min-h-0 flex-1 overflow-hidden rounded-4xl border border-cream/10 bg-black/20">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={current.src} alt={current.alt} decoding="async" className="size-full object-contain" />
+              <Image
+                src={current.src}
+                alt={current.alt}
+                fill
+                sizes="100vw"
+                quality={90}
+                className="object-contain"
+              />
             </div>
             <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-cream/75">
               <p>{current.alt}</p>
