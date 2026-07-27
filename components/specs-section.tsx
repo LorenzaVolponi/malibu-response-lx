@@ -47,7 +47,7 @@ export function SpecsSection() {
   )
 
   return (
-    <section ref={root} id="ficha" className="relative bg-background py-24 sm:py-32">
+    <section ref={root} id="especificacoes" className="relative bg-background py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-5">
         <div className="mb-14 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end" data-spec-head>
           <div>
@@ -105,7 +105,7 @@ export function SpecsSection() {
               ))}
             </div>
             <p data-spec-card className="mt-6 rounded-3xl bg-gold/10 p-4 text-sm leading-relaxed text-cream/75">
-              Para fechar visita, teste na água ou documentação, fale diretamente com o vendedor pelo WhatsApp.
+              Informações complementares devem ser confirmadas antes da visita, do teste na água e da análise documental.
             </p>
           </aside>
         </div>
