@@ -36,24 +36,23 @@ export function ConversionEventTracker() {
       referrer: document.referrer || 'direct',
     })
 
-    const observed = SECTION_EVENTS
-      .map(({ selector, event }) => {
-        const element = document.querySelector(selector)
-        return element ? { element, event } : null
-      })
-      .filter((item): item is { element: Element; event: string } => item !== null)
+    const observed = SECTION_EVENTS.flatMap(({ selector, event }) => {
+      const element = document.querySelector(selector)
+      return element ? [{ element, event }] : []
+    })
 
     const viewedDepths = new Set<number>()
     const onScroll = () => {
       const scrollable = document.documentElement.scrollHeight - window.innerHeight
       if (scrollable <= 0) return
       const depth = Math.round((window.scrollY / scrollable) * 100)
-      ;[25, 50, 75, 90].forEach((threshold) => {
+
+      for (const threshold of [25, 50, 75, 90]) {
         if (depth >= threshold && !viewedDepths.has(threshold)) {
           viewedDepths.add(threshold)
           pushDataLayerEvent({ event: 'scroll_depth', percent_scrolled: threshold })
         }
-      })
+      }
     }
 
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -64,18 +63,19 @@ export function ConversionEventTracker() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue
           const item = observed.find(({ element }) => element === entry.target)
-          if (!item) return
+          if (!item) continue
           pushDataLayerEvent({ event: item.event })
           observer.unobserve(entry.target)
-        })
+        }
       },
       { threshold: 0.45 },
     )
 
     observed.forEach(({ element }) => observer.observe(element))
+
     return () => {
       observer.disconnect()
       window.removeEventListener('scroll', onScroll)
