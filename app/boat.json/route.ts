@@ -70,11 +70,6 @@ export function GET() {
       description: page.description,
       keywords: page.keywords,
     })),
-    contact: {
-      channel: 'WhatsApp',
-      url: `https://wa.me/${boat.whatsapp}`,
-      intent: 'request-current-availability-and-inspection-details',
-    },
     provenance: {
       sourceType: 'seller-published-listing',
       evidenceTypes: ['listing data', 'photographs', 'technical specifications'],
