@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { MessageCircle } from 'lucide-react'
 import { boat } from '@/lib/boat-data'
+import { knowledgeEntities, knowledgeGraphForText } from '@/lib/knowledge-graph'
 import { getSeoIntentPage, seoIntentPages, seoIntentPageUrl, seoLeadHref } from '@/lib/seo-pages'
 import { siteConfig } from '@/lib/site-config'
 
@@ -16,11 +17,11 @@ const entityIds = {
   website: `${siteConfig.url}/#website`,
   seller: `${siteConfig.url}/#seller`,
   product: `${siteConfig.url}/#product`,
-  brand: `${siteConfig.url}/#malibu-boats`,
-  model: `${siteConfig.url}/#response-lx`,
-  engine: `${siteConfig.url}/#indmar-monsoon-350-ss`,
-  zeroOff: `${siteConfig.url}/#zero-off-gps`,
-  directDrive: `${siteConfig.url}/#direct-drive`,
+  brand: knowledgeEntities.malibuBoats.id,
+  model: knowledgeEntities.responseLx.id,
+  engine: knowledgeEntities.monsoon350.id,
+  zeroOff: knowledgeEntities.zeroOff.id,
+  directDrive: knowledgeEntities.directDrive.id,
   guides: `${siteConfig.url}/guias#webpage`,
 }
 
@@ -121,9 +122,19 @@ export default async function SeoIntentPage({ params }: Props) {
     question: section.heading,
     answer: section.text,
   }))
+  const knowledgeNodes = knowledgeGraphForText([
+    page.title,
+    page.h1,
+    page.description,
+    page.intro,
+    ...page.keywords,
+    ...page.sections.flatMap((section) => [section.heading, section.text]),
+  ])
+  const contextualEntityRefs = knowledgeNodes.map((node) => ({ '@id': node['@id'] }))
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
+      ...knowledgeNodes,
       {
         '@type': 'WebPage',
         '@id': `${pageUrl}#webpage`,
@@ -143,8 +154,7 @@ export default async function SeoIntentPage({ params }: Props) {
         about: [
           { '@id': entityIds.product },
           { '@id': entityIds.model },
-          { '@id': entityIds.directDrive },
-          { '@id': entityIds.zeroOff },
+          ...contextualEntityRefs,
         ],
         relatedLink: recommendations.map((item) => seoIntentPageUrl(item.slug)),
       },
@@ -164,7 +174,7 @@ export default async function SeoIntentPage({ params }: Props) {
         publisher: { '@id': entityIds.seller },
         image: { '@id': imageId },
         about: { '@id': entityIds.product },
-        mentions: [
+        mentions: contextualEntityRefs.length > 0 ? contextualEntityRefs : [
           { '@id': entityIds.brand },
           { '@id': entityIds.model },
           { '@id': entityIds.engine },
