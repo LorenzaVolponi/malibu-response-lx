@@ -3,8 +3,7 @@
 import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { boat } from '@/lib/boat-data'
-import { whatsappLeadUrl } from '@/lib/contact'
-import { ChevronDown, MessageCircle } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 
 const heroFacts = [
   ['Motor', 'Indmar Monsoon 350 SS'],
@@ -124,22 +123,13 @@ export function Hero() {
 
         <div
           data-hero-reveal
-          className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:mt-10 sm:flex-row sm:items-center sm:gap-4"
+          className="mt-8 flex justify-center sm:mt-10"
         >
           <a
             href="#experiencia"
             className="w-full max-w-xs rounded-full bg-gold px-7 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-gold/10 transition-all hover:scale-[1.04] hover:shadow-gold/20 sm:w-auto"
           >
             Explorar embarcação
-          </a>
-          <a
-            href={whatsappLeadUrl('secondary')}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex w-full max-w-xs items-center justify-center gap-2 rounded-full border border-cream/20 px-7 py-3 text-sm font-semibold text-cream transition-colors hover:bg-white/5 sm:w-auto"
-          >
-            <MessageCircle className="size-4" aria-hidden="true" />
-            Agendar avaliação
           </a>
         </div>
 
