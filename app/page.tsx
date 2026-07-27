@@ -30,13 +30,17 @@ const entityIds = {
   offer: `${SITE_URL}/#offer`,
   seller: `${SITE_URL}/#seller`,
   brand: `${SITE_URL}/#malibu-boats`,
+  manufacturer: `${SITE_URL}/#malibu-boats-manufacturer`,
   model: `${SITE_URL}/#response-lx`,
   engine: `${SITE_URL}/#indmar-monsoon-350-ss`,
+  engineManufacturer: `${SITE_URL}/#indmar-marine-engines`,
   zeroOff: `${SITE_URL}/#zero-off-gps`,
   directDrive: `${SITE_URL}/#direct-drive`,
   skiBoat: `${SITE_URL}/#ski-boat`,
   slalom: `${SITE_URL}/#slalom-water-skiing`,
   wakeboard: `${SITE_URL}/#wakeboard`,
+  glossary: `${SITE_URL}/#nautical-glossary`,
+  evidenceProfile: `${SITE_URL}/#evidence-profile`,
 }
 
 const imageObjects = gallery.map((image, index) => ({
@@ -49,28 +53,71 @@ const imageObjects = gallery.map((image, index) => ({
   representativeOfPage: index === 0,
   inLanguage: 'pt-BR',
   about: { '@id': entityIds.product },
+  creditText: 'Fotografia real publicada no anúncio da embarcação',
 }))
 
-const semanticThings = [
+const definedTerms = [
   {
-    '@type': 'Thing',
+    '@type': 'DefinedTerm',
     '@id': entityIds.skiBoat,
     name: 'Ski boat',
     alternateName: ['Lancha de esqui aquático', 'Competition ski boat'],
     description: 'Categoria de embarcação esportiva otimizada para rebocar praticantes de esqui aquático.',
+    inDefinedTermSet: { '@id': entityIds.glossary },
   },
   {
-    '@type': 'Thing',
+    '@type': 'DefinedTerm',
     '@id': entityIds.slalom,
     name: 'Esqui aquático slalom',
     alternateName: 'Slalom water skiing',
     description: 'Modalidade de esqui aquático associada a velocidade constante, resposta previsível e esteira controlada.',
+    inDefinedTermSet: { '@id': entityIds.glossary },
   },
   {
-    '@type': 'Thing',
+    '@type': 'DefinedTerm',
     '@id': entityIds.wakeboard,
     name: 'Wakeboard',
     description: 'Esporte náutico de prancha rebocado por embarcação, relacionado ao uso recreativo desta lancha.',
+    inDefinedTermSet: { '@id': entityIds.glossary },
+  },
+  {
+    '@type': 'DefinedTerm',
+    '@id': entityIds.directDrive,
+    name: 'Direct Drive',
+    alternateName: 'Transmissão direct drive',
+    description: 'Configuração de transmissão com motor central e eixo direto, comum em embarcações de esqui aquático.',
+    inDefinedTermSet: { '@id': entityIds.glossary },
+  },
+  {
+    '@type': 'DefinedTerm',
+    '@id': entityIds.zeroOff,
+    name: 'Zero Off GPS',
+    description: 'Sistema de controle de velocidade por GPS utilizado em embarcações de esqui aquático.',
+    inDefinedTermSet: { '@id': entityIds.glossary },
+  },
+]
+
+const glossaryJsonLd = {
+  '@type': 'DefinedTermSet',
+  '@id': entityIds.glossary,
+  name: 'Glossário técnico da Malibu Response LX',
+  description: 'Conjunto de termos técnicos e esportivos relacionados à embarcação anunciada.',
+  inLanguage: 'pt-BR',
+  hasDefinedTerm: definedTerms.map((term) => ({ '@id': term['@id'] })),
+}
+
+const manufacturerEntities = [
+  {
+    '@type': 'Organization',
+    '@id': entityIds.manufacturer,
+    name: 'Malibu Boats',
+    url: 'https://www.malibuboats.com/',
+  },
+  {
+    '@type': 'Organization',
+    '@id': entityIds.engineManufacturer,
+    name: 'Indmar Marine Engines',
+    url: 'https://www.indmar.com/',
   },
 ]
 
@@ -82,6 +129,7 @@ const productJsonLd = {
   alternateName: ['Malibu Response LX à venda', 'Lancha Malibu Response LX 2013', boat.name],
   description: 'Malibu Response LX 2013 à venda, com motor Indmar Monsoon 350 SS V8 de 350 HP, transmissão direct drive, Zero Off GPS, bimini e carreta rodoviária inclusa.',
   brand: { '@id': entityIds.brand },
+  manufacturer: { '@id': entityIds.manufacturer },
   model: { '@id': entityIds.model },
   category: 'Competition ski boat usada',
   image: imageObjects.map((image) => ({ '@id': image['@id'] })),
@@ -100,6 +148,7 @@ const productJsonLd = {
   sku: `malibu-response-lx-${boat.year}-${boat.engineHours}h`,
   mpn: 'Response LX',
   mainEntityOfPage: { '@id': entityIds.webpage },
+  subjectOf: { '@id': entityIds.evidenceProfile },
   isRelatedTo: [
     { '@id': entityIds.engine },
     { '@id': entityIds.zeroOff },
@@ -114,6 +163,7 @@ const productJsonLd = {
   },
   additionalProperty: [
     { '@type': 'PropertyValue', name: 'Motor', value: 'Indmar Monsoon 350 SS' },
+    { '@type': 'PropertyValue', name: 'Fabricante do motor', value: 'Indmar Marine Engines' },
     { '@type': 'PropertyValue', name: 'Potência', value: '350 HP' },
     { '@type': 'PropertyValue', name: 'Transmissão', value: 'Direct Drive' },
     { '@type': 'PropertyValue', name: 'Comprimento', value: 'Aproximadamente 6,1 m' },
@@ -126,12 +176,30 @@ const productJsonLd = {
   ],
 }
 
+const evidenceProfileJsonLd = {
+  '@type': 'CreativeWork',
+  '@id': entityIds.evidenceProfile,
+  name: 'Perfil de evidências e autenticidade do anúncio',
+  description: 'Registro estruturado das evidências publicadas, das limitações do anúncio e dos itens que exigem validação independente.',
+  about: { '@id': entityIds.product },
+  isPartOf: { '@id': entityIds.webpage },
+  dateModified: siteConfig.updatedAt,
+  inLanguage: 'pt-BR',
+  citation: imageObjects.map((image) => ({ '@id': image['@id'] })),
+  keywords: [
+    'fotos reais da embarcação',
+    'ficha técnica',
+    'proveniência dos dados',
+    'inspeção independente recomendada',
+  ],
+}
+
 const webPageJsonLd = {
   '@type': 'WebPage',
   '@id': entityIds.webpage,
   url: SITE_URL,
   name: `Comprar ${boat.brand} ${boat.model} ${boat.year}`,
-  description: `Página de venda da ${boat.brand} ${boat.model} ${boat.year}, com fotos reais, ficha técnica, preço, motor, horas, prova de autenticidade e dados estruturados.` ,
+  description: `Página de venda da ${boat.brand} ${boat.model} ${boat.year}, com fotos reais, ficha técnica, preço, motor, horas, prova de autenticidade e dados estruturados.`,
   inLanguage: 'pt-BR',
   isPartOf: { '@id': entityIds.website },
   primaryImageOfPage: { '@id': `${SITE_URL}/#image-1` },
@@ -147,6 +215,7 @@ const webPageJsonLd = {
   ],
   mentions: [
     { '@id': entityIds.brand },
+    { '@id': entityIds.engineManufacturer },
     { '@id': entityIds.slalom },
     { '@id': entityIds.wakeboard },
   ],
@@ -209,11 +278,14 @@ export default function Page() {
     '@graph': [
       webPageJsonLd,
       productJsonLd,
+      evidenceProfileJsonLd,
       galleryJsonLd,
       videoJsonLd,
       faqJsonLd,
       breadcrumbJsonLd,
-      ...semanticThings,
+      glossaryJsonLd,
+      ...manufacturerEntities,
+      ...definedTerms,
       ...imageObjects,
     ],
   }
