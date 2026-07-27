@@ -7,6 +7,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { gallery } from '@/lib/boat-data'
+import { pushDataLayerEvent } from '@/lib/analytics'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP)
@@ -20,15 +21,36 @@ const spanClass: Record<string, string> = {
 
 export function GallerySection() {
   const root = useRef<HTMLElement>(null)
+  const viewedImages = useRef(new Set<number>())
   const [selected, setSelected] = useState<number | null>(null)
+
+  const registerView = useCallback((index: number) => {
+    viewedImages.current.add(index)
+    pushDataLayerEvent({
+      event: 'gallery_image_view',
+      image_position: index + 1,
+      image_count: gallery.length,
+      viewed_unique_images: viewedImages.current.size,
+    })
+    if (viewedImages.current.size === gallery.length) {
+      pushDataLayerEvent({ event: 'gallery_completed', image_count: gallery.length })
+    }
+  }, [])
+
+  const open = useCallback((index: number) => {
+    setSelected(index)
+    registerView(index)
+  }, [registerView])
 
   const close = useCallback(() => setSelected(null), [])
   const move = useCallback((dir: number) => {
     setSelected((current) => {
       if (current === null) return current
-      return (current + dir + gallery.length) % gallery.length
+      const next = (current + dir + gallery.length) % gallery.length
+      registerView(next)
+      return next
     })
-  }, [])
+  }, [registerView])
 
   useEffect(() => {
     if (selected === null) return
@@ -98,7 +120,7 @@ export function GallerySection() {
               key={item.src}
               type="button"
               data-gal-item
-              onClick={() => setSelected(index)}
+              onClick={() => open(index)}
               className={`group relative overflow-hidden rounded-3xl text-left outline-none ring-gold/0 transition-all duration-300 hover:-translate-y-1 focus-visible:ring-2 ${spanClass[item.span]}`}
               aria-label={`Ampliar foto: ${item.alt}`}
             >
