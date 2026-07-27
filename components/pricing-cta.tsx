@@ -6,8 +6,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
-import { whatsappLeadUrl } from '@/lib/contact'
-import { MessageCircle, Check } from 'lucide-react'
+import { Check } from 'lucide-react'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP)
@@ -23,7 +22,6 @@ const includes = [
   `${boat.engineHours} horas de motor`,
   'Estofamento conservado creme/azul',
 ]
-
 
 export function PricingCta() {
   const root = useRef<HTMLElement>(null)
@@ -86,13 +84,13 @@ export function PricingCta() {
                 data-cta-reveal
                 className="mb-3 text-xs tracking-luxe text-gold uppercase"
               >
-                Concierge de venda
+                Valor da embarcação
               </p>
               <h2
                 data-cta-reveal
                 className="text-balance font-serif text-4xl leading-tight text-cream sm:text-5xl"
               >
-                Agende uma avaliação privada da embarcação
+                Malibu Response LX disponível para venda
               </h2>
               <div data-cta-reveal className="mt-8 flex items-end gap-3">
                 <span className="text-sm text-muted-foreground">Valor</span>
@@ -100,33 +98,8 @@ export function PricingCta() {
                   {boat.priceLabel}
                 </span>
               </div>
-
-              <div
-                data-cta-reveal
-                className="mt-8 flex flex-col gap-3 sm:flex-row"
-              >
-                <a
-                  href={whatsappLeadUrl('primary')}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex w-full items-center justify-center gap-2 rounded-full bg-gold px-7 py-3.5 text-center text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.03] sm:w-auto"
-                >
-                  <MessageCircle className="size-5" aria-hidden="true" />
-                  Receber vídeos e documentação
-                </a>
-                <a
-                  href={whatsappLeadUrl('technical')}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-whatsapp-intent="motor_manutencao"
-                  className="flex w-full items-center justify-center gap-2 rounded-full border border-cream/20 px-7 py-3.5 text-center text-sm font-semibold text-cream transition-colors hover:bg-white/5 sm:w-auto"
-                >
-                  <MessageCircle className="size-5" aria-hidden="true" />
-                  Falar sobre motor e manutenção
-                </a>
-              </div>
               <p data-cta-reveal className="mt-4 text-xs text-muted-foreground">
-                Atendimento direto com o vendedor. Propostas, troca, documentação e teste sob consulta.
+                Informações de contato temporariamente indisponíveis.
               </p>
             </div>
 
