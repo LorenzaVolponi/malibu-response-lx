@@ -44,6 +44,11 @@ const relatedGuides = (page: SeoIntentPage) => {
     .map(({ candidate }) => candidate)
 }
 
+const summarizeSection = (text: string) => {
+  const firstSentence = text.match(/^.*?[.!?](?:\s|$)/)?.[0]?.trim()
+  return firstSentence || text
+}
+
 export function generateStaticParams() {
   return seoIntentPages.map((page) => ({ slug: page.slug }))
 }
@@ -111,6 +116,11 @@ export default async function SeoIntentPage({ params }: Props) {
   const pageUrl = seoIntentPageUrl(page.slug)
   const recommendations = relatedGuides(page)
   const imageId = `${pageUrl}#primary-image`
+  const answerSummary = summarizeSection(page.intro)
+  const faqItems = page.sections.map((section) => ({
+    question: section.heading,
+    answer: section.text,
+  }))
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -126,7 +136,10 @@ export default async function SeoIntentPage({ params }: Props) {
         isPartOf: { '@id': entityIds.guides },
         breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
         primaryImageOfPage: { '@id': imageId },
-        mainEntity: { '@id': `${pageUrl}#article` },
+        mainEntity: [
+          { '@id': `${pageUrl}#article` },
+          { '@id': `${pageUrl}#faq` },
+        ],
         about: [
           { '@id': entityIds.product },
           { '@id': entityIds.model },
@@ -141,6 +154,7 @@ export default async function SeoIntentPage({ params }: Props) {
         url: pageUrl,
         headline: page.title,
         description: page.description,
+        abstract: answerSummary,
         datePublished: siteConfig.updatedAt,
         dateModified: siteConfig.updatedAt,
         inLanguage: 'pt-BR',
@@ -160,8 +174,21 @@ export default async function SeoIntentPage({ params }: Props) {
         keywords: [...page.keywords],
         speakable: {
           '@type': 'SpeakableSpecification',
-          cssSelector: ['h1', 'article > p', 'article section h2', 'article section p'],
+          cssSelector: ['h1', '#resposta-direta', 'article section h2', 'article section p'],
         },
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': `${pageUrl}#faq`,
+        inLanguage: 'pt-BR',
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
       },
       {
         '@type': 'ItemList',
@@ -204,6 +231,17 @@ export default async function SeoIntentPage({ params }: Props) {
         <p className="mt-10 text-xs tracking-luxe text-gold uppercase">Guia do comprador</p>
         <h1 className="mt-4 max-w-4xl text-balance font-serif text-4xl leading-tight sm:text-6xl">{page.h1}</h1>
         <p className="mt-6 max-w-3xl text-pretty text-lg leading-relaxed text-muted-foreground">{page.intro}</p>
+
+        <section id="resposta-direta" className="mt-8 rounded-3xl border border-gold/25 bg-gold/[0.08] p-6" aria-labelledby="resposta-direta-titulo">
+          <p className="text-xs tracking-luxe text-gold uppercase">Resposta direta</p>
+          <h2 id="resposta-direta-titulo" className="mt-3 font-serif text-2xl text-cream">Resumo em 30 segundos</h2>
+          <p className="mt-3 text-sm leading-relaxed text-cream/80">{answerSummary}</p>
+          <ul className="mt-4 grid gap-2 text-sm text-muted-foreground">
+            {page.sections.slice(0, 3).map((section) => (
+              <li key={section.heading}>• <strong className="text-cream/90">{section.heading}:</strong> {summarizeSection(section.text)}</li>
+            ))}
+          </ul>
+        </section>
 
         <div className="mt-10 flex flex-col gap-3 rounded-4xl border border-gold/20 bg-gold/[0.06] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
           <div>
