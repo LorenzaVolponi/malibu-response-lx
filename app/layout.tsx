@@ -3,7 +3,6 @@ import type { Metadata, Viewport } from 'next'
 import { siteConfig } from '@/lib/site-config'
 import { boat } from '@/lib/boat-data'
 import './globals.css'
-import { WhatsAppClickTracker } from '@/components/whatsapp-click-tracker'
 import { AnalyticsTags } from '@/components/analytics-tags'
 import { ConversionEventTracker } from '@/components/conversion-event-tracker'
 
@@ -13,7 +12,7 @@ export const metadata: Metadata = {
     default: `${siteConfig.listingName} à venda | V8 350 HP, Direct Drive e Zero Off`,
     template: `%s | ${siteConfig.name}`,
   },
-  description: `${siteConfig.listingName} ${boat.year} à venda por ${boat.priceLabel}. Lancha esportiva com ${boat.engineHours} horas, motor Indmar Monsoon 350 SS V8 350 HP, direct drive, Zero Off GPS, bimini e carreta inclusa. Fale diretamente pelo WhatsApp.`,
+  description: `${siteConfig.listingName} ${boat.year} à venda por ${boat.priceLabel}. Lancha esportiva com ${boat.engineHours} horas, motor Indmar Monsoon 350 SS V8 350 HP, direct drive, Zero Off GPS, bimini e carreta inclusa.`,
   applicationName: siteConfig.name,
   keywords: [
     'Malibu Response LX à venda',
@@ -55,7 +54,7 @@ export const metadata: Metadata = {
     url: siteConfig.url,
     siteName: siteConfig.name,
     title: `${siteConfig.listingName} ${boat.year} à venda — V8 350 HP`,
-    description: `${boat.engineHours} horas, Indmar Monsoon 350 SS, direct drive, Zero Off GPS, bimini e carreta inclusa. Veja fotos reais e fale pelo WhatsApp.`,
+    description: `${boat.engineHours} horas, Indmar Monsoon 350 SS, direct drive, Zero Off GPS, bimini e carreta inclusa. Veja fotos reais e dados técnicos.`,
     images: [{
       url: '/images/hero-side.jpeg',
       width: 1600,
@@ -249,7 +248,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </a>
         {children}
         <AnalyticsTags />
-        <WhatsAppClickTracker />
         <ConversionEventTracker />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
