@@ -41,7 +41,7 @@ export function ConversionEventTracker() {
         const element = document.querySelector(selector)
         return element ? { element, event } : null
       })
-      .filter(Boolean) as Array<{ element: Element; event: string }>
+      .filter((item): item is { element: Element; event: string } => item !== null)
 
     const viewedDepths = new Set<number>()
     const onScroll = () => {
