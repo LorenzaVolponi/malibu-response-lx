@@ -7,8 +7,8 @@ export const boat = {
   currency: 'BRL',
   // Valor final oficial e vigente do anúncio: R$ 165.000
   // Contato — ajuste o número do WhatsApp aqui
-  whatsapp: '5531998654328',
-  whatsappLabel: '(31) 99865-4328',
+  whatsapp: '5511999037979',
+  whatsappLabel: '(11) 99903-7979',
   location: 'Brasil',
   year: 2013,
   engineHours: 940,
