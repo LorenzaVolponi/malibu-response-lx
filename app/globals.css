@@ -168,6 +168,28 @@
   }
 }
 
+/* Preserve the nautical brand palette across browser color-scheme defaults. */
+:root,
+.dark {
+  --background: oklch(0.15 0.035 255);
+  --foreground: oklch(0.94 0.015 90);
+  --card: oklch(0.21 0.05 256);
+  --card-foreground: oklch(0.94 0.015 90);
+  --popover: oklch(0.19 0.05 256);
+  --popover-foreground: oklch(0.94 0.015 90);
+  --primary: oklch(0.8 0.11 85);
+  --primary-foreground: oklch(0.18 0.04 255);
+  --secondary: oklch(0.28 0.075 258);
+  --secondary-foreground: oklch(0.94 0.015 90);
+  --muted: oklch(0.25 0.04 256);
+  --muted-foreground: oklch(0.72 0.03 250);
+  --accent: oklch(0.8 0.11 85);
+  --accent-foreground: oklch(0.18 0.04 255);
+  --border: oklch(0.98 0.02 90 / 12%);
+  --input: oklch(0.98 0.02 90 / 15%);
+  --ring: oklch(0.8 0.11 85 / 60%);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -175,10 +197,17 @@
   html {
     scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
   }
   body {
     @apply bg-background text-foreground;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  img,
+  video,
+  canvas {
+    max-width: 100%;
   }
   ::selection {
     background: var(--gold);
@@ -220,4 +249,60 @@
 ::-webkit-scrollbar-thumb {
   background: color-mix(in oklch, var(--gold) 55%, var(--navy));
   border-radius: 999px;
+}
+
+@layer utilities {
+  .water-surface::before,
+  .water-surface::after {
+    content: "";
+    position: absolute;
+    inset: auto -10% -12% -10%;
+    height: 34%;
+    pointer-events: none;
+    z-index: 1;
+    background:
+      radial-gradient(70% 42% at 50% 100%, color-mix(in oklch, var(--gold) 22%, transparent), transparent 62%),
+      repeating-radial-gradient(ellipse at 50% 100%, color-mix(in oklch, var(--cream) 16%, transparent) 0 2px, transparent 3px 18px);
+    opacity: 0.42;
+    filter: blur(0.2px);
+    animation: water-drift 9s ease-in-out infinite alternate;
+  }
+
+  .water-surface::after {
+    inset: auto -18% -16% -18%;
+    height: 42%;
+    opacity: 0.26;
+    animation-duration: 13s;
+    animation-direction: alternate-reverse;
+  }
+}
+
+@keyframes water-drift {
+  0% { transform: translate3d(-2%, 0, 0) scaleX(1); }
+  50% { transform: translate3d(1%, -2%, 0) scaleX(1.04); }
+  100% { transform: translate3d(3%, 1%, 0) scaleX(0.98); }
+}
+
+@media (max-width: 767px) {
+  .water-surface::before,
+  .water-surface::after {
+    animation: none;
+    opacity: 0.22;
+  }
+}
+
+@supports (height: 100dvh) {
+  html {
+    min-height: 100dvh;
+    scroll-padding-top: calc(5rem + env(safe-area-inset-top));
+  }
+}
+
+@layer base {
+  a,
+  button,
+  input,
+  textarea {
+    touch-action: manipulation;
+  }
 }

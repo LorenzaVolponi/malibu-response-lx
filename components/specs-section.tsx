@@ -11,11 +11,9 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP)
 }
 
-const icons = [Cog, Gauge, Waves, Ship, Ruler, Satellite]
+const icons = [Cog, Gauge, Waves, Ship, Ruler, Satellite, Clock, Gauge]
 
 const toConfirm = [
-  { label: 'Ano', value: 'A confirmar', icon: Clock },
-  { label: 'Horas de motor', value: 'A confirmar', icon: Gauge },
   { label: 'Local de visita', value: 'Sob consulta', icon: MapPin },
   { label: 'Histórico de manutenção', value: 'Sob consulta', icon: Wrench },
 ] as const
@@ -27,7 +25,7 @@ export function SpecsSection() {
     () => {
       const mm = gsap.matchMedia()
 
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
+      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
         gsap.from('[data-spec-head]', {
           y: 30,
           opacity: 0,
@@ -61,13 +59,13 @@ export function SpecsSection() {
             </h2>
           </div>
           <p className="max-w-2xl text-pretty leading-relaxed text-muted-foreground lg:justify-self-end">
-            Informações técnicas confirmadas por fotos e descrição disponível. Itens complementares ficam destacados para validação direta com o vendedor.
+            Informações técnicas e comerciais organizadas para avaliar a Malibu Response LX direct drive com clareza antes da visita.
           </p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1.25fr_0.75fr]">
-          <div data-spec-grid className="rounded-4xl glass-strong p-5 sm:p-7">
-            <div className="mb-6 flex items-center justify-between gap-4">
+          <div data-spec-grid className="rounded-3xl glass-strong p-4 sm:rounded-4xl sm:p-7">
+            <div className="mb-5 flex flex-wrap items-center justify-between gap-3 sm:mb-6 sm:gap-4">
               <p className="text-xs tracking-luxe text-gold uppercase">Confirmado</p>
               <span className="rounded-full border border-cream/10 px-3 py-1 text-xs text-cream/60">Malibu Response LX</span>
             </div>
@@ -75,15 +73,15 @@ export function SpecsSection() {
               {specs.map((spec, i) => {
                 const Icon = icons[i % icons.length]
                 return (
-                  <div key={spec.label} data-spec-card className="group rounded-3xl border border-cream/10 bg-cream/[0.035] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-gold/40">
-                    <div className="mb-5 flex items-center justify-between gap-4">
+                  <div key={spec.label} data-spec-card className="group rounded-2xl border border-cream/10 bg-cream/[0.035] p-4 transition-all duration-300 hover:-translate-y-1 hover:border-gold/40 sm:rounded-3xl sm:p-5">
+                    <div className="mb-4 flex items-center justify-between gap-4 sm:mb-5">
                       <span className="grid size-10 place-items-center rounded-2xl bg-gold/12 text-gold">
                         <Icon className="size-5" aria-hidden="true" />
                       </span>
                       <span className="text-[10px] tracking-[0.22em] text-cream/35 uppercase">0{i + 1}</span>
                     </div>
                     <p className="text-xs tracking-luxe text-muted-foreground uppercase">{spec.label}</p>
-                    <p className="mt-1 font-serif text-2xl text-cream">{spec.value}</p>
+                    <p className="mt-1 font-serif text-xl leading-tight text-cream sm:text-2xl">{spec.value}</p>
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{spec.note}</p>
                   </div>
                 )
@@ -91,8 +89,8 @@ export function SpecsSection() {
             </div>
           </div>
 
-          <aside className="rounded-4xl border border-cream/10 bg-navy-deep/50 p-6 sm:p-7">
-            <p data-spec-card className="text-xs tracking-luxe text-gold uppercase">A confirmar</p>
+          <aside className="rounded-3xl border border-cream/10 bg-navy-deep/50 p-5 sm:rounded-4xl sm:p-7">
+            <p data-spec-card className="text-xs tracking-luxe text-gold uppercase">Complementar</p>
             <div className="mt-6 divide-y divide-cream/10">
               {toConfirm.map(({ label, value, icon: Icon }) => (
                 <div key={label} data-spec-card className="flex items-center gap-4 py-5 first:pt-0 last:pb-0">
