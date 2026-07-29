@@ -12,7 +12,7 @@ const wa = whatsappLeadUrl('primary')
 export const metadata: Metadata = {
   title: `Comprar Barco ${siteConfig.listingName} | Guia de Compra e Contato`,
   description:
-    `Guia para comprar barco ${siteConfig.listingName}: preço ${boat.priceLabel}, ${boat.engineHours} horas, motor Indmar Monsoon 350 SS V8 350 HP, Zero Off GPS, bimini, carreta e WhatsApp do vendedor.`,
+    `Guia para comprar barco ${siteConfig.listingName}: preço ${boat.priceLabel}, ${boat.engineHours} horas, motor Indmar Monsoon 350 SS V8 350 HP, controle de velocidade Zero Off GPS, vocação para esqui e wakeboard e WhatsApp do vendedor.`,
   alternates: {
     canonical: PAGE_URL,
   },
@@ -93,7 +93,7 @@ const guideJsonLd = {
       about: { '@id': `${siteConfig.url}/#product` },
       step: [
         { '@type': 'HowToStep', name: 'Verifique os dados do anúncio', text: `Confirme preço ${boat.priceLabel}, ano ${boat.year}, ${boat.engineHours} horas, motor e itens inclusos.` },
-        { '@type': 'HowToStep', name: 'Analise fotos reais e ficha técnica', text: 'Compare casco, estofamento, painel, motor, carreta, bimini e configuração direct drive.' },
+        { '@type': 'HowToStep', name: 'Analise fotos reais e ficha técnica', text: 'Compare casco, estofamento, painel, motor, bimini e configuração esportiva e configuração direct drive.' },
         { '@type': 'HowToStep', name: 'Fale com o vendedor', text: 'Solicite documentação, histórico disponível, vídeo complementar, visita e condições de teste na água pelo WhatsApp.' },
       ],
     },

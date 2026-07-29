@@ -41,7 +41,7 @@ Published listing facts:
 - Engine: Indmar Monsoon 350 SS V8, 350 HP
 - Transmission: Direct Drive
 - Speed control: Zero Off GPS
-- Included items informed: bimini and galvanized road trailer
+- Included items informed: bimini; no road trailer is included
 `
 
   return new Response(body, {

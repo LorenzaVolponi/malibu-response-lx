@@ -12,7 +12,7 @@ export const boat = {
   location: 'Brasil',
   year: 2013,
   engineHours: 940,
-  tagline: 'Precisão direct drive, presença clássica Malibu e um conjunto pronto para transformar cada saída em um ritual na água.',
+  tagline: 'Lancha ideal para esqui aquático e wakeboard recreativo, com precisão direct drive e controle de velocidade Zero Off por GPS.',
 } as const
 
 // Especificações confirmadas pelas fotos e ficha do modelo.
@@ -50,11 +50,11 @@ export const features = [
     alt: 'Interior em couro creme com faixas azuis da Malibu Response LX',
   },
   {
-    title: 'Toldo bimini + carreta inclusa',
+    title: 'Vocação para esqui e wakeboard',
     description:
-      'Acompanha toldo bimini e carreta rodoviária galvanizada, facilitando deslocamento, rampa e uso no fim de semana.',
+      'Casco esportivo, transmissão direct drive e plataforma de popa formam um conjunto ideal para esqui aquático e wakeboard recreativo.',
     image: '/images/profile-trailer.jpeg',
-    alt: 'Malibu Response LX sobre carreta galvanizada com toldo bimini',
+    alt: 'Malibu Response LX de perfil, lancha ideal para esqui aquático e wakeboard',
   },
 ] as const
 
@@ -137,7 +137,6 @@ export const conditionItems = [
   { label: 'Motor', status: 'Identificado', note: 'Indmar Monsoon 350 SS V8 de 350 HP.' },
   { label: 'Cockpit', status: 'Visual preservado', note: 'Interior creme/azul com áreas de convivência amplas.' },
   { label: 'Painel', status: 'Zero Off visível', note: 'Controle GPS integrado para ritmo consistente.' },
-  { label: 'Carreta', status: 'Inclusa', note: 'Carreta rodoviária galvanizada para transporte e rampa.' },
   { label: 'Bimini', status: 'Incluso', note: 'Toldo para proteção solar durante a navegação.' },
 ] as const
 
@@ -147,8 +146,8 @@ export const faqs = [
     answer: `O valor final anunciado é ${boat.priceLabel}. Condições de pagamento e demais detalhes devem ser tratados diretamente pelo WhatsApp do vendedor.`,
   },
   {
-    question: 'Acompanha carreta?',
-    answer: 'Sim. A embarcação acompanha carreta rodoviária galvanizada, pronta para transporte e uso em rampa.',
+    question: 'É indicada para esqui aquático e wakeboard?',
+    answer: 'Sim. A transmissão direct drive, o motor V8 de 350 HP e o controle de velocidade Zero Off GPS formam um conjunto ideal para esqui aquático e wakeboard recreativo.',
   },
   {
     question: 'Qual é o motor?',
@@ -186,7 +185,7 @@ FATOS CONFIRMADOS:
 - Horas de motor: 940 h.
 - Controle de velocidade Zero Off por GPS, integrado ao painel (ideal para tow sports).
 - Interior em couro náutico creme com faixas azul-marinho, conservado.
-- Acompanha toldo bimini e carreta rodoviária galvanizada (pronta para rampa/transporte).
+- Acompanha toldo bimini. Não acompanha carreta.
 - Cores externas: casco branco perolado com faixa azul-marinho.
 - Estado geral: bem conservada, motor e estofamento em bom estado pelas fotos.
 

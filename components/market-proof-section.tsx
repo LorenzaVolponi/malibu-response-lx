@@ -10,7 +10,7 @@ const decisionBlocks = [
   },
   {
     title: 'Para quem compara Malibu usada',
-    copy: 'A Response LX 2013 combina motor Indmar Monsoon 350 SS V8 350 HP, eixo direto, Zero Off GPS e conjunto com bimini e carreta galvanizada — dados importantes para comparar antes da visita.',
+    copy: 'A Response LX 2013 combina motor Indmar Monsoon 350 SS V8 350 HP, eixo direto, Zero Off GPS controle de velocidade por GPS e bimini — dados importantes para comparar antes da visita.',
   },
   {
     title: 'Para quem procura esqui e wakeboard',

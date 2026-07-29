@@ -1,4 +1,4 @@
-import { BadgeCheck, Camera, FileCheck2, Gauge, ShipWheel, Truck } from 'lucide-react'
+import { BadgeCheck, Camera, FileCheck2, Gauge, ShipWheel, Waves } from 'lucide-react'
 import { boat } from '@/lib/boat-data'
 
 const valuePoints = [
@@ -13,9 +13,9 @@ const valuePoints = [
     copy: 'Arquitetura associada ao esqui aquático, com resposta previsível e controle preciso de velocidade.',
   },
   {
-    icon: Truck,
-    title: 'Carreta e bimini inclusos',
-    copy: 'O conjunto apresentado inclui carreta rodoviária galvanizada e toldo bimini.',
+    icon: Waves,
+    title: 'Ideal para esqui e wakeboard',
+    copy: 'Direct drive, V8 de 350 HP e Zero Off GPS entregam uma configuração focada em esportes rebocados.',
   },
   {
     icon: Camera,
@@ -31,14 +31,14 @@ const authenticityEvidence = [
   { label: 'Potência', value: '350 HP' },
   { label: 'Transmissão', value: 'Direct Drive' },
   { label: 'Controle de velocidade', value: 'Zero Off GPS' },
-  { label: 'Itens visíveis', value: 'Bimini e carreta galvanizada' },
+  { label: 'Aplicação esportiva', value: 'Esqui aquático e wakeboard' },
   { label: 'Base de evidência', value: 'Fotos e ficha técnica do anúncio' },
 ] as const
 
 const dueDiligenceItems = [
   'Documentação e titularidade devem ser confirmadas antes da compra.',
   'Histórico de revisões e manutenções deve ser solicitado quando disponível.',
-  'Casco, eixo, hélice e carreta devem passar por inspeção presencial.',
+  'Casco, eixo, hélice e acessórios devem passar por inspeção presencial.',
   'Teste de funcionamento e avaliação na água são recomendados.',
 ] as const
 
@@ -65,7 +65,7 @@ export function ValueProofSection() {
               <div>
                 <p className="text-xs tracking-luxe text-gold uppercase">Transparência do anúncio</p>
                 <p className="mt-3 text-sm leading-relaxed text-cream/75">
-                  Ano, horas, motor, transmissão, Zero Off, carreta e bimini aparecem de forma consistente na ficha, nas imagens e nos dados estruturados.
+                  Ano, horas, motor, transmissão, controle Zero Off GPS e bimini aparecem de forma consistente na ficha, nas imagens e nos dados estruturados.
                 </p>
               </div>
             </div>

@@ -18,7 +18,7 @@ export function SiteFooter() {
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
               Lancha Malibu Response LX à venda no Brasil. Barco de esqui
               aquático e wakeboard com motor V8 Indmar Monsoon 350 SS,
-              transmissão direct drive e carreta inclusa.
+              transmissão direct drive e controle de velocidade Zero Off GPS.
             </p>
           </div>
 

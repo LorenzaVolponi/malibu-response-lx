@@ -21,7 +21,7 @@ export const seoKeywordClusters = [
 
 export const offPagePlaybook = [
   'Publicar a URL canônica em marketplaces náuticos, marinas, clubes, grupos de esqui/wake e comunidades regionais com a mesma descrição factual do anúncio.',
-  'Usar vídeos curtos reais do motor, painel, casco, estofamento, carreta e saída na água em YouTube Shorts, Reels e grupos de compradores, sempre apontando para a página canônica.',
+  'Usar vídeos curtos reais do motor, painel, casco, estofamento e saída na água em YouTube Shorts, Reels e grupos de compradores, sempre apontando para a página canônica.',
   'Criar posts com linguagem natural como “Malibu Response LX 2013 à venda” e “lancha direct drive com Zero Off GPS”, sem listas artificiais de palavras-chave.',
   'Padronizar nome do anúncio, preço, ano, horas e link em todas as fontes externas para reduzir inconsistência de NAP/dados comerciais.',
   'Usar UTMs diferentes por origem externa para separar tráfego orgânico social, marketplace, grupos de WhatsApp e mídia paga nos relatórios.',
@@ -41,7 +41,7 @@ export const trustSignals = [
   `Ano de fabricação: ${boat.year}`,
   `Horas de motor informadas: ${boat.engineHours} h`,
   'Motor Indmar Monsoon 350 SS V8 350 HP',
-  'Zero Off GPS, bimini e carreta galvanizada inclusos',
+  'Controle de velocidade Zero Off GPS e bimini',
 ] as const
 
 
@@ -74,7 +74,7 @@ export const backendSearchTerms = [
   'Indmar Monsoon 350 SS',
   'motor V8 350 HP lancha',
   'Zero Off GPS lancha',
-  'lancha com carreta galvanizada',
+  'lancha ideal para esqui e wakeboard',
   'lancha com bimini',
   `${siteConfig.listingName} ${boat.priceLabel}`,
 ] as const

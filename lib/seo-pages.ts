@@ -6,13 +6,13 @@ export const seoIntentPages = [
   {
     slug: 'malibu-response-lx-a-venda',
     title: `${siteConfig.listingName} à venda: preço, motor e fotos reais`,
-    description: `${siteConfig.listingName} à venda por ${boat.priceLabel}. Veja motor Indmar Monsoon 350 SS V8, ${boat.engineHours} h, Zero Off GPS, bimini, carreta e dados para validar a compra.`,
+    description: `${siteConfig.listingName} à venda por ${boat.priceLabel}. Veja motor Indmar Monsoon 350 SS V8, ${boat.engineHours} h, Zero Off GPS, bimini e dados para validar a compra.`,
     h1: `${siteConfig.listingName} à venda com dados reais do anúncio`,
     intro: 'Uma página objetiva para quem busca exatamente o modelo Malibu Response LX e quer confirmar preço, ano, horas, motor, equipamentos e fotos antes de falar com o vendedor.',
     keywords: ['Malibu Response LX à venda', 'Malibu Response LX usada', 'comprar Malibu Response LX', 'Malibu Response LX 2013'],
     sections: [
       { heading: 'O que comparar primeiro', text: 'Preço, ano, horas de motor, motorização, transmissão, equipamentos e itens inclusos devem estar claros antes de qualquer avanço.' },
-      { heading: 'Dados deste anúncio', text: `O anúncio informa ${boat.year}, ${boat.engineHours} horas, motor Indmar Monsoon 350 SS V8 350 HP, direct drive, Zero Off GPS, bimini e carreta galvanizada.` },
+      { heading: 'Dados deste anúncio', text: `O anúncio informa ${boat.year}, ${boat.engineHours} horas, motor Indmar Monsoon 350 SS V8 350 HP, direct drive, Zero Off GPS, bimini, além da vocação para esqui aquático e wakeboard.` },
       { heading: 'Próximo passo seguro', text: 'Use o WhatsApp para solicitar vídeos complementares, documentação disponível, informações de manutenção e condições para avaliação.' },
     ],
   },
@@ -26,7 +26,7 @@ export const seoIntentPages = [
     sections: [
       { heading: 'Direct drive e resposta previsível', text: 'A configuração direct drive é procurada por esportistas por entregar resposta direta, distribuição equilibrada e comportamento previsível.' },
       { heading: 'Zero Off GPS', text: 'O Zero Off utiliza referência de GPS para ajudar a manter velocidade consistente, atributo importante em treinos e prática esportiva.' },
-      { heading: 'Conjunto anunciado', text: `A embarcação combina V8 350 HP, ${boat.engineHours} horas informadas, bimini e carreta inclusa para facilitar a comparação técnica.` },
+      { heading: 'Conjunto anunciado', text: `A embarcação combina V8 350 HP, ${boat.engineHours} horas informadas, bimini e recursos voltados a esqui aquático e wakeboard.` },
     ],
   },
   {
@@ -38,7 +38,7 @@ export const seoIntentPages = [
     keywords: ['comprar lancha usada', 'lancha usada premium', 'barco usado premium', 'lancha V8 350 HP usada'],
     sections: [
       { heading: 'Comece por dados objetivos', text: `Preço publicado (${boat.priceLabel}), ano (${boat.year}), horas (${boat.engineHours} h), motor, transmissão e itens inclusos devem estar fáceis de encontrar.` },
-      { heading: 'Compare imagem e descrição', text: 'Fotos de casco, painel, estofamento, motor e carreta ajudam a preparar perguntas melhores antes do contato.' },
+      { heading: 'Compare imagem e descrição', text: 'Fotos de casco, painel, estofamento e motor ajudam a preparar perguntas melhores antes do contato.' },
       { heading: 'Valide antes de avançar', text: 'Peça documentação disponível, histórico de manutenção, vídeos atuais e condições para inspeção e teste.' },
     ],
   },
@@ -84,27 +84,14 @@ export const seoIntentPages = [
   {
     slug: 'malibu-response-lx-2013-ficha-tecnica',
     title: 'Malibu Response LX 2013: ficha técnica e itens do anúncio',
-    description: `Ficha técnica da Malibu Response LX 2013 anunciada com motor V8 350 HP, direct drive, Zero Off GPS, ${boat.engineHours} horas, bimini e carreta.`,
+    description: `Ficha técnica da Malibu Response LX 2013 anunciada com motor V8 350 HP, direct drive, Zero Off GPS, ${boat.engineHours} horas, bimini.`,
     h1: 'Ficha técnica da Malibu Response LX 2013 anunciada',
     intro: 'Resumo técnico indexável para compradores que pesquisam ano, motor, potência, transmissão, horas e equipamentos da embarcação.',
     keywords: ['Malibu Response LX 2013 ficha técnica', 'Malibu Response LX especificações', 'Malibu Response LX 350 HP', 'Malibu Response LX Zero Off'],
     sections: [
       { heading: 'Conjunto mecânico', text: 'Motor Indmar Monsoon 350 SS V8 5.7L de 350 HP com transmissão direct drive.' },
       { heading: 'Dados de uso publicados', text: `Ano ${boat.year} e ${boat.engineHours} horas informadas no anúncio, sujeitos à validação presencial e documental.` },
-      { heading: 'Equipamentos apresentados', text: 'Controle Zero Off GPS, toldo bimini e carreta rodoviária galvanizada.' },
-    ],
-  },
-  {
-    slug: 'lancha-com-carreta-inclusa',
-    title: 'Lancha com carreta inclusa: o que avaliar antes da compra',
-    description: 'Veja o que avaliar em uma lancha usada com carreta inclusa, incluindo estrutura, pneus, rolamentos, documentação, elétrica e uso em rampa.',
-    h1: 'Lancha usada com carreta inclusa: checklist essencial',
-    intro: 'A carreta agrega praticidade e valor, mas precisa ser avaliada separadamente da embarcação para evitar custos inesperados.',
-    keywords: ['lancha com carreta inclusa', 'lancha usada com carreta', 'carreta galvanizada para lancha', 'comprar barco com carreta'],
-    sections: [
-      { heading: 'Estrutura e corrosão', text: 'Verifique chassi, soldas, galvanização, pontos de corrosão, guincho, cintas e roletes.' },
-      { heading: 'Rodagem e segurança', text: 'Avalie pneus, estepe, cubos, rolamentos, freios quando aplicáveis, iluminação e engate.' },
-      { heading: 'Neste anúncio', text: 'A Malibu Response LX anunciada informa carreta rodoviária galvanizada inclusa, cuja condição deve ser confirmada presencialmente.' },
+      { heading: 'Equipamentos apresentados', text: 'Controle de velocidade Zero Off GPS e toldo bimini.' },
     ],
   },
   {
@@ -138,11 +125,11 @@ export const seoIntentPages = [
     title: `Malibu Response LX preço: anúncio por ${boat.priceLabel}`,
     description: `Veja o preço anunciado da Malibu Response LX ${boat.year}, os itens inclusos e os fatores que devem ser comparados antes de negociar uma lancha esportiva usada.`,
     h1: `Preço da Malibu Response LX ${boat.year} anunciada`,
-    intro: `A embarcação está anunciada por ${boat.priceLabel}. O valor deve ser analisado junto com ano, horas, motor, equipamentos, carreta, conservação e documentação.`,
+    intro: `A embarcação está anunciada por ${boat.priceLabel}. O valor deve ser analisado junto com ano, horas, motor, equipamentos, conservação e documentação.`,
     keywords: ['Malibu Response LX preço', 'preço Malibu Response LX usada', 'Malibu Response LX 2013 valor', 'lancha Malibu usada'],
     sections: [
       { heading: 'Preço publicado', text: `O valor anunciado é ${boat.priceLabel}, com negociação tratada diretamente com o vendedor.` },
-      { heading: 'O que está informado', text: `Ano ${boat.year}, ${boat.engineHours} horas, V8 350 HP, Zero Off GPS, bimini e carreta inclusa.` },
+      { heading: 'O que está informado', text: `Ano ${boat.year}, ${boat.engineHours} horas, V8 350 HP, controle de velocidade Zero Off GPS e bimini.` },
       { heading: 'Como comparar', text: 'Compare estado, manutenção, acessórios, documentação, custo de transporte e eventual necessidade de revisão.' },
     ],
   },
@@ -156,7 +143,7 @@ export const seoIntentPages = [
     sections: [
       { heading: 'Proposta esportiva', text: 'Os dois modelos pertencem ao universo de lanchas especializadas para esportes rebocados. A escolha deve considerar prioridade entre slalom, recreação, conforto a bordo e disponibilidade de suporte.' },
       { heading: 'O que comparar na prática', text: 'Ano, motorização, horas, transmissão, controle de velocidade, histórico de manutenção, conservação do casco, estofamento e disponibilidade de peças devem ser avaliados barco a barco.' },
-      { heading: 'Quando a Response LX faz sentido', text: 'A Response LX tende a interessar quem procura direct drive, proposta esportiva objetiva e um conjunto anunciado com Zero Off GPS, motor V8, bimini e carreta inclusa.' },
+      { heading: 'Quando a Response LX faz sentido', text: 'A Response LX tende a interessar quem procura direct drive, proposta esportiva objetiva e um conjunto anunciado com controle de velocidade Zero Off GPS, motor V8 e bimini.' },
     ],
   },
   {
@@ -168,7 +155,7 @@ export const seoIntentPages = [
     keywords: ['Malibu Response LX vs MasterCraft ProStar', 'Malibu ou MasterCraft', 'ProStar usada', 'melhor lancha para slalom'],
     sections: [
       { heading: 'Sem vencedor universal', text: 'Não existe escolha correta apenas pela marca. O melhor negócio depende da unidade disponível, do histórico, do estado mecânico e da adequação ao esporte prioritário.' },
-      { heading: 'Critérios decisivos', text: 'Compare qualidade da esteira na velocidade utilizada, resposta do motor, ergonomia, espaço, manutenção, peças, eletrônica, carreta e custo total de regularização e transporte.' },
+      { heading: 'Critérios decisivos', text: 'Compare qualidade da esteira na velocidade utilizada, resposta do motor, ergonomia, espaço, manutenção, peças, eletrônica, logística de transporte e custo total de regularização e transporte.' },
       { heading: 'Dados objetivos desta Malibu', text: `A unidade anunciada informa ano ${boat.year}, ${boat.engineHours} horas, motor Indmar Monsoon 350 SS V8 de 350 HP, direct drive e Zero Off GPS.` },
     ],
   },
@@ -181,19 +168,19 @@ export const seoIntentPages = [
     keywords: ['Malibu Response LX vale a pena', 'comprar Malibu Response LX usada', 'Malibu Response LX opinião', 'lancha de esqui aquático usada'],
     sections: [
       { heading: 'Para quem tende a valer a pena', text: 'Faz mais sentido para quem valoriza direct drive, prática de esqui aquático, controle de velocidade e comportamento esportivo previsível.' },
-      { heading: 'O que pode mudar a decisão', text: 'Estado do motor, sistema de arrefecimento, transmissão, casco, estofamento, eletrônica, carreta, documentação e histórico de manutenção podem alterar totalmente o custo-benefício.' },
+      { heading: 'O que pode mudar a decisão', text: 'Estado do motor, sistema de arrefecimento, transmissão, casco, estofamento, eletrônica, documentação e histórico de manutenção podem alterar totalmente o custo-benefício.' },
       { heading: 'Como decidir com menos risco', text: `Use os dados publicados — ${boat.year}, ${boat.engineHours} horas, V8 350 HP e itens inclusos — como ponto de partida, nunca como substituto de inspeção, teste e validação documental.` },
     ],
   },
   {
     slug: 'quanto-custa-manter-malibu-response-lx',
     title: 'Quanto custa manter uma Malibu Response LX?',
-    description: 'Veja quais despesas compõem o custo de manutenção de uma Malibu Response LX usada: revisão, combustível, guarda, carreta, documentação e prevenção.',
+    description: 'Veja quais despesas compõem o custo de manutenção de uma Malibu Response LX usada: revisão, combustível, guarda, documentação e prevenção.',
     h1: 'Quanto custa manter uma Malibu Response LX usada',
     intro: 'O custo anual varia conforme uso, região, guarda e condição mecânica. Mais útil que prometer um número único é separar as despesas que precisam entrar no orçamento.',
     keywords: ['quanto custa manter Malibu Response LX', 'manutenção Malibu Response LX', 'custo lancha esportiva usada', 'custo anual lancha'],
     sections: [
-      { heading: 'Custos recorrentes', text: 'Considere combustível, marina ou guarda, limpeza, bateria, lubrificantes, filtros, conservação do estofamento, seguro quando contratado e manutenção da carreta.' },
+      { heading: 'Custos recorrentes', text: 'Considere combustível, marina ou guarda, limpeza, bateria, lubrificantes, filtros, conservação do estofamento, seguro quando contratado e manutenção preventiva.' },
       { heading: 'Custos por uso e prevenção', text: 'Horas navegadas, qualidade da água, rotina de lavagem, invernagem, revisões preventivas e substituição de componentes de desgaste influenciam fortemente o orçamento.' },
       { heading: 'Reserva de segurança', text: 'Em uma embarcação usada, mantenha uma reserva específica para inspeção inicial, revisão pós-compra e correções não identificadas no anúncio.' },
     ],
@@ -209,8 +196,8 @@ export const seoIntentPages = [
       { heading: '900 horas de motor é muito?', text: 'O número isolado não decide a compra. Histórico de manutenção, tipo de uso, partida a frio, temperatura, ruídos, vazamentos e inspeção técnica pesam mais que uma referência genérica.' },
       { heading: 'Direct drive serve para wakeboard?', text: 'Pode atender uso recreativo, mas a configuração é tradicionalmente associada ao esqui aquático. Quem prioriza ondas maiores e mais espaço costuma também comparar opções V-drive.' },
       { heading: 'O Zero Off vale a pena?', text: 'Para quem pratica esportes rebocados e busca repetibilidade de velocidade, é um equipamento relevante. O funcionamento deve ser demonstrado e testado antes da compra.' },
-      { heading: 'O que pedir ao vendedor?', text: 'Solicite vídeos atuais, partida a frio, painel ligado, motor em funcionamento, casco, interior, carreta, documentos disponíveis, histórico informado e condições para inspeção.' },
-      { heading: 'Como saber se o preço está adequado?', text: 'Compare ano, horas, motorização, tecnologia, conservação, acessórios, carreta, documentação, localização e despesas imediatas após a compra.' },
+      { heading: 'O que pedir ao vendedor?', text: 'Solicite vídeos atuais, partida a frio, painel ligado, motor em funcionamento, casco, interior, documentos disponíveis, histórico informado e condições para inspeção.' },
+      { heading: 'Como saber se o preço está adequado?', text: 'Compare ano, horas, motorização, tecnologia, conservação, acessórios, documentação, localização e despesas imediatas após a compra.' },
     ],
   },
   {
@@ -242,7 +229,7 @@ export const seoIntentPages = [
   {
     slug: 'checklist-inspecao-pre-compra-lancha',
     title: 'Inspeção pré-compra de lancha: checklist completo',
-    description: 'Checklist de inspeção pré-compra para motor, casco, transmissão, elétrica, estofamento, carreta, documentação e teste na água.',
+    description: 'Checklist de inspeção pré-compra para motor, casco, transmissão, elétrica, estofamento, documentação e teste na água.',
     h1: 'Checklist completo de inspeção pré-compra de lancha',
     intro: 'Uma boa inspeção reduz decisões baseadas apenas em fotos e ajuda a transformar o anúncio em dados verificáveis antes do pagamento.',
     keywords: ['inspeção pré-compra lancha', 'checklist barco usado', 'avaliar lancha usada', 'vistoria embarcação usada'],
@@ -318,19 +305,6 @@ export const seoIntentPages = [
     ],
   },
   {
-    slug: 'manutencao-carreta-galvanizada-lancha',
-    title: 'Manutenção de carreta galvanizada para lancha',
-    description: 'Guia de manutenção para carreta galvanizada: lavagem, rolamentos, pneus, cubos, elétrica, guincho, cintas e corrosão.',
-    h1: 'Como manter uma carreta galvanizada para lancha',
-    intro: 'A galvanização ajuda contra corrosão, mas não elimina a necessidade de lavagem, inspeção e manutenção preventiva após uso em rampas e ambientes úmidos.',
-    keywords: ['manutenção carreta galvanizada', 'carreta lancha rolamentos', 'lavar carreta barco', 'corrosão carreta lancha'],
-    sections: [
-      { heading: 'Após o uso', text: 'Lave estrutura, cubos, rodas, guincho e componentes expostos, especialmente após contato com água salobra ou salgada.' },
-      { heading: 'Itens de segurança', text: 'Revise pneus, rolamentos, porcas, engate, correntes, iluminação, guincho, cintas e pontos de apoio do casco.' },
-      { heading: 'Antes de viajar', text: 'Confirme aperto, calibragem, estepe, documentação e capacidade adequada ao peso transportado.' },
-    ],
-  },
-  {
     slug: 'bimini-lancha-cuidados-e-avaliacao',
     title: 'Bimini de lancha: cuidados, conservação e avaliação',
     description: 'Saiba como avaliar tecido, estrutura, fixações e conservação de um bimini em uma lancha usada.',
@@ -372,14 +346,14 @@ export const seoIntentPages = [
   {
     slug: 'custos-pos-compra-lancha-usada',
     title: 'Custos pós-compra de uma lancha usada: o que reservar',
-    description: 'Planeje revisão inicial, transporte, documentação, seguro, guarda, carreta, combustível e correções após comprar uma lancha usada.',
+    description: 'Planeje revisão inicial, transporte, documentação, seguro, guarda, combustível e correções após comprar uma lancha usada.',
     h1: 'Quais custos reservar depois de comprar uma lancha usada',
     intro: 'O preço do anúncio não representa sozinho o custo de entrada. Uma reserva pós-compra evita que pequenos ajustes interrompam o uso logo no início.',
     keywords: ['custos pós-compra lancha', 'quanto reservar barco usado', 'revisão inicial lancha', 'custo total compra embarcação'],
     sections: [
       { heading: 'Revisão inicial', text: 'Considere fluidos, filtros, bateria, impeller, correias, velas, mangueiras e itens encontrados na inspeção.' },
-      { heading: 'Logística e regularização', text: 'Transporte, deslocamento, documentação, transferência, carreta e eventuais adequações podem alterar o custo total.' },
-      { heading: 'Uso recorrente', text: 'Inclua combustível, guarda, limpeza, manutenção preventiva, seguro quando contratado e conservação da carreta.' },
+      { heading: 'Logística e regularização', text: 'Transporte, deslocamento, documentação, transferência e eventuais adequações podem alterar o custo total.' },
+      { heading: 'Uso recorrente', text: 'Inclua combustível, guarda, limpeza, manutenção preventiva, seguro quando contratado e conservação geral.' },
     ],
   },
 ] as const

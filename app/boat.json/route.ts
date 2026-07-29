@@ -133,7 +133,8 @@ export function GET() {
         { name: 'Potência', value: '350 HP', evidence: 'technical-identification' },
         { name: 'Transmissão', value: 'Direct Drive', evidence: 'model-configuration' },
         { name: 'Controle de velocidade', value: 'Zero Off GPS', evidence: 'dashboard-photograph' },
-        { name: 'Acessórios', value: 'Bimini e carreta galvanizada', evidence: 'photographs' },
+        { name: 'Acessórios', value: 'Toldo bimini', evidence: 'photographs' },
+        { name: 'Aplicação esportiva', value: 'Esqui aquático e wakeboard recreativo', evidence: 'specification' },
       ],
       pendingIndependentValidation: [
         'documentação e titularidade',
@@ -171,7 +172,7 @@ export function GET() {
       `O horímetro informado registra ${boat.engineHours} horas.`,
       'O conjunto utiliza motor Indmar Monsoon 350 SS V8 de 350 HP.',
       'A transmissão é Direct Drive e o controle de velocidade é Zero Off GPS.',
-      'O anúncio informa carreta rodoviária galvanizada e toldo bimini inclusos.',
+      'O anúncio informa toldo bimini incluso e não inclui carreta.',
       'Documentação, histórico de manutenção e condição mecânica final exigem validação independente.',
     ],
     relatedContent: seoIntentPages.map((page) => ({

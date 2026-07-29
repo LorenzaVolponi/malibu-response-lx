@@ -17,7 +17,7 @@ const includes = [
   'Transmissão direct drive',
   'Controle de velocidade Zero Off GPS',
   'Toldo bimini',
-  'Carreta rodoviária galvanizada inclusa',
+  'Controle de velocidade Zero Off GPS',
   `Ano de fabricação ${boat.year}`,
   `${boat.engineHours} horas de motor`,
   'Estofamento conservado creme/azul',

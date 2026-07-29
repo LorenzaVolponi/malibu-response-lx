@@ -17,7 +17,7 @@ const confirmed = [
   `${boat.engineHours} horas de motor`,
   'Motor Indmar Monsoon 350 SS',
   'Zero Off GPS',
-  'Bimini e carreta inclusos',
+  'Ideal para esqui aquático e wakeboard',
 ]
 const toConfirm = ['Local de visita', 'Documentação', 'Histórico de manutenção', 'Condições para teste na água']
 
