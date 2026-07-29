@@ -13,7 +13,7 @@ if (typeof window !== 'undefined') {
 const pillars = [
   ['Precisão', 'Resposta direta no comando e condução estável para quem conhece a água.'],
   ['Presença', 'Casco branco perolado, assinatura azul-marinho e proporção clássica Malibu.'],
-  ['Pronta', 'Bimini, carreta galvanizada e conjunto preparado para a próxima saída.'],
+  ['Pronta', 'Bimini, Zero Off GPS e conjunto preparado para esqui aquático e wakeboard.'],
 ] as const
 
 export function BrandStorySection() {

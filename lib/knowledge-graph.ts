@@ -140,14 +140,6 @@ export const knowledgeEntities = {
     aliases: ['bimini', 'cobertura retrátil', 'cobertura solar'],
     node: { inDefinedTermSet: `${siteConfig.url}/guias` },
   },
-  trailer: {
-    id: `${siteConfig.url}/#carreta-galvanizada`,
-    type: 'DefinedTerm',
-    name: 'Carreta galvanizada',
-    description: 'Estrutura rodoviária para transporte da embarcação, com galvanização voltada à resistência à corrosão.',
-    aliases: ['carreta galvanizada', 'carreta', 'reboque', 'transporte'],
-    node: { inDefinedTermSet: `${siteConfig.url}/guias` },
-  },
   hourMeter: {
     id: `${siteConfig.url}/#horimetro`,
     type: 'DefinedTerm',

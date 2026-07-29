@@ -10,7 +10,7 @@ const SUGGESTIONS = [
   'Quero agendar uma visita',
   'O preço é negociável?',
   'Ano e horas de motor?',
-  'Acompanha carreta e bimini?',
+  'É ideal para esqui e wakeboard?',
   'Quero falar sobre motor e manutenção',
   'Quais dados preciso confirmar?',
 ]

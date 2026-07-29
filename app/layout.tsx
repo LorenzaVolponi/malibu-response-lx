@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     default: `${siteConfig.listingName} à venda | V8 350 HP, Direct Drive e Zero Off`,
     template: `%s | ${siteConfig.name}`,
   },
-  description: `${siteConfig.listingName} ${boat.year} à venda por ${boat.priceLabel}. Lancha esportiva com ${boat.engineHours} horas, motor Indmar Monsoon 350 SS V8 350 HP, direct drive, Zero Off GPS, bimini e carreta inclusa.`,
+  description: `${siteConfig.listingName} ${boat.year} à venda por ${boat.priceLabel}. Lancha ideal para esqui aquático e wakeboard, com motor V8 350 HP, direct drive, controle de velocidade Zero Off GPS e bimini.`,
   applicationName: siteConfig.name,
   keywords: [
     'Malibu Response LX à venda',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     'Indmar Monsoon 350 SS',
     'lancha V8 350 HP',
     'Zero Off GPS',
-    'lancha com carreta',
+    'lancha com controle de velocidade GPS',
     'lancha premium usada',
   ],
   authors: [{ name: siteConfig.name }],
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     url: siteConfig.url,
     siteName: siteConfig.name,
     title: `${siteConfig.listingName} ${boat.year} à venda — V8 350 HP`,
-    description: `${boat.engineHours} horas, Indmar Monsoon 350 SS, direct drive, Zero Off GPS, bimini e carreta inclusa. Veja fotos reais e dados técnicos.`,
+    description: `${boat.engineHours} horas, motor V8 350 HP, direct drive e controle de velocidade Zero Off GPS. Ideal para esqui aquático e wakeboard.`,
     images: [{
       url: '/images/hero-side.jpeg',
       width: 1600,
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: `${siteConfig.listingName} ${boat.year} à venda`,
-    description: `V8 350 HP, ${boat.engineHours} horas, direct drive, Zero Off, bimini e carreta inclusa.`,
+    description: `Lancha para esqui aquático e wakeboard: V8 350 HP, ${boat.engineHours} horas, direct drive e controle Zero Off GPS.`,
     images: ['/images/hero-side.jpeg'],
   },
   robots: {

@@ -59,7 +59,7 @@ export function SpecsSection() {
             </h2>
           </div>
           <p className="max-w-2xl text-pretty leading-relaxed text-muted-foreground lg:justify-self-end">
-            Informações técnicas e comerciais organizadas para avaliar a Malibu Response LX direct drive com clareza antes da visita.
+            Informações técnicas e comerciais da Malibu Response LX, lancha ideal para esqui aquático e wakeboard recreativo, com controle de velocidade Zero Off GPS.
           </p>
         </div>
 

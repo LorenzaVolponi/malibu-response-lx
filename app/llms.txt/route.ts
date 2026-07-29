@@ -43,7 +43,7 @@ ${guideLinks}
 - Potência: 350 HP
 - Transmissão: Direct Drive
 - Controle de velocidade: Zero Off GPS
-- Itens informados: bimini e carreta rodoviária
+- Itens informados: bimini; a embarcação não acompanha carreta
 
 ## Política de precisão
 - Não inferir garantia, laudo, revisão, originalidade, localização exata ou disponibilidade sem confirmação.

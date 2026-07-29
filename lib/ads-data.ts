@@ -18,7 +18,6 @@ export const googleAdsKeywordGroups = {
     '"lancha malibu usada"',
   ],
   buyerIntent: [
-    '"lancha usada com carreta"',
     '"lancha v8 350 hp"',
     '"barco usado para wakeboard"',
     '"comprar lancha premium usada"',
@@ -53,13 +52,13 @@ export const googleAdsCopy = {
   headlines: [
     `${siteConfig.listingName} à Venda`,
     'V8 350 HP | Zero Off GPS',
-    'Carreta Galvanizada Inclusa',
+    'Ideal para Esqui e Wakeboard',
     'Fotos e Vídeos Reais',
     'Agende uma Avaliação',
     boat.priceLabel,
   ],
   descriptions: [
-    `${siteConfig.listingName} com motor Indmar Monsoon V8 350 HP, Zero Off GPS, bimini e carreta inclusa. Veja fotos reais e fale pelo WhatsApp.`,
+    `${siteConfig.listingName} com motor Indmar Monsoon V8 350 HP, controle de velocidade Zero Off GPS e bimini. Ideal para esqui aquático e wakeboard. Veja fotos reais e fale pelo WhatsApp.`,
     `${boat.engineHours} horas informadas. Embarcação disponível para avaliação. Solicite vídeos, localização, documentação e condições de teste.`,
   ],
 } as const

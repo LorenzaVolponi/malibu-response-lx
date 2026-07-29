@@ -8,6 +8,8 @@ import { ChevronDown } from 'lucide-react'
 const heroFacts = [
   ['Motor', 'Indmar Monsoon 350 SS'],
   ['Potência', '350 HP'],
+  ['Controle', 'Zero Off GPS'],
+  ['Esportes', 'Esqui · Wakeboard'],
   ['Ano', String(boat.year)],
   ['Horas', `${boat.engineHours} h`],
 ] as const
@@ -105,7 +107,7 @@ export function Hero() {
           data-hero-reveal
           className="mb-5 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs tracking-luxe text-gold uppercase"
         >
-          Malibu Response LX · Direct Drive V8
+          Lancha para esqui aquático e wakeboard · Direct Drive V8
         </p>
         <h1
           data-hero-reveal
@@ -141,7 +143,7 @@ export function Hero() {
         </p>
         <div
           data-hero-reveal
-          className="mx-auto mt-8 grid max-w-xl grid-cols-2 overflow-hidden rounded-3xl border border-cream/10 bg-navy-deep/35 text-left backdrop-blur-md sm:grid-cols-4"
+          className="mx-auto mt-8 grid max-w-4xl grid-cols-2 overflow-hidden rounded-3xl border border-cream/10 bg-navy-deep/35 text-left backdrop-blur-md sm:grid-cols-3 lg:grid-cols-6"
         >
           {heroFacts.map(([label, value]) => (
             <div key={label} className="border-b border-cream/10 p-3 last:border-b-0 sm:border-b-0 sm:border-r sm:p-4 sm:last:border-r-0">

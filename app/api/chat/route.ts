@@ -20,7 +20,7 @@ const facts = {
   motor: 'Motor: Indmar Monsoon 350 SS, V8 5.7L, 350 HP, identificado na tampa do motor.',
   transmission: 'Transmissão: Direct Drive / eixo direto, configuração consagrada para esqui aquático.',
   zeroOff: 'Controle de velocidade: Zero Off GPS integrado ao painel, útil para manter ritmo consistente em esportes náuticos.',
-  includes: 'Inclusos: toldo bimini e carreta rodoviária galvanizada.',
+  includes: 'Inclui toldo bimini. A embarcação não acompanha carreta.',
   condition: conditionItems.map((item) => `${item.label}: ${item.status} (${item.note})`).join('\n'),
   specs: specs.map((item) => `${item.label}: ${item.value} — ${item.note}`).join('\n'),
 }
@@ -97,7 +97,7 @@ function answerWithBoatFacts(question: string) {
 
   if (sections.length === 0) {
     sections.push(
-      `${boat.brand} ${boat.model} "${boat.name}" à venda por ${boat.priceLabel}, ano ${boat.year}, ${boat.engineHours} h, motor Indmar Monsoon 350 SS V8 350 HP, Direct Drive, Zero Off GPS, bimini e carreta inclusos.`,
+      `${boat.brand} ${boat.model} "${boat.name}" à venda por ${boat.priceLabel}, ano ${boat.year}, ${boat.engineHours} h, motor Indmar Monsoon 350 SS V8 350 HP, Direct Drive, Zero Off GPS, bimini incluso; não acompanha carreta.`,
     )
   }
 

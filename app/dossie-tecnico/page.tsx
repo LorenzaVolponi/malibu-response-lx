@@ -162,7 +162,7 @@ export default function TechnicalDossierPage() {
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {[
               ['Dados declarados', 'Preço, ano, horas, localização, equipamentos e especificações são apresentados como informações publicadas no anúncio.'],
-              ['Evidência visual', 'As fotografias são usadas para contextualizar casco, interior, painel, motor, acessórios e carreta, sem substituir inspeção.'],
+              ['Evidência visual', 'As fotografias são usadas para contextualizar casco, interior, painel, motor, acessórios e configuração esportiva, sem substituir inspeção.'],
               ['Validação independente', 'Documentação, mecânica, titularidade, histórico e condição atual devem ser confirmados pelo comprador e por profissionais de sua confiança.'],
             ].map(([title, text]) => (
               <div key={title} className="rounded-2xl border border-white/10 p-5">
@@ -218,7 +218,7 @@ export default function TechnicalDossierPage() {
             <li>• Disponibilidade atual, documentação e titularidade.</li>
             <li>• Registros de manutenção, revisões, fluidos e sistema de arrefecimento.</li>
             <li>• Leitura do horímetro, partida a frio e funcionamento do Zero Off.</li>
-            <li>• Inspeção de casco, estofamento, elétrica, carreta e acessórios.</li>
+            <li>• Inspeção de casco, estofamento, elétrica e acessórios.</li>
             <li>• Teste presencial na água e avaliação técnica independente.</li>
           </ul>
           <p className="mt-6 text-sm leading-6 text-white/55">
