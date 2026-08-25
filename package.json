@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "pnpm dlx eslint@9.39.5 .",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

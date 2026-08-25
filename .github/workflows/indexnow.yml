@@ -1,0 +1,43 @@
+name: IndexNow
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/**'
+      - 'components/**'
+      - 'lib/**'
+      - 'public/**'
+      - 'scripts/submit-indexnow.mjs'
+      - '.github/workflows/indexnow.yml'
+      - 'next.config.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: indexnow-production
+  cancel-in-progress: true
+
+jobs:
+  notify:
+    name: Notify search engines
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Wait for production and submit IndexNow
+        env:
+          INDEXNOW_SITE_URL: https://malibu-response-lx.vercel.app
+          INDEXNOW_KEY: 9a7f3c1e4b8d2f6a0c5e7b1d3f9a4c2e
+          EXPECTED_COMMIT_SHA: ${{ github.sha }}
+        run: node scripts/submit-indexnow.mjs
