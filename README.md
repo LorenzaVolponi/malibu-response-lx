@@ -29,10 +29,13 @@ pnpm build
 
 ## Variáveis de ambiente
 
-- `NEXT_PUBLIC_SITE_URL`: URL pública canônica do site. Se não for definida, o projeto usa `https://malibu-response-lx.vercel.app`.
 - `NEXT_PUBLIC_GTM_ID`: ID opcional do Google Tag Manager.
+- `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`: token da meta tag de verificação do Google Search Console.
+- `NEXT_PUBLIC_BING_SITE_VERIFICATION`: token da meta tag de verificação do Bing Webmaster Tools.
 - `NEXT_PUBLIC_GOOGLE_ADS_ID`: ID opcional do Google Ads/gtag, como `AW-000000000`.
 - `NEXT_PUBLIC_GOOGLE_ADS_WHATSAPP_LABEL`: label opcional da conversão de clique no WhatsApp.
+
+A URL canônica é definida em `lib/site-config.ts` para impedir que URLs de preview da Vercel virem canonical por engano.
 
 ## Onde editar dados do anúncio
 
@@ -47,10 +50,17 @@ A home renderiza JSON-LD de produto, vídeo, FAQ, website, breadcrumb, organiza�
 
 Evite repetir palavras-chave artificialmente. Prefira descrições naturais com preço, ano, motor, horas, fotos reais e contato direto.
 
+### IndexNow
+
+O workflow `.github/workflows/indexnow.yml` roda quando conteúdo indexável chega à `main`. Ele espera a Vercel publicar exatamente o commit do push, valida a chave pública IndexNow, lê o sitemap de produção e envia as URLs HTML para `api.indexnow.org`.
+
+A chave pública fica em `public/9a7f3c1e4b8d2f6a0c5e7b1d3f9a4c2e.txt`. Ela não é segredo: faz parte do protocolo de comprovação de domínio do IndexNow.
+
+Depois de configurar os tokens de verificação na Vercel, valide a propriedade no Google Search Console e no Bing Webmaster Tools e envie `https://malibu-response-lx.vercel.app/sitemap.xml` em ambos.
+
 ## Analytics e conversão
 
 - `NEXT_PUBLIC_GTM_ID` ativa Google Tag Manager.
-- `NEXT_PUBLIC_SITE_URL` mantém canonical, sitemap, robots e JSON-LD alinhados ao domínio final.
 - Cliques de WhatsApp são enviados para `window.dataLayer`.
 - Eventos de seção e chat também são registrados no `dataLayer` para medir intenção de compra.
 - Cliques no WhatsApp disparam `generate_lead` e preservam UTMs, `gclid`, `gbraid`, `wbraid` e `msclkid` no texto da conversa.
