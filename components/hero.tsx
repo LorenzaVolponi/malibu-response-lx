@@ -9,7 +9,7 @@ const heroFacts = [
   ['Motor', 'Indmar Monsoon 350 SS'],
   ['Potência', '350 HP'],
   ['Controle', 'Zero Off GPS'],
-  ['Esportes', 'Esqui · Wakeboard'],
+  ['Vocação', 'Slalom · Esqui'],
   ['Ano', String(boat.year)],
   ['Horas', `${boat.engineHours} h`],
 ] as const
@@ -107,7 +107,7 @@ export function Hero() {
           data-hero-reveal
           className="mb-5 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs tracking-luxe text-gold uppercase"
         >
-          Lancha para esqui aquático e wakeboard · Direct Drive V8
+          Competition ski boat · Slalom · Direct Drive V8
         </p>
         <h1
           data-hero-reveal
@@ -120,7 +120,7 @@ export function Hero() {
           data-hero-reveal
           className="mx-auto mt-6 max-w-xl text-pretty text-base leading-relaxed text-cream/75 sm:text-lg"
         >
-          {boat.tagline}
+          Direct drive de performance para esqui aquático e slalom, com motor Indmar V8 350 HP e controle de velocidade Zero Off GPS. Wakeboard recreativo como uso complementar.
         </p>
 
         <div
@@ -139,7 +139,7 @@ export function Hero() {
           data-hero-reveal
           className="mt-6 text-xs tracking-[0.24em] text-cream/55 uppercase"
         >
-          Disponível para venda · {boat.priceLabel}
+          {boat.year} · {boat.engineHours} h · {boat.priceLabel} · disponível para venda
         </p>
         <div
           data-hero-reveal
