@@ -6,7 +6,8 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
-import { Check } from 'lucide-react'
+import { Check, MessageCircle } from 'lucide-react'
+import { whatsappLeadUrl } from '@/lib/contact'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP)
@@ -17,11 +18,16 @@ const includes = [
   'Transmissão direct drive',
   'Controle de velocidade Zero Off GPS',
   'Toldo bimini',
-  'Controle de velocidade Zero Off GPS',
   `Ano de fabricação ${boat.year}`,
   `${boat.engineHours} horas de motor`,
   'Estofamento conservado creme/azul',
 ]
+
+const contactActions = [
+  { label: 'Solicitar vídeos e documentação', href: whatsappLeadUrl('documents'), intent: 'documents' },
+  { label: 'Agendar avaliação / teste', href: whatsappLeadUrl('test'), intent: 'test' },
+  { label: 'Fazer uma proposta', href: whatsappLeadUrl('offer'), intent: 'offer' },
+] as const
 
 export function PricingCta() {
   const root = useRef<HTMLElement>(null)
@@ -90,7 +96,7 @@ export function PricingCta() {
                 data-cta-reveal
                 className="text-balance font-serif text-4xl leading-tight text-cream sm:text-5xl"
               >
-                Malibu Response LX disponível para venda
+                Malibu Response LX {boat.year} disponível para venda
               </h2>
               <div data-cta-reveal className="mt-8 flex items-end gap-3">
                 <span className="text-sm text-muted-foreground">Valor</span>
@@ -98,9 +104,26 @@ export function PricingCta() {
                   {boat.priceLabel}
                 </span>
               </div>
-              <p data-cta-reveal className="mt-4 text-xs text-muted-foreground">
-                Informações de contato temporariamente indisponíveis.
+              <p data-cta-reveal className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">
+                Fale diretamente pelo WhatsApp para receber vídeos complementares, documentação disponível, informações de manutenção e condições para avaliação presencial.
               </p>
+              <div data-cta-reveal className="mt-6 flex flex-col gap-3">
+                {contactActions.map((action, index) => (
+                  <a
+                    key={action.intent}
+                    href={action.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-whatsapp-intent={`pricing_${action.intent}`}
+                    className={index === 0
+                      ? 'inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-semibold text-primary-foreground transition-transform hover:scale-[1.02]'
+                      : 'inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-cream/15 px-5 py-3 text-sm font-semibold text-cream transition-colors hover:border-gold/40 hover:text-gold-soft'}
+                  >
+                    <MessageCircle className="size-4" aria-hidden="true" />
+                    {action.label}
+                  </a>
+                ))}
+              </div>
             </div>
 
             <div data-cta-reveal className="lg:border-l lg:border-cream/10 lg:pl-10">
