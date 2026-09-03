@@ -26,20 +26,71 @@ const ATTRIBUTION_KEYS = [
 
 const ATTRIBUTION_STORAGE_KEY = 'malibu_attribution_v1'
 
-type Attribution = Partial<Record<(typeof ATTRIBUTION_KEYS)[number] | 'source_group' | 'landing_path', string>>
+type Attribution = Partial<Record<
+  | (typeof ATTRIBUTION_KEYS)[number]
+  | 'source_group'
+  | 'channel_group'
+  | 'landing_path'
+  | 'referrer_host',
+  string
+>>
 
-function detectTrafficSource() {
-  const referrer = document.referrer.toLowerCase()
-  if (!referrer) return 'direct'
-  if (referrer.includes('google.')) return 'google'
-  if (referrer.includes('bing.')) return 'bing'
-  if (referrer.includes('chatgpt.com') || referrer.includes('openai.com')) return 'chatgpt'
-  if (referrer.includes('perplexity.ai')) return 'perplexity'
-  if (referrer.includes('gemini.google.com')) return 'gemini'
-  if (referrer.includes('claude.ai')) return 'claude'
-  if (referrer.includes('linkedin.com')) return 'linkedin'
-  if (referrer.includes('reddit.com')) return 'reddit'
-  if (referrer.includes('facebook.com') || referrer.includes('instagram.com')) return 'meta'
+function referrerHost() {
+  if (!document.referrer) return ''
+  try {
+    return new URL(document.referrer).hostname.toLowerCase().replace(/^www\./, '')
+  } catch {
+    return ''
+  }
+}
+
+function detectReferrerSource(host: string) {
+  if (!host) return 'direct'
+  if (host.includes('google.')) return 'google'
+  if (host.includes('bing.')) return 'bing'
+  if (host.includes('duckduckgo.com')) return 'duckduckgo'
+  if (host.includes('search.yahoo.')) return 'yahoo'
+  if (host.includes('ecosia.org')) return 'ecosia'
+  if (host.includes('brave.com')) return 'brave'
+  if (host.includes('chatgpt.com') || host.includes('openai.com')) return 'chatgpt'
+  if (host.includes('perplexity.ai')) return 'perplexity'
+  if (host.includes('gemini.google.com')) return 'gemini'
+  if (host.includes('claude.ai')) return 'claude'
+  if (host.includes('copilot.microsoft.com')) return 'copilot'
+  if (host.includes('grok.com') || host.includes('x.ai')) return 'grok'
+  if (host.includes('linkedin.com')) return 'linkedin'
+  if (host.includes('reddit.com')) return 'reddit'
+  if (host.includes('facebook.com') || host.includes('instagram.com')) return 'meta'
+  if (host.includes('youtube.com') || host.includes('youtu.be')) return 'youtube'
+  return 'referral'
+}
+
+function sourceFromCampaign(params: URLSearchParams) {
+  const utmSource = params.get('utm_source')?.trim().toLowerCase()
+  if (utmSource) return utmSource.slice(0, 80)
+  if (params.has('gclid') || params.has('gbraid') || params.has('wbraid')) return 'google_ads'
+  if (params.has('msclkid')) return 'microsoft_ads'
+  if (params.has('fbclid')) return 'meta'
+  return ''
+}
+
+function channelFromAttribution(params: URLSearchParams, source: string) {
+  const medium = params.get('utm_medium')?.trim().toLowerCase() || ''
+  const paidByClickId = params.has('gclid') || params.has('gbraid') || params.has('wbraid') || params.has('msclkid') || params.has('fbclid')
+
+  if (paidByClickId || /(cpc|ppc|paid|display|remarketing|retargeting)/.test(medium)) return 'paid_media'
+  if (/(email|newsletter)/.test(medium)) return 'email'
+
+  const aiSources = new Set(['chatgpt', 'openai', 'perplexity', 'gemini', 'claude', 'copilot', 'grok', 'xai'])
+  if (aiSources.has(source)) return 'ai_referral'
+
+  const searchSources = new Set(['google', 'bing', 'duckduckgo', 'yahoo', 'ecosia', 'brave'])
+  if (searchSources.has(source)) return 'organic_search'
+
+  const socialSources = new Set(['linkedin', 'reddit', 'meta', 'facebook', 'instagram', 'youtube', 'x', 'twitter'])
+  if (socialSources.has(source)) return 'social_referral'
+
+  if (source === 'direct') return 'direct'
   return 'referral'
 }
 
@@ -62,7 +113,14 @@ function buildAttribution(): Attribution {
     if (value) attribution[key] = value.slice(0, 250)
   }
 
-  attribution.source_group = attribution.source_group || detectTrafficSource()
+  const host = referrerHost()
+  const detectedReferrerSource = detectReferrerSource(host)
+  const campaignSource = sourceFromCampaign(params)
+  const source = campaignSource || attribution.source_group || detectedReferrerSource
+
+  attribution.source_group = source
+  attribution.channel_group = attribution.channel_group || channelFromAttribution(params, source)
+  attribution.referrer_host = attribution.referrer_host || host || 'direct'
   attribution.landing_path = attribution.landing_path || `${window.location.pathname}${window.location.search}`.slice(0, 500)
 
   try {
@@ -104,7 +162,9 @@ export function ConversionEventTracker() {
     pushDataLayerEvent({
       event: 'page_intent_view',
       traffic_source_group: attribution.source_group,
+      acquisition_channel: attribution.channel_group,
       landing_path: attribution.landing_path,
+      referrer_host: attribution.referrer_host,
       referrer: document.referrer || 'direct',
       ...attribution,
     })
