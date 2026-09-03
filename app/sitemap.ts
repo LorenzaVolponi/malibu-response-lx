@@ -39,32 +39,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }))
 
-  const machineReadablePages: MetadataRoute.Sitemap = [
-    {
-      url: `${siteConfig.url}/boat.json`,
-      lastModified: updatedAt,
-      changeFrequency: 'weekly',
-      priority: 0.7,
-    },
-    {
-      url: `${siteConfig.url}/llms.txt`,
-      lastModified: updatedAt,
-      changeFrequency: 'weekly',
-      priority: 0.6,
-    },
-    {
-      url: `${siteConfig.url}/ai.txt`,
-      lastModified: updatedAt,
-      changeFrequency: 'weekly',
-      priority: 0.6,
-    },
-    {
-      url: `${siteConfig.url}/feed.xml`,
-      lastModified: updatedAt,
-      changeFrequency: 'weekly',
-      priority: 0.5,
-    },
-  ]
-
-  return [...corePages, ...intentPages, ...machineReadablePages]
+  // Machine-readable discovery surfaces are intentionally excluded from the
+  // human search sitemap. They are advertised through robots.txt and HTTP Link
+  // headers and carry noindex directives so they support GEO without competing
+  // with the buyer-facing HTML pages in search results.
+  return [...corePages, ...intentPages]
 }
