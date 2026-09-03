@@ -33,6 +33,9 @@ jobs:
       - name: Resolve latest runtime release
         run: node scripts/check-production-runtime-freshness.mjs --expected-only
 
+      - name: Verify runtime ancestry contract
+        run: node scripts/runtime-release.test.mjs
+
       - name: Lint
         run: pnpm lint
 
