@@ -11,7 +11,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 async function waitForProductionCommit() {
   if (!EXPECTED_COMMIT_SHA) {
     console.log('No expected commit SHA provided; skipping deploy SHA check.')
-    return
+    return true
   }
 
   const buildInfoUrl = `${SITE_URL}/api/build-info`
@@ -28,7 +28,7 @@ async function waitForProductionCommit() {
         const data = await response.json()
         if (data.commit === EXPECTED_COMMIT_SHA) {
           console.log(`Production is running commit ${EXPECTED_COMMIT_SHA}.`)
-          return
+          return true
         }
 
         console.log(`Deploy check ${attempt}/${maxAttempts}: production commit is ${data.commit ?? 'unknown'}.`)
@@ -42,7 +42,8 @@ async function waitForProductionCommit() {
     await sleep(10000)
   }
 
-  throw new Error(`Production did not reach commit ${EXPECTED_COMMIT_SHA} within the deploy check window.`)
+  console.log(`IndexNow deferred: production did not reach commit ${EXPECTED_COMMIT_SHA} within the deploy check window.`)
+  return false
 }
 
 async function verifyKey() {
@@ -95,7 +96,12 @@ async function getIndexableUrls() {
 }
 
 async function submitIndexNow() {
-  await waitForProductionCommit()
+  const productionReady = await waitForProductionCommit()
+  if (!productionReady) {
+    console.log('No stale URLs were submitted. A later scheduled or manual run can retry after production catches up.')
+    return
+  }
+
   const keyLocation = await verifyKey()
   const urlList = await getIndexableUrls()
   const host = new URL(SITE_URL).host
