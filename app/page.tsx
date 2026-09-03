@@ -19,6 +19,7 @@ import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
 import { ValueProofSection } from '@/components/value-proof-section'
 import { SiteFooter } from '@/components/site-footer'
 import { StickyMobileCta } from '@/components/sticky-mobile-cta'
+import { DesktopSalesDock } from '@/components/desktop-sales-dock'
 import { MarketProofSection } from '@/components/market-proof-section'
 import { DeferredWidgets } from '@/components/deferred-widgets'
 import { boat, cinematic, faqs, gallery } from '@/lib/boat-data'
@@ -90,6 +91,7 @@ export default function Page() {
         <SiteFooter />
       </SmoothScroll>
       <StickyMobileCta />
+      <DesktopSalesDock />
       <DeferredWidgets />
     </>
   )

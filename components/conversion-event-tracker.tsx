@@ -29,6 +29,16 @@ function detectTrafficSource() {
   return 'referral'
 }
 
+function readCampaign() {
+  const params = new URLSearchParams(window.location.search)
+  return {
+    utm_source: params.get('utm_source') || undefined,
+    utm_medium: params.get('utm_medium') || undefined,
+    utm_campaign: params.get('utm_campaign') || undefined,
+    utm_content: params.get('utm_content') || undefined,
+  }
+}
+
 export function ConversionEventTracker() {
   useEffect(() => {
     pushDataLayerEvent({
@@ -36,6 +46,7 @@ export function ConversionEventTracker() {
       traffic_source_group: detectTrafficSource(),
       landing_path: window.location.pathname,
       referrer: document.referrer || 'direct',
+      ...readCampaign(),
     })
 
     const observed = SECTION_EVENTS.flatMap(({ selector, event }) => {
@@ -44,6 +55,9 @@ export function ConversionEventTracker() {
     })
 
     const viewedDepths = new Set<number>()
+    const startedAt = Date.now()
+    const milestones = new Set<number>()
+
     const onScroll = () => {
       const scrollable = document.documentElement.scrollHeight - window.innerHeight
       if (scrollable <= 0) return
@@ -57,10 +71,24 @@ export function ConversionEventTracker() {
       }
     }
 
+    const engagementTimer = window.setInterval(() => {
+      const seconds = Math.floor((Date.now() - startedAt) / 1000)
+      for (const threshold of [30, 60, 120]) {
+        if (seconds >= threshold && !milestones.has(threshold)) {
+          milestones.add(threshold)
+          pushDataLayerEvent({ event: 'engaged_time', engaged_seconds: threshold })
+        }
+      }
+      if (milestones.has(120)) window.clearInterval(engagementTimer)
+    }, 5000)
+
     window.addEventListener('scroll', onScroll, { passive: true })
 
     if (observed.length === 0) {
-      return () => window.removeEventListener('scroll', onScroll)
+      return () => {
+        window.removeEventListener('scroll', onScroll)
+        window.clearInterval(engagementTimer)
+      }
     }
 
     const observer = new IntersectionObserver(
@@ -81,6 +109,7 @@ export function ConversionEventTracker() {
     return () => {
       observer.disconnect()
       window.removeEventListener('scroll', onScroll)
+      window.clearInterval(engagementTimer)
     }
   }, [])
 
