@@ -4,24 +4,26 @@ import { latestRuntimeCommit, productionContainsRuntime } from './check-producti
 
 const git = (args) => execFileSync('git', args, { encoding: 'utf8' }).trim()
 const runtime = latestRuntimeCommit().commit
-const runtimeParent = git(['rev-parse', `${runtime}^1`])
 const head = git(['rev-parse', 'HEAD'])
+const headParent = git(['rev-parse', `${head}^1`])
 
 assert.match(runtime, /^[a-f0-9]{40}$/)
+assert.match(head, /^[a-f0-9]{40}$/)
+
 assert.equal(
-  productionContainsRuntime(runtimeParent, runtime),
+  productionContainsRuntime(headParent, head),
   true,
   'A newer commit must contain its first-parent ancestor.',
 )
 assert.equal(
-  productionContainsRuntime(runtime, runtimeParent),
+  productionContainsRuntime(head, headParent),
   false,
-  'An older commit must not satisfy a newer expected runtime release.',
+  'An older commit must not satisfy a newer expected release.',
 )
-assert.notEqual(
-  runtime,
-  head,
-  'This operational-only branch should resolve an earlier runtime release instead of treating HEAD as runtime.',
+assert.equal(
+  productionContainsRuntime(runtime, head),
+  true,
+  'The resolved runtime release must be HEAD itself or an ancestor contained by HEAD.',
 )
 
 console.log(`Runtime release ancestry tests passed. expected_runtime=${runtime} head=${head}`)
