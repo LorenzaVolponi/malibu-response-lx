@@ -1,3 +1,5 @@
+import { INDEXABLE_GUIDE_SLUGS, SUPPORT_ONLY_GUIDE_SLUGS } from './lib/search-index-policy.mjs'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -25,6 +27,12 @@ const nextConfig = {
       { key: 'X-Content-Type-Options', value: 'nosniff' },
     ]
 
+    const supportOnlyHeaders = [
+      { key: 'X-Robots-Tag', value: 'noindex, follow' },
+      { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+      { key: 'X-Content-Type-Options', value: 'nosniff' },
+    ]
+
     const machineHeaders = (contentType) => [
       { key: 'Content-Type', value: contentType },
       { key: 'Cache-Control', value: 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800' },
@@ -33,9 +41,19 @@ const nextConfig = {
 
     return [
       {
-        source: '/((?!_next/|api/|boat\\.json$|citation\\.json$|authority\\.json$|llms\\.txt$|ai\\.txt$|feed\\.xml$|guias/malibu-response-lx-a-venda$).*)',
+        // Child guides are classified explicitly below. All other human HTML
+        // routes remain indexable by default.
+        source: '/((?!_next/|api/|boat\\.json$|citation\\.json$|authority\\.json$|llms\\.txt$|ai\\.txt$|feed\\.xml$|guias/).*)',
         headers: indexableHeaders,
       },
+      ...INDEXABLE_GUIDE_SLUGS.map((slug) => ({
+        source: `/guias/${slug}`,
+        headers: indexableHeaders,
+      })),
+      ...SUPPORT_ONLY_GUIDE_SLUGS.map((slug) => ({
+        source: `/guias/${slug}`,
+        headers: supportOnlyHeaders,
+      })),
       {
         source: '/',
         headers: [
@@ -47,7 +65,6 @@ const nextConfig = {
       },
       { source: '/_next/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }, { key: 'X-Content-Type-Options', value: 'nosniff' }] },
       { source: '/api/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, nosnippet' }, { key: 'X-Content-Type-Options', value: 'nosniff' }] },
-      { source: '/guias/malibu-response-lx-a-venda', headers: [{ key: 'X-Robots-Tag', value: 'noindex, follow' }] },
       { source: '/sitemap.xml', headers: [{ key: 'Cache-Control', value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' }] },
       { source: '/sitemap-images.xml', headers: [{ key: 'Cache-Control', value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' }] },
       { source: '/robots.txt', headers: [{ key: 'Cache-Control', value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' }] },
