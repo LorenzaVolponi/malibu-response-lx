@@ -13,14 +13,6 @@ const LEDGER_KEYS = [
   'referrer_host',
   'landing_path',
 ] as const
-const MESSAGE_CONTEXT_KEYS = [
-  'channel_group',
-  'source_group',
-  'utm_source',
-  'utm_medium',
-  'utm_campaign',
-  'landing_path',
-] as const
 
 function safeParam(reqUrl: URL, key: string, maxLength = 250) {
   const value = reqUrl.searchParams.get(key)?.trim()
@@ -32,22 +24,10 @@ function createLeadRef() {
   return crypto.randomUUID().replaceAll('-', '').slice(0, 10).toUpperCase()
 }
 
-function withAttribution(url: string, reqUrl: URL, intent: ContactIntent, leadRef: string) {
+function withLeadReference(url: string, leadRef: string) {
   const destination = new URL(url)
   const currentText = destination.searchParams.get('text') ?? ''
-  const attribution = MESSAGE_CONTEXT_KEYS
-    .map((key) => [key, safeParam(reqUrl, key)] as const)
-    .filter(([, value]) => value)
-
-  const context: string[] = [`lead_ref: ${leadRef}`, `intenção: ${intent}`]
-  if (attribution.length > 0) {
-    context.push(...attribution.map(([key, value]) => `${key}: ${value}`))
-  }
-
-  if (!currentText.includes('Contexto do lead:')) {
-    destination.searchParams.set('text', `${currentText}\n\nContexto do lead: ${context.join(' | ')}`)
-  }
-
+  destination.searchParams.set('text', `${currentText}\n\nReferência do anúncio: ${leadRef}`)
   return destination
 }
 
@@ -76,7 +56,7 @@ export function GET(req: Request) {
   const reqUrl = new URL(req.url)
   const intent = intentSchema.parse(reqUrl.searchParams.get('intent')) as ContactIntent
   const leadRef = createLeadRef()
-  const destination = withAttribution(whatsappUrl(intent), reqUrl, intent, leadRef)
+  const destination = withLeadReference(whatsappUrl(intent), leadRef)
 
   logLeadRedirect(reqUrl, intent, leadRef)
 
@@ -85,5 +65,6 @@ export function GET(req: Request) {
   response.headers.set('Pragma', 'no-cache')
   response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive')
   response.headers.set('X-Lead-Reference', leadRef)
+  response.headers.set('X-Lead-Intent', intent)
   return response
 }

@@ -60,7 +60,7 @@ jobs:
           cat /tmp/malibu-sales-health-server.log || true
           exit 1
 
-      - name: Verify lead redirect contract
+      - name: Verify buyer-clean lead redirect
         shell: bash
         run: |
           set -euo pipefail
@@ -76,54 +76,99 @@ jobs:
 
           location="$(awk 'BEGIN{IGNORECASE=1} /^location:/ {sub(/^[^:]+:[[:space:]]*/, ""); gsub(/\r/, ""); print; exit}' /tmp/whatsapp-headers)"
           lead_ref="$(awk 'BEGIN{IGNORECASE=1} /^x-lead-reference:/ {sub(/^[^:]+:[[:space:]]*/, ""); gsub(/\r/, ""); print; exit}' /tmp/whatsapp-headers)"
+          lead_intent="$(awk 'BEGIN{IGNORECASE=1} /^x-lead-intent:/ {sub(/^[^:]+:[[:space:]]*/, ""); gsub(/\r/, ""); print; exit}' /tmp/whatsapp-headers)"
           cache_control="$(awk 'BEGIN{IGNORECASE=1} /^cache-control:/ {sub(/^[^:]+:[[:space:]]*/, ""); gsub(/\r/, ""); print; exit}' /tmp/whatsapp-headers)"
           robots="$(awk 'BEGIN{IGNORECASE=1} /^x-robots-tag:/ {sub(/^[^:]+:[[:space:]]*/, ""); gsub(/\r/, ""); print; exit}' /tmp/whatsapp-headers)"
 
-          LOCATION="$location" LEAD_REF="$lead_ref" node <<'NODE'
+          LOCATION="$location" LEAD_REF="$lead_ref" LEAD_INTENT="$lead_intent" node <<'NODE'
           const location = process.env.LOCATION || ''
           const leadRef = process.env.LEAD_REF || ''
+          const leadIntent = process.env.LEAD_INTENT || ''
           if (!/^[A-F0-9]{10}$/.test(leadRef)) throw new Error(`Invalid lead reference: ${leadRef}`)
+          if (leadIntent !== 'offer') throw new Error(`Unexpected lead intent header: ${leadIntent}`)
 
           const destination = new URL(location)
           if (destination.hostname !== 'wa.me') throw new Error(`Unexpected redirect host: ${destination.hostname}`)
           const text = destination.searchParams.get('text') || ''
 
-          const required = [
-            'Contexto do lead:',
-            `lead_ref: ${leadRef}`,
-            'intenção: offer',
-            'channel_group: organic_search',
-            'source_group: google',
-            'utm_source: google',
-            'utm_medium: organic',
-            'utm_campaign: sale line break',
-            'landing_path: /',
-          ]
-          for (const value of required) {
-            if (!text.includes(value)) throw new Error(`Missing WhatsApp context: ${value}`)
+          if (!text.includes(`Referência do anúncio: ${leadRef}`)) {
+            throw new Error('Buyer message is missing the correlatable listing reference')
           }
 
-          if (text.includes('SENSITIVE_TEST_ID') || text.includes('gclid:')) {
-            throw new Error('Raw paid click ID leaked into WhatsApp message')
-          }
-          if (text.includes('sale|line') || text.includes('sale\nline')) {
-            throw new Error('Unsafe attribution delimiter reached WhatsApp message')
+          const forbidden = [
+            'Contexto do lead:',
+            'lead_ref:',
+            'intenção:',
+            'channel_group',
+            'source_group',
+            'utm_source',
+            'utm_medium',
+            'utm_campaign',
+            'landing_path',
+            'gclid',
+            'SENSITIVE_TEST_ID',
+            'sale|line',
+          ]
+          for (const value of forbidden) {
+            if (text.includes(value)) throw new Error(`Tracking detail leaked into buyer message: ${value}`)
           }
           NODE
 
           printf '%s' "$cache_control" | grep -F 'no-store' >/dev/null
           printf '%s' "$robots" | grep -F 'noindex' >/dev/null
 
+      - name: Verify server-side attribution ledger
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ledger_line="$(grep '\[whatsapp-lead\]' /tmp/malibu-sales-health-server.log | tail -n 1)"
+          if [ -z "$ledger_line" ]; then
+            echo 'No whatsapp lead ledger event was written by the local PR server.'
+            cat /tmp/malibu-sales-health-server.log
+            exit 1
+          fi
+
+          if printf '%s' "$ledger_line" | grep -F 'SENSITIVE_TEST_ID' >/dev/null; then
+            echo 'Raw paid click ID leaked into server-side ledger.'
+            exit 1
+          fi
+
+          LEDGER_LINE="$ledger_line" node <<'NODE'
+          const line = process.env.LEDGER_LINE || ''
+          const jsonStart = line.indexOf('{')
+          if (jsonStart < 0) throw new Error('Ledger event JSON was not found')
+          const event = JSON.parse(line.slice(jsonStart))
+
+          const expected = {
+            event: 'whatsapp_lead_redirect',
+            intent: 'offer',
+            channel_group: 'organic_search',
+            source_group: 'google',
+            utm_source: 'google',
+            utm_medium: 'organic',
+            utm_campaign: 'sale line break',
+            landing_path: '/',
+            has_paid_click_id: true,
+          }
+          for (const [key, value] of Object.entries(expected)) {
+            if (event[key] !== value) throw new Error(`Ledger mismatch for ${key}: ${event[key]} !== ${value}`)
+          }
+          if (!/^[A-F0-9]{10}$/.test(event.lead_ref || '')) throw new Error('Ledger lead_ref is invalid')
+          if (!event.occurred_at) throw new Error('Ledger timestamp is missing')
+          NODE
+
       - name: Verify invalid intent fails safe
         shell: bash
         run: |
           set -euo pipefail
-          location="$(curl -sS -D - -o /dev/null "$SITE_URL/api/whatsapp?intent=not-a-real-intent" | awk 'BEGIN{IGNORECASE=1} /^location:/ {sub(/^[^:]+:[[:space:]]*/, ""); gsub(/\r/, ""); print; exit}')"
-          LOCATION="$location" node <<'NODE'
-          const destination = new URL(process.env.LOCATION || '')
-          const text = destination.searchParams.get('text') || ''
-          if (!text.includes('intenção: primary')) throw new Error('Invalid intent did not fall back to primary')
-          NODE
+          headers="$(curl -sS -D - -o /dev/null "$SITE_URL/api/whatsapp?intent=not-a-real-intent")"
+          intent="$(printf '%s' "$headers" | awk 'BEGIN{IGNORECASE=1} /^x-lead-intent:/ {sub(/^[^:]+:[[:space:]]*/, ""); gsub(/\r/, ""); print; exit}')"
+          if [ "$intent" != "primary" ]; then
+            echo "Invalid intent did not fall back to primary: $intent"
+            exit 1
+          fi
 
       - name: Publish summary
         if: always()
@@ -133,10 +178,11 @@ jobs:
             echo '### Sales funnel health'
             echo "- Tested source: $SITE_URL"
             echo '- Verifies WhatsApp redirect remains HTTP 302 and non-cacheable.'
-            echo '- Verifies lead_ref is generated and matches the WhatsApp context.'
-            echo '- Verifies intent, source, channel, campaign and landing attribution survive the redirect.'
-            echo '- Verifies raw advertising click IDs do not leak into the seller message.'
-            echo '- Verifies untrusted delimiters are sanitized.'
+            echo '- Verifies the buyer sees only the commercial message plus a short listing reference.'
+            echo '- Verifies attribution/UTM/click IDs never leak into the buyer-facing WhatsApp text.'
+            echo '- In PRs, verifies channel, source, campaign, landing and paid-click presence remain in the server-side ledger.'
+            echo '- Verifies raw advertising click IDs are not persisted in the ledger.'
+            echo '- Verifies untrusted attribution delimiters are sanitized server-side.'
             echo '- Verifies invalid intents fall back safely to primary.'
             echo '- No frontend behavior or layout is added by this workflow.'
           } >> "$GITHUB_STEP_SUMMARY"
