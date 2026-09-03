@@ -1,13 +1,9 @@
-'use client'
-
-import { useRef } from 'react'
 import Image from 'next/image'
 import { boat } from '@/lib/boat-data'
-import { Check, MessageCircle, Share2 } from 'lucide-react'
+import { Check, MessageCircle } from 'lucide-react'
 import { whatsappLeadUrl } from '@/lib/contact'
-import { siteConfig } from '@/lib/site-config'
-import { pushDataLayerEvent } from '@/lib/analytics'
-import { useDeferredGsap } from '@/lib/use-deferred-gsap'
+import { ListingShareControls } from '@/components/listing-share-controls'
+import { PricingMotionEnhancer } from '@/components/pricing-motion-enhancer'
 
 const includes = [
   'Motor Indmar Monsoon 350 SS (V8 350 HP)',
@@ -25,41 +21,10 @@ const contactActions = [
   { label: 'Fazer uma proposta', href: whatsappLeadUrl('offer'), intent: 'offer' },
 ] as const
 
-const shareText = `${boat.brand} ${boat.model} ${boat.year} à venda por ${boat.priceLabel} — V8 350 HP, Direct Drive e Zero Off GPS.`
-const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(`${shareText}\n${siteConfig.url}`)}`
-
 export function PricingCta() {
-  const root = useRef<HTMLElement>(null)
-  const bg = useRef<HTMLDivElement>(null)
-
-  useDeferredGsap(root, (gsap) => {
-    gsap.to(bg.current, {
-      yPercent: 20,
-      ease: 'none',
-      scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
-    })
-    gsap.from('[data-cta-reveal]', {
-      y: 40,
-      opacity: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-      stagger: 0.1,
-      scrollTrigger: { trigger: root.current, start: 'top 70%' },
-    })
-  })
-
-  const shareListing = async () => {
-    pushDataLayerEvent({ event: 'listing_share_click', share_surface: 'native' })
-    if (navigator.share) {
-      await navigator.share({ title: `${boat.brand} ${boat.model} ${boat.year}`, text: shareText, url: siteConfig.url }).catch(() => undefined)
-      return
-    }
-    window.open(whatsappShareUrl, '_blank', 'noopener,noreferrer')
-  }
-
   return (
-    <section ref={root} id="negociar" className="relative overflow-hidden py-28 sm:py-36">
-      <div ref={bg} className="absolute inset-0 -z-10 will-change-transform">
+    <section id="negociar" className="relative overflow-hidden py-28 sm:py-36">
+      <div data-cta-bg className="absolute inset-0 -z-10 will-change-transform">
         <Image src="/images/exterior-front.jpeg" alt="" aria-hidden="true" fill sizes="100vw" loading="lazy" decoding="async" className="scale-110 object-cover" />
         <div className="absolute inset-0 bg-navy-deep/80" />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
@@ -92,24 +57,7 @@ export function PricingCta() {
                     {action.label}
                   </a>
                 ))}
-                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                  <button
-                    type="button"
-                    onClick={shareListing}
-                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-cream/10 px-4 py-2 text-xs font-semibold text-cream/75 transition hover:border-gold/35 hover:text-gold"
-                  >
-                    <Share2 className="size-4" aria-hidden="true" /> Compartilhar anúncio
-                  </button>
-                  <a
-                    href={whatsappShareUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => pushDataLayerEvent({ event: 'listing_share_click', share_surface: 'whatsapp' })}
-                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-cream/10 px-4 py-2 text-xs font-semibold text-cream/75 transition hover:border-gold/35 hover:text-gold"
-                  >
-                    <MessageCircle className="size-4" aria-hidden="true" /> Enviar a alguém
-                  </a>
-                </div>
+                <ListingShareControls />
               </div>
             </div>
 
@@ -127,6 +75,7 @@ export function PricingCta() {
           </div>
         </div>
       </div>
+      <PricingMotionEnhancer />
     </section>
   )
 }
