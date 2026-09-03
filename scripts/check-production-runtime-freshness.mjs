@@ -1,4 +1,6 @@
 import { execFileSync } from 'node:child_process'
+import { fileURLToPath } from 'node:url'
+import { resolve } from 'node:path'
 import { changesRequireBuild } from './vercel-ignore-build.mjs'
 
 const SITE_URL = (process.env.PRODUCTION_SITE_URL || 'https://malibu-response-lx.vercel.app').replace(/\/$/, '')
@@ -48,7 +50,7 @@ export function latestRuntimeCommit() {
   throw new Error('Could not find a runtime-impacting commit on the first-parent history.')
 }
 
-function productionContainsRuntime(expectedRuntimeCommit, productionCommit) {
+export function productionContainsRuntime(expectedRuntimeCommit, productionCommit) {
   if (!productionCommit) return false
   if (productionCommit === expectedRuntimeCommit) return true
 
@@ -120,4 +122,7 @@ async function main() {
   )
 }
 
-await main()
+const invokedPath = process.argv[1] ? resolve(process.argv[1]) : ''
+if (invokedPath && fileURLToPath(import.meta.url) === invokedPath) {
+  await main()
+}
