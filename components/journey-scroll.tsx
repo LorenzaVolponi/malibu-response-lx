@@ -1,63 +1,9 @@
-'use client'
-
-import { useRef } from 'react'
 import { journey } from '@/lib/boat-data'
-import { useDeferredGsap } from '@/lib/use-deferred-gsap'
+import { SectionMotionEnhancer } from '@/components/section-motion-enhancer'
 
 export function JourneyScroll() {
-  const root = useRef<HTMLElement>(null)
-  const pin = useRef<HTMLDivElement>(null)
-
-  useDeferredGsap(root, (gsap) => {
-    const slides = gsap.utils.toArray<HTMLElement>('[data-slide]')
-    const total = slides.length
-
-    slides.forEach((slide, index) => {
-      gsap.set(slide, {
-        opacity: index === 0 ? 1 : 0,
-        scale: index === 0 ? 1 : 1.08,
-      })
-      gsap.set(slide.querySelectorAll('[data-slide-text]'), {
-        opacity: index === 0 ? 1 : 0,
-        y: index === 0 ? 0 : 30,
-      })
-    })
-
-    const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: root.current,
-        start: 'top top',
-        end: () => `+=${total * 90}%`,
-        scrub: 1,
-        pin: pin.current,
-        anticipatePin: 1,
-      },
-    })
-
-    for (let index = 1; index < total; index++) {
-      const previous = slides[index - 1]
-      const current = slides[index]
-
-      timeline
-        .to(previous, { opacity: 0, scale: 1.06, duration: 0.5, ease: 'power2.inOut' }, index)
-        .to(previous.querySelectorAll('[data-slide-text]'), { opacity: 0, y: -20, duration: 0.35 }, index)
-        .fromTo(
-          current,
-          { opacity: 0, scale: 1.1 },
-          { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.inOut' },
-          index,
-        )
-        .fromTo(
-          current.querySelectorAll('[data-slide-text]'),
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power3.out' },
-          index + 0.2,
-        )
-    }
-  })
-
   return (
-    <section ref={root} id="experiencia" className="relative">
+    <section id="experiencia" className="relative">
       <div className="bg-navy-deep px-5 py-16 md:hidden">
         <div className="mx-auto max-w-md">
           <p className="mb-3 text-xs tracking-luxe text-gold uppercase">
@@ -92,7 +38,7 @@ export function JourneyScroll() {
       </div>
 
       <div
-        ref={pin}
+        data-journey-pin
         className="relative hidden h-[100svh] w-full overflow-hidden bg-navy-deep md:block"
       >
         {journey.map((step, i) => (
@@ -138,6 +84,7 @@ export function JourneyScroll() {
           </article>
         ))}
       </div>
+      <SectionMotionEnhancer sectionId="experiencia" kind="journey" />
     </section>
   )
 }
