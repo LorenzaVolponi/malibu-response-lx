@@ -8,6 +8,7 @@ type Setup = (gsap: Gsap) => Cleanup
 
 type Options = {
   rootMargin?: string
+  mediaQuery?: string
 }
 
 /**
@@ -17,7 +18,10 @@ type Options = {
 export function useDeferredGsap<T extends Element>(
   root: RefObject<T | null>,
   setup: Setup,
-  { rootMargin = '120px 0px' }: Options = {},
+  {
+    rootMargin = '120px 0px',
+    mediaQuery = '(min-width: 768px) and (prefers-reduced-motion: no-preference)',
+  }: Options = {},
 ) {
   const setupRef = useRef(setup)
   setupRef.current = setup
@@ -26,7 +30,7 @@ export function useDeferredGsap<T extends Element>(
     const element = root.current
     if (!element) return
 
-    const media = window.matchMedia('(min-width: 768px) and (prefers-reduced-motion: no-preference)')
+    const media = window.matchMedia(mediaQuery)
     if (!media.matches) return
 
     let cancelled = false
@@ -77,5 +81,5 @@ export function useDeferredGsap<T extends Element>(
       if (typeof setupCleanup === 'function') setupCleanup()
       context?.revert()
     }
-  }, [root, rootMargin])
+  }, [root, rootMargin, mediaQuery])
 }
