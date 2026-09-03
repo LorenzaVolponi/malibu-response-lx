@@ -50,9 +50,30 @@ export function latestRuntimeCommit() {
   throw new Error('Could not find a runtime-impacting commit on the first-parent history.')
 }
 
+function commitExists(commit) {
+  if (!commit) return false
+  try {
+    execFileSync('git', ['cat-file', '-e', `${commit}^{commit}`], { stdio: 'ignore' })
+    return true
+  } catch {
+    return false
+  }
+}
+
+function refreshMainHistory() {
+  try {
+    execFileSync('git', ['fetch', '--quiet', '--no-tags', 'origin', 'main'], { stdio: 'ignore' })
+  } catch {
+    // Freshness checks remain fail-closed if the remote cannot be refreshed.
+  }
+}
+
 export function productionContainsRuntime(expectedRuntimeCommit, productionCommit) {
   if (!productionCommit) return false
   if (productionCommit === expectedRuntimeCommit) return true
+
+  if (!commitExists(productionCommit)) refreshMainHistory()
+  if (!commitExists(productionCommit)) return false
 
   try {
     execFileSync('git', ['merge-base', '--is-ancestor', expectedRuntimeCommit, productionCommit], {
