@@ -20,14 +20,33 @@ const ATTRIBUTION_KEYS = [
   'landing_path',
 ] as const
 
-function withAttribution(url: string, reqUrl: URL, intent: ContactIntent) {
+const PAID_CLICK_KEYS = ['gclid', 'gbraid', 'wbraid', 'msclkid', 'fbclid'] as const
+const LEDGER_KEYS = [
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'source_group',
+  'channel_group',
+  'referrer_host',
+  'landing_path',
+] as const
+
+function safeParam(reqUrl: URL, key: string, maxLength = 250) {
+  return reqUrl.searchParams.get(key)?.trim().slice(0, maxLength) || undefined
+}
+
+function createLeadRef() {
+  return crypto.randomUUID().replaceAll('-', '').slice(0, 10).toUpperCase()
+}
+
+function withAttribution(url: string, reqUrl: URL, intent: ContactIntent, leadRef: string) {
   const destination = new URL(url)
   const currentText = destination.searchParams.get('text') ?? ''
   const attribution = ATTRIBUTION_KEYS
     .map((key) => [key, reqUrl.searchParams.get(key)?.slice(0, 500)] as const)
     .filter(([, value]) => value)
 
-  const context: string[] = [`intenção: ${intent}`]
+  const context: string[] = [`lead_ref: ${leadRef}`, `intenção: ${intent}`]
   if (attribution.length > 0) {
     context.push(...attribution.map(([key, value]) => `${key}: ${value}`))
   }
@@ -39,9 +58,37 @@ function withAttribution(url: string, reqUrl: URL, intent: ContactIntent) {
   return destination
 }
 
+function logLeadRedirect(reqUrl: URL, intent: ContactIntent, leadRef: string) {
+  const attribution = Object.fromEntries(
+    LEDGER_KEYS
+      .map((key) => [key, safeParam(reqUrl, key)] as const)
+      .filter(([, value]) => value),
+  )
+
+  const event = {
+    event: 'whatsapp_lead_redirect',
+    lead_ref: leadRef,
+    occurred_at: new Date().toISOString(),
+    intent,
+    ...attribution,
+    has_paid_click_id: PAID_CLICK_KEYS.some((key) => Boolean(reqUrl.searchParams.get(key))),
+  }
+
+  // First-party conversion ledger only. Deliberately excludes IP address,
+  // phone number, user agent and raw advertising click IDs.
+  console.info('[whatsapp-lead]', JSON.stringify(event))
+}
+
 export function GET(req: Request) {
   const reqUrl = new URL(req.url)
   const intent = intentSchema.parse(reqUrl.searchParams.get('intent')) as ContactIntent
+  const leadRef = createLeadRef()
+  const destination = withAttribution(whatsappUrl(intent), reqUrl, intent, leadRef)
 
-  return NextResponse.redirect(withAttribution(whatsappUrl(intent), reqUrl, intent), 302)
+  logLeadRedirect(reqUrl, intent, leadRef)
+
+  const response = NextResponse.redirect(destination, 302)
+  response.headers.set('Cache-Control', 'private, no-store, max-age=0')
+  response.headers.set('X-Lead-Reference', leadRef)
+  return response
 }
