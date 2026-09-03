@@ -31,8 +31,61 @@ const queryPortfolio = {
 export function GET() {
   const manifestUrl = `${siteConfig.url}/authority.json`
 
+  const primarySearchTargets = {
+    listing: {
+      intents: ['Malibu Response LX à venda', 'comprar Malibu Response LX', `Malibu Response LX ${boat.year}`],
+      primaryUrl: siteConfig.url,
+      supportingUrls: [
+        `${siteConfig.url}${siteConfig.guidePath}`,
+        `${siteConfig.url}/guias/malibu-response-lx-a-venda`,
+      ],
+      policy: 'The canonical listing owns the exact sale intent. The exact-sale support guide is accessible but noindex to avoid competing with the listing.',
+    },
+    price: {
+      intents: ['Malibu Response LX preço', 'Malibu Response LX valor', `Malibu Response LX ${boat.year} preço`],
+      primaryUrl: `${siteConfig.url}/guias/malibu-response-lx-preco`,
+    },
+    specification: {
+      intents: ['Malibu Response LX ficha técnica', 'Malibu Response LX especificações', `Malibu Response LX ${boat.year} ficha técnica`],
+      primaryUrl: `${siteConfig.url}/guias/malibu-response-lx-2013-ficha-tecnica`,
+      evidenceUrl: `${siteConfig.url}/dossie-tecnico`,
+    },
+    zeroOff: {
+      intents: ['Malibu Response LX Zero Off', 'Zero Off GPS lancha', 'Zero Off esqui aquático'],
+      primaryUrl: `${siteConfig.url}/guias/zero-off-gps-como-funciona`,
+    },
+    directDriveSki: {
+      intents: ['lancha para esqui aquático direct drive', 'lancha para ski aquático', 'barco de esqui náutico direct drive'],
+      primaryUrl: `${siteConfig.url}/guias/lancha-direct-drive-esqui-aquatico`,
+    },
+    engine: {
+      intents: ['Indmar Monsoon 350 SS', 'motor Malibu Response LX', 'Malibu V8 350 HP'],
+      primaryUrl: `${siteConfig.url}/guias/indmar-monsoon-350-ss-v8`,
+    },
+    engineHours: {
+      intents: [`Malibu Response LX ${boat.engineHours} horas`, 'horas motor lancha usada', 'horímetro lancha usada'],
+      primaryUrl: `${siteConfig.url}/guias/quantas-horas-motor-lancha-usada`,
+    },
+    documentation: {
+      intents: ['documentação lancha usada', 'transferência embarcação usada', 'checklist compra barco usado'],
+      primaryUrl: `${siteConfig.url}/guias/checklist-documentacao-lancha-usada`,
+    },
+    inspection: {
+      intents: ['inspeção pré-compra lancha', 'avaliar lancha usada', 'vistoria embarcação usada'],
+      primaryUrl: `${siteConfig.url}/guias/checklist-inspecao-pre-compra-lancha`,
+    },
+    compareNautique: {
+      intents: ['Malibu Response LX vs Nautique Ski 200', 'Malibu ou Nautique'],
+      primaryUrl: `${siteConfig.url}/guias/malibu-response-lx-vs-nautique-ski-200`,
+    },
+    compareMasterCraft: {
+      intents: ['Malibu Response LX vs MasterCraft ProStar', 'Malibu ou MasterCraft ProStar'],
+      primaryUrl: `${siteConfig.url}/guias/malibu-response-lx-vs-mastercraft-prostar`,
+    },
+  } as const
+
   const payload = {
-    schemaVersion: '1.1',
+    schemaVersion: '1.2',
     manifestType: 'listing-organic-authority',
     canonical: siteConfig.url,
     machineReadable: manifestUrl,
@@ -49,6 +102,13 @@ export function GET() {
       language: 'pt-BR',
     },
     queryPortfolio,
+    primarySearchTargets,
+    cannibalizationPolicy: {
+      principle: 'One primary buyer-facing URL is assigned to each high-value query class; supporting content must not displace the canonical commercial target for duplicate intent.',
+      exactSaleIntentOwner: siteConfig.url,
+      supportOnlyNoindex: [`${siteConfig.url}/guias/malibu-response-lx-a-venda`],
+      evidencePagesRemainDistinct: [`${siteConfig.url}/dossie-tecnico`],
+    },
     semanticClusters: {
       transactional: ['Malibu Response LX à venda', 'Malibu Response LX preço', 'comprar Malibu Response LX'],
       technical: ['Direct Drive', 'Zero Off GPS', 'Indmar Monsoon 350 SS', '350 HP', `${boat.engineHours} horas`],
@@ -124,7 +184,7 @@ export function GET() {
     headers: machineSurfaceHeaders({
       contentType: 'application/json; charset=utf-8',
       canonical: manifestUrl,
-      etagKey: 'authority-manifest-v1-1',
+      etagKey: 'authority-manifest-v1-2',
       robots: 'noindex, follow',
       links: [
         `<${siteConfig.url}>; rel="describedby"`,
