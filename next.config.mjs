@@ -33,7 +33,7 @@ const nextConfig = {
 
     return [
       {
-        source: '/((?!_next/|api/|boat\\.json$|citation\\.json$|authority\\.json$|llms\\.txt$|ai\\.txt$|feed\\.xml$).*)',
+        source: '/((?!_next/|api/|boat\\.json$|citation\\.json$|authority\\.json$|llms\\.txt$|ai\\.txt$|feed\\.xml$|guias/malibu-response-lx-a-venda$).*)',
         headers: indexableHeaders,
       },
       {
@@ -47,6 +47,7 @@ const nextConfig = {
       },
       { source: '/_next/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }, { key: 'X-Content-Type-Options', value: 'nosniff' }] },
       { source: '/api/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, nosnippet' }, { key: 'X-Content-Type-Options', value: 'nosniff' }] },
+      { source: '/guias/malibu-response-lx-a-venda', headers: [{ key: 'X-Robots-Tag', value: 'noindex, follow' }] },
       { source: '/sitemap.xml', headers: [{ key: 'Cache-Control', value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' }] },
       { source: '/sitemap-images.xml', headers: [{ key: 'Cache-Control', value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' }] },
       { source: '/robots.txt', headers: [{ key: 'Cache-Control', value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' }] },
