@@ -59,18 +59,33 @@ jobs:
           grep -F "$SITE_URL/sitemap.xml" /tmp/robots.txt >/dev/null
           grep -F "<loc>$SITE_URL</loc>" /tmp/sitemap.xml >/dev/null
 
+          if [ -n "$google_meta" ]; then
+            google_status='detected'
+          else
+            google_status='not_detected'
+          fi
+
+          if [ -n "$bing_meta" ]; then
+            bing_status='detected'
+          else
+            bing_status='not_detected'
+          fi
+
+          echo "google_html_verification_meta=$google_status"
+          echo "bing_html_verification_meta=$bing_status"
+
           {
             echo '### Search ownership / indexing readiness'
             echo "- Canonical homepage: reachable and indexable ✅"
             echo "- robots.txt: Googlebot + Bingbot + sitemap signals present ✅"
             echo "- sitemap.xml: canonical homepage present ✅"
-            if [ -n "$google_meta" ]; then
+            if [ "$google_status" = 'detected' ]; then
               echo '- Google HTML verification meta: detected ✅'
             else
               echo '- Google HTML verification meta: not detected ⚠️'
               echo '  - This does **not** prove Search Console is unverified; ownership may use a DNS/domain-property method.'
             fi
-            if [ -n "$bing_meta" ]; then
+            if [ "$bing_status" = 'detected' ]; then
               echo '- Bing HTML verification meta: detected ✅'
             else
               echo '- Bing HTML verification meta: not detected ⚠️'
