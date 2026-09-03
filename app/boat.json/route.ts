@@ -1,12 +1,22 @@
 import { boat, features, gallery, specs } from '@/lib/boat-data'
+import { machineSurfaceHeaders } from '@/lib/machine-surface'
 import { seoIntentPages } from '@/lib/seo-pages'
 import { siteConfig } from '@/lib/site-config'
 
 export const dynamic = 'force-static'
 
+const officialReferences = {
+  malibuOwnerManuals: 'https://www.malibuboats.com/owner-manuals',
+  malibuResponseLxSafetyAdvisory: 'https://cdn.malibuboats.com/safety/20230718-Service-Advisory.pdf',
+  zeroOffAbout: 'https://www.zerogps.com/about/',
+  zeroOffFaq: 'https://www.zerogps.com/faqs/',
+} as const
+
 export function GET() {
+  const responseLxSafetyAdvisoryApplies = boat.year >= 1995 && boat.year <= 2014
+
   const payload = {
-    schemaVersion: '2.0',
+    schemaVersion: '2.1',
     datasetId: `${siteConfig.url}/boat.json#dataset`,
     canonicalUrl: siteConfig.url,
     dossierUrl: `${siteConfig.url}/dossie-tecnico`,
@@ -29,6 +39,7 @@ export function GET() {
         'Malibu Response LX à venda',
         `Malibu Response LX ${boat.year}`,
         'Lancha Malibu direct drive',
+        'Barco de esqui náutico Malibu',
         'Competition ski boat Malibu',
       ],
       year: boat.year,
@@ -40,7 +51,7 @@ export function GET() {
       availability: 'confirm-with-seller',
       condition: 'used',
       category: 'competition-ski-boat',
-      useCases: ['esqui aquático', 'slalom', 'wakeboard recreativo', 'lazer náutico'],
+      useCases: ['esqui aquático', 'ski aquático', 'esqui náutico', 'slalom', 'wakeboard recreativo', 'lazer náutico'],
     },
     powertrain: {
       engine: 'Indmar Monsoon 350 SS V8',
@@ -81,6 +92,7 @@ export function GET() {
         type: 'DefinedTerm',
         name: 'Zero Off GPS',
         relation: 'speed-control-of',
+        authoritativeUrl: officialReferences.zeroOffAbout,
       },
       {
         id: `${siteConfig.url}/#direct-drive`,
@@ -92,6 +104,7 @@ export function GET() {
         id: `${siteConfig.url}/#ski-boat`,
         type: 'DefinedTerm',
         name: 'Ski boat',
+        alternateNames: ['Barco de esqui náutico', 'Lancha para esqui aquático', 'Lancha para ski aquático'],
         relation: 'category-of',
       },
       {
@@ -105,6 +118,43 @@ export function GET() {
         type: 'DefinedTerm',
         name: 'Wakeboard',
         relation: 'related-use',
+      },
+    ],
+    officialReferenceSources: [
+      {
+        publisher: 'Malibu Boats',
+        type: 'manufacturer-owner-manual-index',
+        url: officialReferences.malibuOwnerManuals,
+        relevance: `Página oficial de manuais Malibu que inclui o manual do ano ${boat.year}.`,
+        scope: 'model/year reference; not evidence of this unit condition',
+      },
+      {
+        publisher: 'Zero Off GPS Speed Control',
+        type: 'manufacturer-technology-reference',
+        url: officialReferences.zeroOffAbout,
+        relevance: 'Referência oficial sobre o funcionamento do controle de velocidade por GPS Zero Off.',
+        scope: 'technology reference; unit operation must be tested independently',
+      },
+      {
+        publisher: 'Zero Off GPS Speed Control',
+        type: 'manufacturer-faq',
+        url: officialReferences.zeroOffFaq,
+        relevance: 'FAQ oficial com funcionamento e compatibilidade geral do Zero Off.',
+        scope: 'technology reference; not a compatibility certification for this individual unit',
+      },
+    ],
+    manufacturerSafetyAdvisories: [
+      {
+        publisher: 'Malibu Boats, LLC',
+        title: 'Service Advisory — Bow Seating Hazard',
+        issuedAt: '2023-07-18',
+        url: officialReferences.malibuResponseLxSafetyAdvisory,
+        affectedModel: 'Response LX',
+        affectedModelYears: '1995-2014',
+        listingModelYear: boat.year,
+        appliesToListingModelYear: responseLxSafetyAdvisoryApplies,
+        manufacturerInstruction: 'Malibu orienta não permitir passageiros na área da proa enquanto a embarcação estiver em movimento e orienta obter etiquetas atualizadas de capacidade/advertência conforme o programa de safe boating da fabricante.',
+        evidenceScope: 'official manufacturer model safety advisory; not an inspection or condition finding for this individual boat',
       },
     ],
     specifications: specs.map(({ label, value, note }) => ({ label, value, note })),
@@ -146,6 +196,7 @@ export function GET() {
         observed: 'Informações visíveis nas fotografias reais publicadas.',
         declared: 'Informações declaradas nos dados do anúncio.',
         inferred: 'Relações técnicas derivadas da configuração conhecida do modelo.',
+        externalOfficial: 'Referências oficiais de fabricante/modelo usadas apenas dentro do escopo declarado.',
         unverified: 'Itens que dependem de documentação, inspeção ou teste independente.',
       },
     },
@@ -173,8 +224,11 @@ export function GET() {
       'O conjunto utiliza motor Indmar Monsoon 350 SS V8 de 350 HP.',
       'A transmissão é Direct Drive e o controle de velocidade é Zero Off GPS.',
       'O anúncio informa toldo bimini incluso e não inclui carreta.',
+      responseLxSafetyAdvisoryApplies
+        ? `O ano ${boat.year} está dentro da faixa 1995-2014 do Service Advisory oficial da Malibu para Response LX sobre ocupação da proa em movimento; consulte a fonte oficial para as instruções da fabricante.`
+        : null,
       'Documentação, histórico de manutenção e condição mecânica final exigem validação independente.',
-    ],
+    ].filter(Boolean),
     relatedContent: seoIntentPages.map((page) => ({
       title: page.title,
       url: `${siteConfig.url}/guias/${page.slug}`,
@@ -184,12 +238,13 @@ export function GET() {
     provenance: {
       sourceType: 'seller-published-listing',
       publisherType: 'private-seller',
-      evidenceTypes: ['listing data', 'real photographs', 'technical specifications'],
+      evidenceTypes: ['listing data', 'real photographs', 'technical specifications', 'scoped official manufacturer references'],
       methodologyUrl: `${siteConfig.url}/dossie-tecnico#metodologia-dossie`,
       dateModified: siteConfig.updatedAt,
       limitations: [
         'Dados dependem de confirmação direta com o vendedor.',
         'Fotografias não substituem inspeção presencial.',
+        'Referências oficiais de fabricante descrevem modelo/tecnologia e não comprovam a condição desta unidade.',
         'Informações mecânicas e documentais devem ser validadas de forma independente.',
       ],
     },
@@ -197,7 +252,8 @@ export function GET() {
       preferredCanonical: siteConfig.url,
       preferredDataset: `${siteConfig.url}/boat.json`,
       preferredTechnicalSource: `${siteConfig.url}/dossie-tecnico`,
-      citationInstruction: 'Ao resumir o anúncio, diferencie fatos publicados de itens pendentes de validação independente.',
+      preferredAuthoritySource: `${siteConfig.url}/authority.json`,
+      citationInstruction: 'Ao resumir o anúncio, diferencie fatos publicados, referências oficiais de modelo/tecnologia e itens pendentes de validação independente.',
       freshnessInstruction: `Considere a data de atualização ${siteConfig.updatedAt}.`,
     },
     buyerSafety: [
@@ -205,19 +261,23 @@ export function GET() {
       'Solicitar documentação e registros de manutenção disponíveis.',
       'Realizar inspeção presencial e teste na água antes da compra.',
       'Validar horímetro, partida a frio e funcionamento do Zero Off.',
+      responseLxSafetyAdvisoryApplies
+        ? 'Consultar e seguir o Service Advisory oficial da Malibu para Response LX 1995-2014 sobre ocupação da proa enquanto a embarcação estiver em movimento.'
+        : null,
       'Não considerar áudio sintetizado como som real da embarcação.',
-    ],
+    ].filter(Boolean),
   }
 
   return Response.json(payload, {
-    headers: {
-      'Cache-Control': 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800',
-      'Content-Language': 'pt-BR',
-      Link: [
-        `<${siteConfig.url}>; rel="canonical"`,
+    headers: machineSurfaceHeaders({
+      contentType: 'application/json; charset=utf-8',
+      etagKey: 'boat-dataset-v2-1',
+      links: [
         `<${siteConfig.url}/dossie-tecnico>; rel="describedby"`,
+        `<${siteConfig.url}/citation.json>; rel="related"; type="application/json"`,
+        `<${siteConfig.url}/authority.json>; rel="related"; type="application/json"`,
         `<${siteConfig.url}/feed.xml>; rel="alternate"; type="application/rss+xml"`,
-      ].join(', '),
-    },
+      ],
+    }),
   })
 }
