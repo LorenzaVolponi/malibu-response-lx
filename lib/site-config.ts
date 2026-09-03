@@ -11,8 +11,8 @@ export const siteConfig = {
   listingName: `${boat.brand} ${boat.model} ${boat.year}`,
   url: CANONICAL_SITE_URL,
   guidePath: '/comprar-barco-malibu-response-lx',
-  updatedAt: '2026-08-25',
-  mobileCtaLabel: `Consultar pelo valor final de ${boat.priceLabel}`,
+  updatedAt: '2026-09-03',
+  mobileCtaLabel: `Tenho interesse · ${boat.priceLabel}`,
   searchConsoleVerification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
   bingVerification: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION,
   engineVideo: {
