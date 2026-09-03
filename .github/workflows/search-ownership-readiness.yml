@@ -1,0 +1,81 @@
+name: Search Ownership Readiness
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/search-ownership-readiness.yml'
+      - 'app/layout.tsx'
+      - 'app/robots.ts'
+      - 'app/sitemap.ts'
+      - 'lib/site-config.ts'
+  workflow_dispatch:
+  schedule:
+    - cron: '37 12 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: malibu-search-ownership-readiness
+  cancel-in-progress: true
+
+jobs:
+  readiness:
+    name: Inspect public search ownership signals
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+
+    env:
+      SITE_URL: https://malibu-response-lx.vercel.app
+
+    steps:
+      - name: Inspect public search signals
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          curl -L -fsS -D /tmp/home-headers "$SITE_URL/" -o /tmp/home.html
+          curl -L -fsS "$SITE_URL/robots.txt" -o /tmp/robots.txt
+          curl -L -fsS "$SITE_URL/sitemap.xml" -o /tmp/sitemap.xml
+
+          canonical="$(grep -oE '<link[^>]+rel="canonical"[^>]+href="[^"]+"|<link[^>]+href="[^"]+"[^>]+rel="canonical"' /tmp/home.html | head -n 1 || true)"
+          google_meta="$(grep -oE '<meta[^>]+name="google-site-verification"[^>]+content="[^"]+"|<meta[^>]+content="[^"]+"[^>]+name="google-site-verification"' /tmp/home.html | head -n 1 || true)"
+          bing_meta="$(grep -oE '<meta[^>]+name="msvalidate\.01"[^>]+content="[^"]+"|<meta[^>]+content="[^"]+"[^>]+name="msvalidate\.01"' /tmp/home.html | head -n 1 || true)"
+
+          if [ -z "$canonical" ] || ! printf '%s' "$canonical" | grep -F "$SITE_URL" >/dev/null; then
+            echo 'Canonical signal is missing or does not point to the canonical site.'
+            exit 1
+          fi
+
+          if grep -Eqi '^x-robots-tag:.*noindex' /tmp/home-headers; then
+            echo 'Canonical homepage unexpectedly exposes X-Robots-Tag noindex.'
+            exit 1
+          fi
+
+          grep -F 'Googlebot' /tmp/robots.txt >/dev/null
+          grep -F 'Bingbot' /tmp/robots.txt >/dev/null
+          grep -F "$SITE_URL/sitemap.xml" /tmp/robots.txt >/dev/null
+          grep -F "<loc>$SITE_URL</loc>" /tmp/sitemap.xml >/dev/null
+
+          {
+            echo '### Search ownership / indexing readiness'
+            echo "- Canonical homepage: reachable and indexable ✅"
+            echo "- robots.txt: Googlebot + Bingbot + sitemap signals present ✅"
+            echo "- sitemap.xml: canonical homepage present ✅"
+            if [ -n "$google_meta" ]; then
+              echo '- Google HTML verification meta: detected ✅'
+            else
+              echo '- Google HTML verification meta: not detected ⚠️'
+              echo '  - This does **not** prove Search Console is unverified; ownership may use a DNS/domain-property method.'
+            fi
+            if [ -n "$bing_meta" ]; then
+              echo '- Bing HTML verification meta: detected ✅'
+            else
+              echo '- Bing HTML verification meta: not detected ⚠️'
+              echo '  - This does **not** prove Bing Webmaster ownership is absent; another verification method may be in use.'
+            fi
+            echo '- This diagnostic cannot read Search Console/Bing Webmaster private coverage, impressions, clicks or query positions.'
+            echo '- Treat actual index coverage and ranking as external evidence, separate from technical readiness.'
+          } >> "$GITHUB_STEP_SUMMARY"
