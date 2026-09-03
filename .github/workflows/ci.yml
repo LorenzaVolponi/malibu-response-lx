@@ -30,6 +30,9 @@ jobs:
       - name: Verify Vercel build quota classifier
         run: node scripts/vercel-ignore-build.test.mjs
 
+      - name: Verify Vercel deployment policy
+        run: node scripts/vercel-deployment-policy.test.mjs
+
       - name: Verify search index policy coverage
         run: node scripts/verify-search-index-policy.mjs
 
