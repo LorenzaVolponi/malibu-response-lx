@@ -15,6 +15,8 @@ const ATTRIBUTION_KEYS = [
   'msclkid',
   'fbclid',
   'source_group',
+  'channel_group',
+  'referrer_host',
   'landing_path',
 ] as const
 
