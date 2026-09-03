@@ -1,0 +1,53 @@
+name: Production Runtime Freshness
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: '41 */2 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: malibu-production-runtime-freshness
+  cancel-in-progress: true
+
+jobs:
+  freshness:
+    name: Verify production contains latest runtime release
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Checkout full main history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Compare latest runtime release with production
+        env:
+          PRODUCTION_SITE_URL: https://malibu-response-lx.vercel.app
+          FRESHNESS_ATTEMPTS: 30
+          FRESHNESS_INTERVAL_MS: 10000
+        run: node scripts/check-production-runtime-freshness.mjs
+
+      - name: Publish freshness summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '### Production runtime freshness'
+            echo '- Compares production with the latest first-parent main commit that changed runtime/build inputs.'
+            echo '- Workflow/docs-only commits do not create false stale alerts.'
+            echo '- Production may report that runtime commit itself or a later descendant containing it.'
+            echo '- Push runs allow up to ~5 minutes for deployment catch-up before failing.'
+            echo '- A failure means code may be merged but the canonical site is still serving older runtime.'
+          } >> "$GITHUB_STEP_SUMMARY"
