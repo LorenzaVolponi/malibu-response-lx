@@ -154,6 +154,28 @@ jobs:
             exit 1
           fi
 
+      - name: Verify machine authority and safety provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          curl -L -sS "$SITE_URL/boat.json" > /tmp/boat.json
+          jq -e '.schemaVersion == "2.1"' /tmp/boat.json >/dev/null
+          jq -e '.officialReferenceSources | length >= 3' /tmp/boat.json >/dev/null
+          jq -e '.manufacturerSafetyAdvisories[0].publisher == "Malibu Boats, LLC"' /tmp/boat.json >/dev/null
+          jq -e '.manufacturerSafetyAdvisories[0].affectedModel == "Response LX"' /tmp/boat.json >/dev/null
+          jq -e '.manufacturerSafetyAdvisories[0].appliesToListingModelYear == true' /tmp/boat.json >/dev/null
+          jq -e '.manufacturerSafetyAdvisories[0].evidenceScope | test("not an inspection")' /tmp/boat.json >/dev/null
+          jq -e '.authenticity.evidencePolicy.externalOfficial | length > 20' /tmp/boat.json >/dev/null
+          jq -e '.provenance.limitations | map(select(test("Referências oficiais"))) | length == 1' /tmp/boat.json >/dev/null
+
+          AUTHORITY_HEADERS="$(curl -sSI "$SITE_URL/authority.json")"
+          printf '%s' "$AUTHORITY_HEADERS" | grep -Eqi '^x-robots-tag:.*noindex' >/dev/null
+          curl -L -sS "$SITE_URL/authority.json" > /tmp/authority.json
+          jq -e '.officialReferenceSources | length >= 4' /tmp/authority.json >/dev/null
+          jq -e '.officialReferenceSources | map(select(.scope | test("not evidence|not an inspection|requires independent test|not a compatibility certification"))) | length >= 4' /tmp/authority.json >/dev/null
+          jq -e '.boundaries | map(select(test("Official manufacturer references"))) | length == 1' /tmp/authority.json >/dev/null
+
       - name: Publish summary
         if: always()
         shell: bash
@@ -167,5 +189,6 @@ jobs:
             echo '- Checked Googlebot and Bingbot access.'
             echo '- Checked XML and image sitemap coverage, freshness and truthful image metadata.'
             echo '- Checked Product + Offer + ItemPage + Vehicle semantic integrity.'
+            echo '- Checked machine authority, official-source scope and manufacturer safety provenance.'
             echo '- This workflow changes no frontend behavior.'
           } >> "$GITHUB_STEP_SUMMARY"
