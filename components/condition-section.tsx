@@ -1,26 +1,10 @@
-'use client'
-
-import { useRef } from 'react'
 import { CheckCircle2 } from 'lucide-react'
 import { conditionItems } from '@/lib/boat-data'
-import { useDeferredGsap } from '@/lib/use-deferred-gsap'
+import { SectionMotionEnhancer } from '@/components/section-motion-enhancer'
 
 export function ConditionSection() {
-  const root = useRef<HTMLElement>(null)
-
-  useDeferredGsap(root, (gsap) => {
-    gsap.from('[data-condition-reveal]', {
-      y: 36,
-      opacity: 0,
-      duration: 0.85,
-      ease: 'power3.out',
-      stagger: 0.08,
-      scrollTrigger: { trigger: root.current, start: 'top 72%' },
-    })
-  })
-
   return (
-    <section ref={root} id="estado" className="relative bg-background py-20 sm:py-28">
+    <section id="estado" className="relative bg-background py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5">
         <div className="mb-12 grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-end" data-condition-reveal>
           <div>
@@ -51,6 +35,7 @@ export function ConditionSection() {
           ))}
         </div>
       </div>
+      <SectionMotionEnhancer sectionId="estado" kind="condition" />
     </section>
   )
 }
