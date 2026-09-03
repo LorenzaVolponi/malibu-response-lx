@@ -30,7 +30,8 @@ export function Hero() {
       const ScrollTrigger = scrollTriggerModule.ScrollTrigger
       gsap.registerPlugin(ScrollTrigger)
       const context = gsap.context(() => {
-        gsap.from('[data-hero-reveal]', { y: 40, opacity: 0, duration: 1.1, ease: 'power3.out', stagger: 0.1, delay: 0.15 })
+        gsap.from('[data-hero-reveal]:not([data-hero-lcp])', { y: 40, opacity: 0, duration: 1.1, ease: 'power3.out', stagger: 0.1, delay: 0.15 })
+        gsap.from('[data-hero-lcp]', { y: 24, duration: 0.8, ease: 'power3.out', delay: 0.05 })
         gsap.to(imgRef.current, { yPercent: 18, scale: 1.12, ease: 'none', scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true } })
         gsap.to('[data-hero-content]', { yPercent: -24, opacity: 0, ease: 'none', scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true } })
       }, root)
@@ -47,9 +48,7 @@ export function Hero() {
           alt="Lancha Malibu Response LX de perfil na represa, casco branco com faixa azul-marinho"
           fill
           sizes="100vw"
-          loading="eager"
-          fetchPriority="high"
-          unoptimized
+          preload
           className="object-cover object-center saturate-110 contrast-105"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-navy-deep/75 via-navy-deep/35 to-background" />
@@ -58,7 +57,7 @@ export function Hero() {
 
       <div data-hero-content className="relative mx-auto max-w-5xl px-5 text-center md:will-change-transform">
         <p data-hero-reveal className="mb-5 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs tracking-luxe text-gold uppercase">À venda no Brasil · venda particular · sem intermediário</p>
-        <h1 data-hero-reveal className="text-balance font-serif text-4xl leading-[0.95] text-cream sm:text-7xl lg:text-8xl">
+        <h1 data-hero-reveal data-hero-lcp className="text-balance font-serif text-4xl leading-[0.95] text-cream sm:text-7xl lg:text-8xl">
           Malibu <span className="block text-gradient-gold">Response LX</span>
         </h1>
         <p data-hero-reveal className="mx-auto mt-5 max-w-2xl text-pretty text-base leading-relaxed text-cream/80 sm:text-lg">
