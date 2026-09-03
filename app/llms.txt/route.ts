@@ -1,4 +1,5 @@
 import { boat } from '@/lib/boat-data'
+import { machineSurfaceHeaders } from '@/lib/machine-surface'
 import { seoIntentPages, seoIntentPageUrl } from '@/lib/seo-pages'
 import { siteConfig } from '@/lib/site-config'
 
@@ -25,6 +26,7 @@ export function GET() {
 - Dossiê técnico: ${siteConfig.url}/dossie-tecnico
 - Central de guias: ${siteConfig.url}/guias
 - Dados estruturados: ${siteConfig.url}/boat.json
+- Manifesto de citação: ${siteConfig.url}/citation.json
 - Sitemap XML: ${siteConfig.url}/sitemap.xml
 - Sitemap de imagens: ${siteConfig.url}/sitemap-images.xml
 - Feed RSS: ${siteConfig.url}/feed.xml
@@ -52,11 +54,13 @@ ${guideLinks}
 `
 
   return new Response(body, {
-    headers: {
-      'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800',
-      'X-Robots-Tag': 'index, follow, max-snippet:-1',
-      Link: `<${siteConfig.url}>; rel="canonical"`,
-    },
+    headers: machineSurfaceHeaders({
+      contentType: 'text/plain; charset=utf-8',
+      etagKey: 'llms-index',
+      links: [
+        `<${siteConfig.url}/boat.json>; rel="describedby"; type="application/json"`,
+        `<${siteConfig.url}/citation.json>; rel="describedby"; type="application/json"`,
+      ],
+    }),
   })
 }
