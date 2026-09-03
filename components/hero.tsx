@@ -91,7 +91,7 @@ export function Hero() {
         </div>
       </div>
 
-      <a href="#comprar" data-hero-reveal className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-cream/60 sm:flex" aria-label="Veja as opções para avançar na compra">
+      <a href="#experiencia" data-hero-reveal className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-cream/60 sm:flex" aria-label="Explorar a embarcação">
         <span className="text-[11px] tracking-luxe uppercase">Como avançar</span>
         <ChevronDown className="size-5 animate-bounce" aria-hidden="true" />
       </a>
