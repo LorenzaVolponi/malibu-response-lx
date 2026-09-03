@@ -22,20 +22,69 @@ export function Hero() {
   useEffect(() => {
     const media = window.matchMedia('(min-width: 768px) and (prefers-reduced-motion: no-preference)')
     if (!media.matches || !root.current || !imgRef.current) return
+
     let cleanup: (() => void) | undefined
     let cancelled = false
-    void Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(([gsapModule, scrollTriggerModule]) => {
+    let started = false
+
+    const startParallax = async () => {
+      if (started || cancelled || !root.current || !imgRef.current) return
+      started = true
+      window.removeEventListener('scroll', onFirstScroll)
+
+      const [gsapModule, scrollTriggerModule] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger'),
+      ])
+
       if (cancelled || !root.current || !imgRef.current) return
+
       const gsap = gsapModule.gsap
       const ScrollTrigger = scrollTriggerModule.ScrollTrigger
       gsap.registerPlugin(ScrollTrigger)
+
       const context = gsap.context(() => {
-        gsap.to(imgRef.current, { yPercent: 18, scale: 1.12, ease: 'none', scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true } })
-        gsap.to('[data-hero-content]', { yPercent: -24, opacity: 0, ease: 'none', scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom top', scrub: true } })
+        gsap.to(imgRef.current, {
+          yPercent: 18,
+          scale: 1.12,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: root.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          },
+        })
+        gsap.to('[data-hero-content]', {
+          yPercent: -24,
+          opacity: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: root.current,
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          },
+        })
+        ScrollTrigger.refresh()
       }, root)
+
       cleanup = () => context.revert()
-    })
-    return () => { cancelled = true; cleanup?.() }
+    }
+
+    const onFirstScroll = () => {
+      void startParallax()
+    }
+
+    window.addEventListener('scroll', onFirstScroll, { once: true, passive: true })
+
+    if (window.scrollY > 1) void startParallax()
+
+    return () => {
+      cancelled = true
+      window.removeEventListener('scroll', onFirstScroll)
+      cleanup?.()
+    }
   }, [])
 
   return (
