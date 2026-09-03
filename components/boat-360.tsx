@@ -49,7 +49,6 @@ export function Boat360() {
     dragging.current = false
   }
 
-  // Teclado
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
@@ -95,7 +94,8 @@ export function Boat360() {
               src={f.src || '/placeholder.svg'}
               alt={f.alt}
               fill
-              priority={i === 0}
+              loading="lazy"
+              fetchPriority={i === index ? 'auto' : 'low'}
               draggable={false}
               sizes="(max-width: 768px) 100vw, 1152px"
               className={`pointer-events-none object-cover transition-opacity duration-300 ${
@@ -104,7 +104,6 @@ export function Boat360() {
             />
           ))}
 
-          {/* Hint de arraste */}
           <div
             className={`pointer-events-none absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${
               hint ? 'opacity-100' : 'opacity-0'
@@ -116,14 +115,12 @@ export function Boat360() {
             </span>
           </div>
 
-          {/* Rótulo do ângulo */}
           <div className="pointer-events-none absolute left-4 top-4">
             <span className="glass rounded-full px-4 py-1.5 text-xs uppercase tracking-widest text-cream">
               {frames360[index].label}
             </span>
           </div>
 
-          {/* Setas */}
           <button
             type="button"
             aria-label="Ângulo anterior"
@@ -142,7 +139,6 @@ export function Boat360() {
           </button>
         </div>
 
-        {/* Indicadores */}
         <div className="mt-6 flex items-center justify-center gap-2">
           {frames360.map((f, i) => (
             <button
