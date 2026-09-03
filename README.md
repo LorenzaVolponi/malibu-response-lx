@@ -1,51 +1,64 @@
-# Malibu Response LX — sales experience
+# Malibu Response LX
 
-Site de venda da Malibu Response LX com experiência premium, SEO/GEO, dados estruturados e arquitetura de conversão orientada a evidência.
+Site de venda da Malibu Response LX 2013. A prioridade técnica é manter o front premium e simples enquanto SEO/GEO, atribuição, observabilidade e precisão de claims funcionam no backend.
 
-## Arquitetura de venda
+## Regra de produto
 
-A experiência foi desenhada para reduzir fricção entre descoberta e contato:
+**Não adicionar blocos visuais para resolver problemas de backend.**
 
-**Pesquisa / IA → desejo → evidência → contato → teste → proposta.**
+A infraestrutura deve melhorar descoberta, mensuração e conversão sem transformar a home em um relatório técnico.
 
-### Camadas principais
+## Backend de descoberta
 
-- Hero comercial com preço e ação imediata.
-- Buyer Intent Hub para compra, validação, teste e proposta.
-- Evidence Ledger separando fatos publicados de itens que ainda precisam ser validados.
-- Galeria, 360°, ficha técnica, condição e conteúdo de comparação.
-- CTAs persistentes no mobile e desktop.
-- Consultor virtual limitado aos dados publicados, com roteamento para o próximo passo correto.
-- Compartilhamento nativo e via WhatsApp.
-- Tracking de origem, UTMs, profundidade, tempo engajado, seções e intenção de lead.
-- Cluster SEO/GEO com páginas de intenção, JSON-LD, sitemap, RSS, `boat.json`, `llms.txt` e `ai.txt`.
+Superfícies canônicas e machine-readable:
 
-## Conversão
+- `/robots.txt`
+- `/sitemap.xml`
+- `/sitemap-images.xml`
+- `/llms.txt`
+- `/ai.txt`
+- `/boat.json`
+- `/feed.xml`
+- `/dossie-tecnico`
+- `/api/ai-readiness` — diagnóstico não indexável de crawler, canonical e política de evidência
 
-Os links de contato passam por `/api/whatsapp?intent=...`, permitindo mensagens específicas para:
+A URL canônica é definida em `lib/site-config.ts` e não deve ser substituída por URLs de preview.
 
-- interesse geral;
-- validação de documentação e vídeos;
-- visita e teste;
-- dúvidas técnicas;
-- proposta.
+## Política de evidência
 
-Quando UTMs ou identificadores de mídia estão presentes, a rota preserva a atribuição na mensagem enviada ao vendedor.
+Dados publicados e itens pendentes de validação são tratados separadamente. Documentação, titularidade, histórico de manutenção, condição operacional, inspeção e teste na água não devem ser convertidos em claims verificados sem evidência.
 
-## Confiança e claims
+## Lead attribution
 
-O site não deve transformar informação não verificada em afirmação. Documentação, histórico de manutenção, laudos, localização de visita e condição operacional atual devem ser confirmados diretamente com o vendedor e, quando aplicável, por inspeção independente.
+Os CTAs existentes passam por `/api/whatsapp?intent=...`.
 
-## Performance
+A rota preserva:
 
-- Next.js com otimização de imagens AVIF/WebP e cache.
-- `lucide-react` com package import optimization.
-- assistente carregado de forma dinâmica e adiada até idle/primeira intenção do usuário.
-- animações condicionadas a `prefers-reduced-motion` quando aplicável.
+- intenção do lead;
+- `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`;
+- `gclid`, `gbraid`, `wbraid`, `msclkid`, quando presentes.
+
+Isso permite entender a origem comercial sem adicionar UI ao site.
+
+## Analytics
+
+A telemetria registra origem, campanha, seções vistas, profundidade de scroll, tempo engajado, uso do consultor e ações de contato. O objetivo é medir o funil sem alterar o layout.
+
+## Assistente
+
+O backend do consultor responde somente a partir dos dados publicados e encaminha a intenção correta para contato. O visual do widget deve permanecer desacoplado da lógica de decisão.
+
+## Health checks
+
+`.github/workflows/ai-discovery-health.yml` verifica a produção de forma diária ou manual:
+
+- canonical;
+- robots e acesso de OAI-SearchBot, OAI-AdsBot, ChatGPT-User e GPTBot;
+- sitemaps;
+- `llms.txt`, `ai.txt`, `boat.json` e RSS;
+- contrato de evidência e itens pendentes de validação.
 
 ## Qualidade
-
-CI executa:
 
 ```bash
 pnpm install --frozen-lockfile
@@ -53,7 +66,3 @@ pnpm lint
 pnpm typecheck
 pnpm build
 ```
-
-## Fonte canônica
-
-A URL canônica e os metadados centrais são definidos em `lib/site-config.ts` e não devem ser substituídos por URLs temporárias de preview.
