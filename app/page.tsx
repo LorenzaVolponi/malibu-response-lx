@@ -12,15 +12,12 @@ import { SpecsSection } from '@/components/specs-section'
 import { FeaturesSection } from '@/components/features-section'
 import { ConditionSection } from '@/components/condition-section'
 import { GallerySection } from '@/components/gallery-section'
-import { BuyerGuideSection } from '@/components/buyer-guide-section'
 import { PricingCta } from '@/components/pricing-cta'
 import { FaqSection } from '@/components/faq-section'
 import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
 import { ValueProofSection } from '@/components/value-proof-section'
 import { SiteFooter } from '@/components/site-footer'
 import { StickyMobileCta } from '@/components/sticky-mobile-cta'
-import { DesktopSalesDock } from '@/components/desktop-sales-dock'
-import { MarketProofSection } from '@/components/market-proof-section'
 import { DeferredWidgets } from '@/components/deferred-widgets'
 import { boat, cinematic, faqs, gallery } from '@/lib/boat-data'
 import { siteConfig } from '@/lib/site-config'
@@ -82,8 +79,6 @@ export default function Page() {
           <ValueProofSection />
           <CinematicSection {...cinematic[2]} />
           <GallerySection />
-          <BuyerGuideSection />
-          <MarketProofSection />
           <FaqSection />
           <BuyerConfidenceSection />
           <PricingCta />
@@ -91,7 +86,6 @@ export default function Page() {
         <SiteFooter />
       </SmoothScroll>
       <StickyMobileCta />
-      <DesktopSalesDock />
       <DeferredWidgets />
     </>
   )
