@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { journey } from '@/lib/boat-data'
 import { SectionMotionEnhancer } from '@/components/section-motion-enhancer'
 
@@ -13,17 +14,16 @@ export function JourneyScroll() {
             Veja a lancha por dentro em leitura leve no celular
           </h2>
           <div className="mt-8 flex flex-col gap-5">
-            {journey.map((step, i) => (
+            {journey.map((step) => (
               <article key={step.id} className="overflow-hidden rounded-3xl border border-cream/10 bg-cream/[0.035]">
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={step.image || '/placeholder.svg'}
                     alt={step.alt}
-                    loading={i === 0 ? 'eager' : 'lazy'}
-                    decoding="async"
-                    fetchPriority={i === 0 ? 'high' : 'auto'}
-                    className="size-full object-cover"
+                    fill
+                    loading="lazy"
+                    sizes="(max-width: 767px) calc(100vw - 2.5rem), 100vw"
+                    className="object-cover"
                   />
                 </div>
                 <div className="p-5">
@@ -49,13 +49,13 @@ export function JourneyScroll() {
             style={{ opacity: i === 0 ? 1 : 0 }}
             aria-hidden={i === 0 ? undefined : 'true'}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={step.image || '/placeholder.svg'}
               alt={step.alt}
-              loading={i === 0 ? 'eager' : 'lazy'}
-              decoding="async"
-              className="size-full object-cover"
+              fill
+              loading="lazy"
+              sizes="100vw"
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/40 to-navy-deep/20" />
             <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/70 to-transparent" />
