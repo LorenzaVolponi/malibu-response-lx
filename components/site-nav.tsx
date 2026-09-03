@@ -6,12 +6,11 @@ import { MessageCircle, Menu, X } from 'lucide-react'
 
 const links = [
   { href: '#experiencia', label: 'Experiência' },
-  { href: '#ficha', label: 'Performance' },
+  { href: '#especificacoes', label: 'Performance' },
   { href: '#galeria', label: 'Galeria' },
-  { href: '#comparar-malibu-response-lx', label: 'Comparar' },
+  { href: '/guias', label: 'Comparar' },
   { href: '#negociar', label: 'Contato' },
 ]
-
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false)
@@ -52,13 +51,13 @@ export function SiteNav() {
           </a>
 
           <ul className="hidden items-center justify-center gap-5 lg:flex xl:gap-7">
-            {links.map((l) => (
-              <li key={l.href}>
+            {links.map((link) => (
+              <li key={link.href}>
                 <a
-                  href={l.href}
+                  href={link.href}
                   className="whitespace-nowrap text-sm text-muted-foreground transition-colors hover:text-cream"
                 >
-                  {l.label}
+                  {link.label}
                 </a>
               </li>
             ))}
@@ -76,7 +75,7 @@ export function SiteNav() {
             </a>
             <button
               type="button"
-              onClick={() => setOpen((v) => !v)}
+              onClick={() => setOpen((value) => !value)}
               className="grid size-11 place-items-center rounded-full glass text-cream lg:hidden"
               aria-controls="mobile-menu"
               aria-label={open ? 'Fechar menu' : 'Abrir menu'}
@@ -97,14 +96,14 @@ export function SiteNav() {
             />
             <div id="mobile-menu" className="fixed inset-x-4 top-[calc(env(safe-area-inset-top)+4.75rem)] z-50 max-h-[calc(100dvh-6rem-env(safe-area-inset-top))] overscroll-contain overflow-y-auto rounded-3xl glass-strong p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-2xl shadow-black/40 lg:hidden">
               <ul className="flex flex-col gap-1">
-                {links.map((l) => (
-                  <li key={l.href}>
+                {links.map((link) => (
+                  <li key={link.href}>
                     <a
-                      href={l.href}
+                      href={link.href}
                       onClick={() => setOpen(false)}
                       className="block rounded-xl px-3 py-3 text-cream/90 transition-colors hover:bg-white/5"
                     >
-                      {l.label}
+                      {link.label}
                     </a>
                   </li>
                 ))}
