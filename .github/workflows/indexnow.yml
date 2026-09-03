@@ -10,8 +10,11 @@ on:
       - 'lib/**'
       - 'public/**'
       - 'scripts/submit-indexnow.mjs'
+      - 'scripts/check-production-runtime-freshness.mjs'
+      - 'scripts/vercel-ignore-build.mjs'
       - '.github/workflows/indexnow.yml'
       - 'next.config.mjs'
+      - 'vercel.json'
   workflow_dispatch:
   schedule:
     - cron: '23 */6 * * *'
@@ -29,19 +32,20 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
-      - name: Checkout
+      - name: Checkout full main history
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Wait for production and submit IndexNow
+      - name: Wait for production runtime and submit IndexNow
         env:
           INDEXNOW_SITE_URL: https://malibu-response-lx.vercel.app
           INDEXNOW_KEY: 9a7f3c1e4b8d2f6a0c5e7b1d3f9a4c2e
-          EXPECTED_COMMIT_SHA: ${{ github.sha }}
         run: node scripts/submit-indexnow.mjs
 
       - name: Publish distribution summary
@@ -50,8 +54,10 @@ jobs:
         run: |
           {
             echo '### IndexNow distribution'
-            echo '- Pushes to main trigger immediate distribution checks.'
-            echo '- Scheduled runs retry the latest main revision every 6 hours.'
-            echo '- Submission is deferred rather than sending stale URLs when production has not reached the expected commit.'
+            echo '- Pushes to main trigger immediate distribution checks for runtime/discovery changes.'
+            echo '- Scheduled runs retry the latest runtime release every 6 hours.'
+            echo '- Readiness is based on the latest runtime-impacting main release, not literal HEAD equality.'
+            echo '- A newer production descendant is accepted when it provably contains the expected runtime release.'
+            echo '- Submission is deferred rather than sending stale URLs when production is genuinely behind.'
             echo '- Machine-only manifests remain excluded because IndexNow receives only indexable HTML URLs from sitemap.xml.'
           } >> "$GITHUB_STEP_SUMMARY"
