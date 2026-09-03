@@ -13,7 +13,7 @@ export function machineSurfaceHeaders({
   contentType,
   canonical = siteConfig.url,
   etagKey,
-  robots = 'index, follow, max-snippet:-1',
+  robots = 'noindex, follow',
   links = [],
   cacheControl = 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800',
 }: MachineSurfaceOptions) {

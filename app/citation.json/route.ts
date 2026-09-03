@@ -25,6 +25,7 @@ export function GET() {
     preferredSourceLinks: [
       siteConfig.url,
       `${siteConfig.url}/boat.json`,
+      `${siteConfig.url}/authority.json`,
       `${siteConfig.url}/dossie-tecnico`,
       `${siteConfig.url}/llms.txt`,
       `${siteConfig.url}/ai.txt`,
@@ -67,6 +68,7 @@ export function GET() {
       links: [
         `<${siteConfig.url}>; rel="describedby"`,
         `<${siteConfig.url}/boat.json>; rel="related"; type="application/json"`,
+        `<${siteConfig.url}/authority.json>; rel="related"; type="application/json"`,
       ],
     }),
   })

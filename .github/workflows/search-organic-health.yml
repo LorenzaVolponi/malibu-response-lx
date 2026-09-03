@@ -81,6 +81,41 @@ jobs:
             fi
           done
 
+      - name: Verify exact-sale intent consolidation
+        shell: bash
+        run: |
+          set -euo pipefail
+          SUPPORT_PATH='/guias/malibu-response-lx-a-venda'
+          code="$(curl -L -sS -o /dev/null -w '%{http_code}' "$SITE_URL$SUPPORT_PATH")"
+          if [ "$code" != "200" ]; then
+            echo "Expected support guide to remain accessible, got HTTP $code"
+            exit 1
+          fi
+          headers="$(curl -sSI "$SITE_URL$SUPPORT_PATH")"
+          if ! printf '%s' "$headers" | grep -Eqi '^x-robots-tag:.*noindex'; then
+            echo 'Exact-sale support guide must stay noindex so the canonical listing owns the sale query.'
+            exit 1
+          fi
+
+      - name: Verify machine surfaces support discovery without index pollution
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for path in /boat.json /citation.json /authority.json /llms.txt /ai.txt /feed.xml; do
+            code="$(curl -L -sS -o /dev/null -w '%{http_code}' "$SITE_URL$path")"
+            if [ "$code" != "200" ]; then
+              echo "Expected 200 for machine surface $path, got $code"
+              exit 1
+            fi
+            headers="$(curl -sSI "$SITE_URL$path")"
+            if ! printf '%s' "$headers" | grep -Eqi '^x-robots-tag:.*noindex'; then
+              echo "Expected noindex on machine surface $path"
+              printf '%s\n' "$headers"
+              exit 1
+            fi
+          done
+
       - name: Verify canonical authority
         shell: bash
         run: |
@@ -127,8 +162,27 @@ jobs:
           printf '%s' "$SITEMAP" | grep -F "$CANONICAL_URL/dossie-tecnico" >/dev/null
           printf '%s' "$SITEMAP" | grep -F "$CANONICAL_URL/guias" >/dev/null
 
+          if printf '%s' "$SITEMAP" | grep -F '/guias/malibu-response-lx-a-venda' >/dev/null; then
+            echo 'Exact-sale support guide must not compete with the canonical listing in sitemap.xml.'
+            exit 1
+          fi
+
+          for machine_path in boat.json citation.json authority.json llms.txt ai.txt feed.xml; do
+            if printf '%s' "$SITEMAP" | grep -F "/$machine_path" >/dev/null; then
+              echo "Machine surface /$machine_path must not be listed in the human search sitemap."
+              exit 1
+            fi
+          done
+
           IMAGE_SITEMAP="$(curl -L -sS "$SITE_URL/sitemap-images.xml")"
           printf '%s' "$IMAGE_SITEMAP" | grep -F "$CANONICAL_URL/images/" >/dev/null
+          printf '%s' "$IMAGE_SITEMAP" | grep -F '<lastmod>' >/dev/null
+          printf '%s' "$IMAGE_SITEMAP" | grep -F '<image:title>Malibu Response LX' >/dev/null
+          printf '%s' "$IMAGE_SITEMAP" | grep -F '<image:caption>Fotografia publicada da embarcação anunciada:' >/dev/null
+          if printf '%s' "$IMAGE_SITEMAP" | grep -F '<image:license>' >/dev/null; then
+            echo 'Image sitemap must not claim a license URL unless a real image license exists.'
+            exit 1
+          fi
 
       - name: Verify commercial structured data
         shell: bash
@@ -141,11 +195,38 @@ jobs:
           printf '%s' "$HTML" | grep -F '"additionalType":"https://schema.org/Vehicle"' >/dev/null
           printf '%s' "$HTML" | grep -F '"priceCurrency":"BRL"' >/dev/null
           printf '%s' "$HTML" | grep -F '"price":165000' >/dev/null
+          printf '%s' "$HTML" | grep -F '"availability":"https://schema.org/LimitedAvailability"' >/dev/null
           printf '%s' "$HTML" | grep -F 'Malibu Response LX' >/dev/null
           if printf '%s' "$HTML" | grep -F 'https://schema.org/Boat' >/dev/null; then
             echo 'Invalid Schema.org Boat type found in structured data'
             exit 1
           fi
+          if printf '%s' "$HTML" | grep -F '"sku":' >/dev/null; then
+            echo 'Synthetic SKU must not be emitted without a real seller/manufacturer identifier.'
+            exit 1
+          fi
+
+      - name: Verify machine authority and safety provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          curl -L -sS "$SITE_URL/boat.json" > /tmp/boat.json
+          jq -e '.schemaVersion == "2.1"' /tmp/boat.json >/dev/null
+          jq -e '.officialReferenceSources | length >= 3' /tmp/boat.json >/dev/null
+          jq -e '.manufacturerSafetyAdvisories[0].publisher == "Malibu Boats, LLC"' /tmp/boat.json >/dev/null
+          jq -e '.manufacturerSafetyAdvisories[0].affectedModel == "Response LX"' /tmp/boat.json >/dev/null
+          jq -e '.manufacturerSafetyAdvisories[0].appliesToListingModelYear == true' /tmp/boat.json >/dev/null
+          jq -e '.manufacturerSafetyAdvisories[0].evidenceScope | test("not an inspection")' /tmp/boat.json >/dev/null
+          jq -e '.authenticity.evidencePolicy.externalOfficial | length > 20' /tmp/boat.json >/dev/null
+          jq -e '.provenance.limitations | map(select(test("Referências oficiais"))) | length == 1' /tmp/boat.json >/dev/null
+
+          curl -L -sS "$SITE_URL/authority.json" > /tmp/authority.json
+          jq -e --arg canonical "$CANONICAL_URL" '.primarySearchTargets.listing.primaryUrl == $canonical' /tmp/authority.json >/dev/null
+          jq -e --arg support "$CANONICAL_URL/guias/malibu-response-lx-a-venda" '.cannibalizationPolicy.supportOnlyNoindex | index($support) != null' /tmp/authority.json >/dev/null
+          jq -e '.officialReferenceSources | length >= 4' /tmp/authority.json >/dev/null
+          jq -e '.officialReferenceSources | map(select(.scope | test("not evidence|not an inspection|requires independent test|not a compatibility certification"))) | length >= 4' /tmp/authority.json >/dev/null
+          jq -e '.boundaries | map(select(test("Official manufacturer references"))) | length == 1' /tmp/authority.json >/dev/null
 
       - name: Publish summary
         if: always()
@@ -156,9 +237,12 @@ jobs:
             echo "- Tested source: $SITE_URL"
             echo "- Expected canonical: $CANONICAL_URL"
             echo '- Checked indexability of core transactional/technical pages.'
+            echo '- Checked exact-sale query consolidation on the canonical listing.'
+            echo '- Checked machine discovery surfaces are noindex and excluded from the human sitemap.'
             echo '- Checked canonical URLs.'
             echo '- Checked Googlebot and Bingbot access.'
-            echo '- Checked XML and image sitemap coverage.'
-            echo '- Checked Product + Offer + ItemPage + Vehicle semantic integrity.'
+            echo '- Checked XML and image sitemap coverage, freshness and truthful image metadata.'
+            echo '- Checked Product + Offer + ItemPage + Vehicle semantic integrity, limited availability and absence of synthetic SKU.'
+            echo '- Checked machine authority, official-source scope and manufacturer safety provenance.'
             echo '- This workflow changes no frontend behavior.'
           } >> "$GITHUB_STEP_SUMMARY"

@@ -1,47 +1,9 @@
-'use client'
-
-import { useRef } from 'react'
 import { features } from '@/lib/boat-data'
-import { useDeferredGsap } from '@/lib/use-deferred-gsap'
+import { SectionMotionEnhancer } from '@/components/section-motion-enhancer'
 
 export function FeaturesSection() {
-  const root = useRef<HTMLElement>(null)
-
-  useDeferredGsap(root, (gsap) => {
-    const rows = gsap.utils.toArray<HTMLElement>('[data-feature-row]')
-    rows.forEach((row) => {
-      const img = row.querySelector('[data-feature-img]')
-      const text = row.querySelectorAll('[data-feature-text]')
-
-      gsap.from(text, {
-        y: 40,
-        opacity: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        stagger: 0.1,
-        scrollTrigger: { trigger: row, start: 'top 72%' },
-      })
-
-      gsap.fromTo(
-        img,
-        { yPercent: -8, scale: 1.12 },
-        {
-          yPercent: 8,
-          scale: 1.12,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: row,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
-          },
-        },
-      )
-    })
-  })
-
   return (
-    <section ref={root} id="destaques" className="relative bg-background py-20 sm:py-28">
+    <section id="destaques" className="relative bg-background py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5">
         <div className="mb-16 max-w-2xl">
           <p className="mb-3 text-xs tracking-luxe text-gold uppercase">
@@ -53,15 +15,13 @@ export function FeaturesSection() {
         </div>
 
         <div className="flex flex-col gap-16 sm:gap-28">
-          {features.map((f, i) => {
-            const reverse = i % 2 === 1
+          {features.map((feature, index) => {
+            const reverse = index % 2 === 1
             return (
               <article
-                key={f.title}
+                key={feature.title}
                 data-feature-row
-                className={`grid items-center gap-8 lg:grid-cols-2 lg:gap-14 ${
-                  reverse ? 'lg:[direction:rtl]' : ''
-                }`}
+                className={`grid items-center gap-8 lg:grid-cols-2 lg:gap-14 ${reverse ? 'lg:[direction:rtl]' : ''}`}
               >
                 <div
                   data-feature-img-wrap
@@ -70,8 +30,8 @@ export function FeaturesSection() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     data-feature-img
-                    src={f.image || '/placeholder.svg'}
-                    alt={f.alt}
+                    src={feature.image || '/placeholder.svg'}
+                    alt={feature.alt}
                     loading="lazy"
                     decoding="async"
                     className="size-full object-cover will-change-transform"
@@ -81,13 +41,13 @@ export function FeaturesSection() {
 
                 <div className="[direction:ltr]">
                   <span data-feature-text className="font-serif text-5xl text-cream/10 sm:text-6xl">
-                    0{i + 1}
+                    0{index + 1}
                   </span>
                   <h3 data-feature-text className="-mt-4 text-balance font-serif text-3xl text-cream sm:text-4xl">
-                    {f.title}
+                    {feature.title}
                   </h3>
                   <p data-feature-text className="mt-4 max-w-md text-pretty leading-relaxed text-muted-foreground">
-                    {f.description}
+                    {feature.description}
                   </p>
                 </div>
               </article>
@@ -95,6 +55,7 @@ export function FeaturesSection() {
           })}
         </div>
       </div>
+      <SectionMotionEnhancer sectionId="destaques" kind="features" />
     </section>
   )
 }

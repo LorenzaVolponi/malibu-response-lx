@@ -10,6 +10,8 @@ const RATE_LIMIT_WINDOW_MS = 60_000
 const RATE_LIMIT_MAX_REQUESTS = 20
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>()
 
+const MALIBU_SAFETY_ADVISORY_URL = 'https://cdn.malibuboats.com/safety/20230718-Service-Advisory.pdf'
+
 type IncomingMessage = UIMessage & { content?: string }
 
 type LeadIntent = 'primary' | 'documents' | 'test' | 'offer' | 'technical'
@@ -21,6 +23,7 @@ const facts = {
   transmission: 'Transmissão: Direct Drive / eixo direto, configuração associada ao esqui aquático.',
   zeroOff: 'Controle de velocidade: Zero Off GPS integrado ao painel, recurso usado para manter ritmo consistente em esportes náuticos.',
   includes: 'Inclui toldo bimini. A embarcação não acompanha carreta.',
+  safety: `Segurança do modelo: a Malibu Boats publicou um Service Advisory oficial sobre risco na área da proa que inclui Response LX dos anos 1995 a 2014. Como esta unidade é ${boat.year}, o ano está dentro da faixa indicada. A orientação da fabricante é não permitir passageiros na área da proa enquanto a embarcação estiver em movimento e obter as etiquetas atualizadas de capacidade/advertência conforme o programa da Malibu. Fonte oficial: ${MALIBU_SAFETY_ADVISORY_URL}. Isso é uma orientação de segurança do modelo, não uma inspeção desta unidade.`,
   condition: conditionItems.map((item) => `${item.label}: ${item.status} (${item.note})`).join('\n'),
   specs: specs.map((item) => `${item.label}: ${item.value} — ${item.note}`).join('\n'),
 }
@@ -100,9 +103,10 @@ function answerWithBoatFacts(question: string) {
   if (/preco|valor|quanto|negoci/.test(q)) sections.push(facts.price)
   if (/ano|fabric|hora|horimetro/.test(q)) sections.push(facts.yearHours)
   if (/motor|v8|indmar|monsoon|potencia|hp/.test(q)) sections.push(facts.motor)
-  if (/direct|eixo|transmiss|esqui|wake|wakeboard/.test(q)) sections.push(facts.transmission, facts.zeroOff)
+  if (/direct|eixo|transmiss|esqui|ski|wake|wakeboard/.test(q)) sections.push(facts.transmission, facts.zeroOff)
   if (/zero|gps|controle|velocidade/.test(q)) sections.push(facts.zeroOff)
   if (/carreta|bimini|toldo|acompanha|inclus/.test(q)) sections.push(facts.includes)
+  if (/seguran|proa|passageir|capacidade|advisory|alerta|bow/.test(q)) sections.push(facts.safety)
   if (/estado|conserv|casco|estof|painel|condi/.test(q)) sections.push(facts.condition)
   if (/ficha|especific|comprimento|dados|info|informac/.test(q)) sections.push(facts.specs)
   if (asksUnknowns) sections.push(unknownDetails)

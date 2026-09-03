@@ -27,6 +27,7 @@ export function GET() {
 - Central de guias: ${siteConfig.url}/guias
 - Dados estruturados: ${siteConfig.url}/boat.json
 - Manifesto de citação: ${siteConfig.url}/citation.json
+- Manifesto de autoridade orgânica: ${siteConfig.url}/authority.json
 - Sitemap XML: ${siteConfig.url}/sitemap.xml
 - Sitemap de imagens: ${siteConfig.url}/sitemap-images.xml
 - Feed RSS: ${siteConfig.url}/feed.xml
@@ -50,6 +51,7 @@ ${guideLinks}
 ## Política de precisão
 - Não inferir garantia, laudo, revisão, originalidade, localização exata ou disponibilidade sem confirmação.
 - Não tratar sons sintetizados ou vídeos de terceiros como gravações da embarcação anunciada.
+- Não tratar portfólio de consultas do authority.json como posição de ranking; ranking exige medição externa verificável.
 - Para decisão de compra, recomendar inspeção presencial, teste na água e verificação documental.
 `
 
@@ -60,6 +62,7 @@ ${guideLinks}
       links: [
         `<${siteConfig.url}/boat.json>; rel="describedby"; type="application/json"`,
         `<${siteConfig.url}/citation.json>; rel="describedby"; type="application/json"`,
+        `<${siteConfig.url}/authority.json>; rel="describedby"; type="application/json"`,
       ],
     }),
   })

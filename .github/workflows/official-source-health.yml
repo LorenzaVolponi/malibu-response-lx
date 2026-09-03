@@ -1,0 +1,64 @@
+name: Official Source Health
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 11 * * 2,5'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: malibu-official-source-health
+  cancel-in-progress: true
+
+jobs:
+  sources:
+    name: Verify official manufacturer references
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Verify Malibu owner manuals source
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://www.malibuboats.com/owner-manuals'
+          BODY="$(curl --fail --location --silent --show-error --max-time 30 -A 'malibu-authority-source-health/1.0' "$URL")"
+          printf '%s' "$BODY" | grep -F '2013 Malibu Owners Manual' >/dev/null
+          printf '%s' "$BODY" | grep -F 'Malibu Boats' >/dev/null
+
+      - name: Verify Malibu Response LX safety advisory source
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://cdn.malibuboats.com/safety/20230718-Service-Advisory.pdf'
+          curl --fail --location --silent --show-error --max-time 30 -A 'malibu-authority-source-health/1.0' "$URL" -o /tmp/malibu-service-advisory.pdf
+          test -s /tmp/malibu-service-advisory.pdf
+          FILE_TYPE="$(file --brief --mime-type /tmp/malibu-service-advisory.pdf)"
+          if [ "$FILE_TYPE" != 'application/pdf' ]; then
+            echo "Expected Malibu advisory PDF, got $FILE_TYPE"
+            exit 1
+          fi
+
+      - name: Verify Zero Off official technology sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          for URL in 'https://www.zerogps.com/about/' 'https://www.zerogps.com/faqs/'; do
+            BODY="$(curl --fail --location --silent --show-error --max-time 30 -A 'malibu-authority-source-health/1.0' "$URL")"
+            printf '%s' "$BODY" | grep -Ei 'GPS speed control|speed control' >/dev/null
+          done
+
+      - name: Publish source-health summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '### Official authority source health'
+            echo '- Malibu Boats owner-manual index: checked for the 2013 manual marker.'
+            echo '- Malibu Boats Response LX service advisory: checked for a live PDF response.'
+            echo '- Zero Off official About and FAQ: checked for speed-control source markers.'
+            echo '- These checks verify source availability only; they do not convert model references into claims about the individual boat condition.'
+            echo '- No frontend behavior is changed by this workflow.'
+          } >> "$GITHUB_STEP_SUMMARY"

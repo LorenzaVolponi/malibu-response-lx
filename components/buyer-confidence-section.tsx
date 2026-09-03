@@ -1,8 +1,5 @@
-'use client'
-
-import { useRef } from 'react'
 import { CalendarDays, FileCheck, Handshake, Waves } from 'lucide-react'
-import { useDeferredGsap } from '@/lib/use-deferred-gsap'
+import { SectionMotionEnhancer } from '@/components/section-motion-enhancer'
 
 const steps = [
   {
@@ -28,25 +25,8 @@ const steps = [
 ] as const
 
 export function BuyerConfidenceSection() {
-  const root = useRef<HTMLElement>(null)
-
-  useDeferredGsap(
-    root,
-    (gsap) => {
-      gsap.from('[data-confidence-reveal]', {
-        y: 34,
-        opacity: 0,
-        duration: 0.85,
-        ease: 'power3.out',
-        stagger: 0.08,
-        scrollTrigger: { trigger: root.current, start: 'top 74%' },
-      })
-    },
-    { mediaQuery: '(prefers-reduced-motion: no-preference)' },
-  )
-
   return (
-    <section ref={root} className="relative bg-background py-20 sm:py-28">
+    <section id="compra-clara" className="relative bg-background py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5">
         <div data-confidence-reveal className="mb-12 max-w-2xl">
           <p className="mb-3 text-xs tracking-luxe text-gold uppercase">Compra com clareza</p>
@@ -66,6 +46,7 @@ export function BuyerConfidenceSection() {
           ))}
         </div>
       </div>
+      <SectionMotionEnhancer sectionId="compra-clara" kind="buyer-confidence" />
     </section>
   )
 }

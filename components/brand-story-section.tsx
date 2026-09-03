@@ -1,8 +1,5 @@
-'use client'
-
-import { useRef } from 'react'
 import Image from 'next/image'
-import { useDeferredGsap } from '@/lib/use-deferred-gsap'
+import { SectionMotionEnhancer } from '@/components/section-motion-enhancer'
 
 const pillars = [
   ['Precisão', 'Resposta direta no comando e condução estável para quem conhece a água.'],
@@ -11,37 +8,8 @@ const pillars = [
 ] as const
 
 export function BrandStorySection() {
-  const root = useRef<HTMLElement>(null)
-
-  useDeferredGsap(root, (gsap) => {
-    gsap.from('[data-story-reveal]', {
-      y: 36,
-      opacity: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-      stagger: 0.1,
-      scrollTrigger: { trigger: root.current, start: 'top 72%' },
-    })
-
-    gsap.fromTo(
-      '[data-story-img]',
-      { scale: 1.08, yPercent: -5 },
-      {
-        scale: 1.02,
-        yPercent: 5,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: root.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-        },
-      },
-    )
-  })
-
   return (
-    <section ref={root} id="essencia" className="relative overflow-hidden bg-background py-24 sm:py-32">
+    <section id="essencia" className="relative overflow-hidden bg-background py-24 sm:py-32">
       <div className="absolute left-1/2 top-0 h-80 w-[42rem] -translate-x-1/2 rounded-full bg-gold/10 blur-3xl" />
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
         <div>
@@ -85,6 +53,7 @@ export function BrandStorySection() {
           </div>
         </div>
       </div>
+      <SectionMotionEnhancer sectionId="essencia" kind="brand-story" />
     </section>
   )
 }

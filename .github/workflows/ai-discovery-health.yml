@@ -38,7 +38,7 @@ jobs:
             fi
           }
 
-          for path in / /robots.txt /sitemap.xml /sitemap-images.xml /llms.txt /ai.txt /boat.json /citation.json /feed.xml /dossie-tecnico /api/ai-readiness; do
+          for path in / /robots.txt /sitemap.xml /sitemap-images.xml /llms.txt /ai.txt /boat.json /citation.json /authority.json /feed.xml /dossie-tecnico /api/ai-readiness; do
             check_200 "$path"
           done
 
@@ -53,14 +53,18 @@ jobs:
           ROOT_HEADERS="$(curl -sSI "$SITE_URL/")"
           printf '%s' "$ROOT_HEADERS" | grep -Fi '/boat.json' >/dev/null
           printf '%s' "$ROOT_HEADERS" | grep -Fi '/citation.json' >/dev/null
+          printf '%s' "$ROOT_HEADERS" | grep -Fi '/authority.json' >/dev/null
           printf '%s' "$ROOT_HEADERS" | grep -Fi '/llms.txt' >/dev/null
 
-          for path in /llms.txt /ai.txt /citation.json; do
+          for path in /llms.txt /ai.txt /citation.json /authority.json; do
             HEADERS="$(curl -sSI "$SITE_URL$path")"
             printf '%s' "$HEADERS" | grep -Fi 'etag:' >/dev/null
             printf '%s' "$HEADERS" | grep -Fi 'last-modified:' >/dev/null
             printf '%s' "$HEADERS" | grep -Fi 'link:' >/dev/null
           done
+
+          AUTHORITY_ROBOTS="$(curl -sSI "$SITE_URL/authority.json")"
+          printf '%s' "$AUTHORITY_ROBOTS" | grep -Fi 'x-robots-tag:' | grep -Fi 'noindex' >/dev/null
 
       - name: Verify crawler policy
         shell: bash
@@ -71,6 +75,7 @@ jobs:
           printf '%s' "$ROBOTS" | grep -F 'OAI-AdsBot' >/dev/null
           printf '%s' "$ROBOTS" | grep -F 'GPTBot' >/dev/null
           printf '%s' "$ROBOTS" | grep -F '/citation.json' >/dev/null
+          printf '%s' "$ROBOTS" | grep -F '/authority.json' >/dev/null
 
           for agent in OAI-SearchBot OAI-AdsBot ChatGPT-User GPTBot; do
             code="$(curl -A "$agent" -L -sS -o /dev/null -w '%{http_code}' "$SITE_URL/")"
@@ -80,7 +85,7 @@ jobs:
             fi
           done
 
-      - name: Verify machine-readable evidence contract
+      - name: Verify machine-readable evidence and authority contracts
         shell: bash
         run: |
           set -euo pipefail
@@ -89,6 +94,7 @@ jobs:
           jq -e '.status == "ok"' /tmp/readiness.json >/dev/null
           jq -e --arg site "$SITE_URL" '.canonicalUrl == $site' /tmp/readiness.json >/dev/null
           jq -e '.evidencePolicy.validationRequired | length >= 4' /tmp/readiness.json >/dev/null
+          jq -e '.discoverySurfaces.authorityManifest | length > 10' /tmp/readiness.json >/dev/null
 
           curl -L -sS "$SITE_URL/boat.json" > /tmp/boat.json
           jq -e --arg site "$SITE_URL" '.canonicalUrl == $site' /tmp/boat.json >/dev/null
@@ -100,17 +106,27 @@ jobs:
           jq -e '.publishedClaims | length >= 8' /tmp/citation.json >/dev/null
           jq -e '.pendingIndependentValidation | length >= 4' /tmp/citation.json >/dev/null
           jq -e '.citationBoundary | length > 40' /tmp/citation.json >/dev/null
+          jq -e --arg authority "$SITE_URL/authority.json" '.preferredSourceLinks | index($authority) != null' /tmp/citation.json >/dev/null
+
+          curl -L -sS "$SITE_URL/authority.json" > /tmp/authority.json
+          jq -e --arg site "$SITE_URL" '.canonical == $site' /tmp/authority.json >/dev/null
+          jq -e '.queryPortfolio.ptBR | length >= 6' /tmp/authority.json >/dev/null
+          jq -e '.semanticClusters.transactional | length >= 3' /tmp/authority.json >/dev/null
+          jq -e '.salesMeasurement.channelGroups | index("organic_search") != null' /tmp/authority.json >/dev/null
+          jq -e '.salesMeasurement.channelGroups | index("ai_referral") != null' /tmp/authority.json >/dev/null
+          jq -e '.boundaries | length >= 4' /tmp/authority.json >/dev/null
 
       - name: Publish health summary
         if: always()
         shell: bash
         run: |
           {
-            echo '### Malibu AI discovery backend'
+            echo '### Malibu AI and organic authority backend'
             echo "- Canonical: $SITE_URL"
-            echo '- Checked: robots, sitemaps, llms.txt, ai.txt, boat.json, citation.json, RSS and technical dossier'
+            echo '- Checked: robots, sitemaps, llms.txt, ai.txt, boat.json, citation.json, authority.json, RSS and technical dossier'
             echo '- Checked crawler access: OAI-SearchBot, OAI-AdsBot, ChatGPT-User and GPTBot'
             echo '- Checked freshness: ETag, Last-Modified and HTTP discovery links'
             echo '- Checked evidence contract: published facts stay separate from pending validation'
+            echo '- Checked authority contract: query portfolio, semantic clusters and acquisition-channel boundaries'
             echo '- This workflow changes no frontend behavior.'
           } >> "$GITHUB_STEP_SUMMARY"

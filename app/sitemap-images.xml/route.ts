@@ -24,22 +24,25 @@ export function GET() {
   const uniqueImages = Array.from(new Map(allImages.map((image) => [image.src, image])).values())
 
   const images = uniqueImages
-    .map(
-      (image) => `
+    .map((image) => {
+      const title = `${siteConfig.listingName} — ${image.alt}`
+      const caption = `Fotografia publicada da embarcação anunciada: ${image.alt}.`
+
+      return `
     <image:image>
       <image:loc>${escapeXml(`${siteConfig.url}${image.src}`)}</image:loc>
-      <image:title>${escapeXml(image.alt)}</image:title>
-      <image:caption>${escapeXml(image.alt)}</image:caption>
-      <image:license>${escapeXml(`${siteConfig.url}/dossie-tecnico`)}</image:license>
-    </image:image>`,
-    )
+      <image:title>${escapeXml(title)}</image:title>
+      <image:caption>${escapeXml(caption)}</image:caption>
+    </image:image>`
+    })
     .join('')
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>${escapeXml(siteConfig.url)}</loc>${images}
+    <loc>${escapeXml(siteConfig.url)}</loc>
+    <lastmod>${escapeXml(siteConfig.updatedAt)}</lastmod>${images}
   </url>
 </urlset>`
 

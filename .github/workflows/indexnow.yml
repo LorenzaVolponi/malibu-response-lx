@@ -13,6 +13,8 @@ on:
       - '.github/workflows/indexnow.yml'
       - 'next.config.mjs'
   workflow_dispatch:
+  schedule:
+    - cron: '23 */6 * * *'
 
 permissions:
   contents: read
@@ -41,3 +43,15 @@ jobs:
           INDEXNOW_KEY: 9a7f3c1e4b8d2f6a0c5e7b1d3f9a4c2e
           EXPECTED_COMMIT_SHA: ${{ github.sha }}
         run: node scripts/submit-indexnow.mjs
+
+      - name: Publish distribution summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '### IndexNow distribution'
+            echo '- Pushes to main trigger immediate distribution checks.'
+            echo '- Scheduled runs retry the latest main revision every 6 hours.'
+            echo '- Submission is deferred rather than sending stale URLs when production has not reached the expected commit.'
+            echo '- Machine-only manifests remain excluded because IndexNow receives only indexable HTML URLs from sitemap.xml.'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -11,6 +11,7 @@ const discoverySurfaces = {
   aiPolicy: `${siteConfig.url}/ai.txt`,
   dataset: `${siteConfig.url}/boat.json`,
   citationManifest: `${siteConfig.url}/citation.json`,
+  authorityManifest: `${siteConfig.url}/authority.json`,
   feed: `${siteConfig.url}/feed.xml`,
   dossier: `${siteConfig.url}/dossie-tecnico`,
 } as const
@@ -42,6 +43,11 @@ export function GET() {
           'teste na água',
         ],
         instruction: 'Do not convert pending validation items into verified claims.',
+      },
+      authorityPolicy: {
+        queryPortfolio: `${siteConfig.url}/authority.json`,
+        rankingClaims: 'External ranking positions require verifiable external measurement.',
+        funnelStates: ['visibility', 'visit', 'engagement', 'lead', 'proposal', 'sale'],
       },
     },
     {
