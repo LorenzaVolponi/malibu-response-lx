@@ -81,6 +81,22 @@ jobs:
             fi
           done
 
+      - name: Verify exact-sale intent consolidation
+        shell: bash
+        run: |
+          set -euo pipefail
+          SUPPORT_PATH='/guias/malibu-response-lx-a-venda'
+          code="$(curl -L -sS -o /dev/null -w '%{http_code}' "$SITE_URL$SUPPORT_PATH")"
+          if [ "$code" != "200" ]; then
+            echo "Expected support guide to remain accessible, got HTTP $code"
+            exit 1
+          fi
+          headers="$(curl -sSI "$SITE_URL$SUPPORT_PATH")"
+          if ! printf '%s' "$headers" | grep -Eqi '^x-robots-tag:.*noindex'; then
+            echo 'Exact-sale support guide must stay noindex so the canonical listing owns the sale query.'
+            exit 1
+          fi
+
       - name: Verify machine surfaces support discovery without index pollution
         shell: bash
         run: |
@@ -146,6 +162,11 @@ jobs:
           printf '%s' "$SITEMAP" | grep -F "$CANONICAL_URL/dossie-tecnico" >/dev/null
           printf '%s' "$SITEMAP" | grep -F "$CANONICAL_URL/guias" >/dev/null
 
+          if printf '%s' "$SITEMAP" | grep -F '/guias/malibu-response-lx-a-venda' >/dev/null; then
+            echo 'Exact-sale support guide must not compete with the canonical listing in sitemap.xml.'
+            exit 1
+          fi
+
           for machine_path in boat.json citation.json authority.json llms.txt ai.txt feed.xml; do
             if printf '%s' "$SITEMAP" | grep -F "/$machine_path" >/dev/null; then
               echo "Machine surface /$machine_path must not be listed in the human search sitemap."
@@ -196,6 +217,8 @@ jobs:
           jq -e '.provenance.limitations | map(select(test("Referências oficiais"))) | length == 1' /tmp/boat.json >/dev/null
 
           curl -L -sS "$SITE_URL/authority.json" > /tmp/authority.json
+          jq -e --arg canonical "$CANONICAL_URL" '.primarySearchTargets.listing.primaryUrl == $canonical' /tmp/authority.json >/dev/null
+          jq -e --arg support "$CANONICAL_URL/guias/malibu-response-lx-a-venda" '.cannibalizationPolicy.supportOnlyNoindex | index($support) != null' /tmp/authority.json >/dev/null
           jq -e '.officialReferenceSources | length >= 4' /tmp/authority.json >/dev/null
           jq -e '.officialReferenceSources | map(select(.scope | test("not evidence|not an inspection|requires independent test|not a compatibility certification"))) | length >= 4' /tmp/authority.json >/dev/null
           jq -e '.boundaries | map(select(test("Official manufacturer references"))) | length == 1' /tmp/authority.json >/dev/null
@@ -209,6 +232,7 @@ jobs:
             echo "- Tested source: $SITE_URL"
             echo "- Expected canonical: $CANONICAL_URL"
             echo '- Checked indexability of core transactional/technical pages.'
+            echo '- Checked exact-sale query consolidation on the canonical listing.'
             echo '- Checked machine discovery surfaces are noindex and excluded from the human sitemap.'
             echo '- Checked canonical URLs.'
             echo '- Checked Googlebot and Bingbot access.'
