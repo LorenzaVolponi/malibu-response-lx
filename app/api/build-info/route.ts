@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 
+// Redeploy marker: 2026-09-03. No runtime behavior change.
 export const dynamic = 'force-dynamic'
 
 export function GET() {
