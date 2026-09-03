@@ -195,9 +195,14 @@ jobs:
           printf '%s' "$HTML" | grep -F '"additionalType":"https://schema.org/Vehicle"' >/dev/null
           printf '%s' "$HTML" | grep -F '"priceCurrency":"BRL"' >/dev/null
           printf '%s' "$HTML" | grep -F '"price":165000' >/dev/null
+          printf '%s' "$HTML" | grep -F '"availability":"https://schema.org/LimitedAvailability"' >/dev/null
           printf '%s' "$HTML" | grep -F 'Malibu Response LX' >/dev/null
           if printf '%s' "$HTML" | grep -F 'https://schema.org/Boat' >/dev/null; then
             echo 'Invalid Schema.org Boat type found in structured data'
+            exit 1
+          fi
+          if printf '%s' "$HTML" | grep -F '"sku":' >/dev/null; then
+            echo 'Synthetic SKU must not be emitted without a real seller/manufacturer identifier.'
             exit 1
           fi
 
@@ -237,7 +242,7 @@ jobs:
             echo '- Checked canonical URLs.'
             echo '- Checked Googlebot and Bingbot access.'
             echo '- Checked XML and image sitemap coverage, freshness and truthful image metadata.'
-            echo '- Checked Product + Offer + ItemPage + Vehicle semantic integrity.'
+            echo '- Checked Product + Offer + ItemPage + Vehicle semantic integrity, limited availability and absence of synthetic SKU.'
             echo '- Checked machine authority, official-source scope and manufacturer safety provenance.'
             echo '- This workflow changes no frontend behavior.'
           } >> "$GITHUB_STEP_SUMMARY"
