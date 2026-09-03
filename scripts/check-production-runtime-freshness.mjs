@@ -3,6 +3,10 @@ import { changesRequireBuild } from './vercel-ignore-build.mjs'
 
 const SITE_URL = (process.env.PRODUCTION_SITE_URL || 'https://malibu-response-lx.vercel.app').replace(/\/$/, '')
 const expectedOnly = process.argv.includes('--expected-only')
+const maxAttempts = Math.max(1, Number.parseInt(process.env.FRESHNESS_ATTEMPTS || '1', 10) || 1)
+const intervalMs = Math.max(1000, Number.parseInt(process.env.FRESHNESS_INTERVAL_MS || '10000', 10) || 10000)
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 function git(args, options = {}) {
   return execFileSync('git', args, {
@@ -58,14 +62,7 @@ function productionContainsRuntime(expectedRuntimeCommit, productionCommit) {
   }
 }
 
-async function main() {
-  const expected = latestRuntimeCommit()
-
-  if (expectedOnly) {
-    console.log(expected.commit)
-    return
-  }
-
+async function readProductionBuildInfo() {
   const response = await fetch(`${SITE_URL}/api/build-info`, {
     cache: 'no-store',
     headers: { 'User-Agent': 'malibu-production-freshness-health/1.0' },
@@ -76,21 +73,51 @@ async function main() {
   }
 
   const data = await response.json()
-  const productionCommit = typeof data.commit === 'string' ? data.commit : ''
-  const environment = typeof data.environment === 'string' ? data.environment : 'unknown'
+  return {
+    commit: typeof data.commit === 'string' ? data.commit : '',
+    environment: typeof data.environment === 'string' ? data.environment : 'unknown',
+  }
+}
+
+async function main() {
+  const expected = latestRuntimeCommit()
+
+  if (expectedOnly) {
+    console.log(expected.commit)
+    return
+  }
 
   console.log(`Latest runtime commit on main: ${expected.commit}`)
   console.log(`Runtime paths in that release: ${expected.files.join(', ')}`)
-  console.log(`Production reports commit: ${productionCommit || 'unknown'}`)
-  console.log(`Production environment: ${environment}`)
 
-  if (!productionContainsRuntime(expected.commit, productionCommit)) {
-    throw new Error(
-      `Production is stale for runtime: expected ${expected.commit} or a descendant containing it, got ${productionCommit || 'unknown'}.`,
-    )
+  let latestProduction = { commit: '', environment: 'unknown' }
+  let latestError = ''
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      latestProduction = await readProductionBuildInfo()
+      latestError = ''
+      console.log(`Freshness check ${attempt}/${maxAttempts}: production=${latestProduction.commit || 'unknown'} env=${latestProduction.environment}`)
+
+      if (productionContainsRuntime(expected.commit, latestProduction.commit)) {
+        console.log('Production contains the latest runtime-impacting main release.')
+        return
+      }
+    } catch (error) {
+      latestError = error instanceof Error ? error.message : String(error)
+      console.log(`Freshness check ${attempt}/${maxAttempts} failed to read production: ${latestError}`)
+    }
+
+    if (attempt < maxAttempts) await sleep(intervalMs)
   }
 
-  console.log('Production contains the latest runtime-impacting main release.')
+  if (latestError) {
+    throw new Error(`Could not validate production freshness: ${latestError}`)
+  }
+
+  throw new Error(
+    `Production is stale for runtime: expected ${expected.commit} or a descendant containing it, got ${latestProduction.commit || 'unknown'}.`,
+  )
 }
 
 await main()
