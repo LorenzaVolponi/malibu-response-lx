@@ -106,7 +106,7 @@ jobs:
           jq -e '.publishedClaims | length >= 8' /tmp/citation.json >/dev/null
           jq -e '.pendingIndependentValidation | length >= 4' /tmp/citation.json >/dev/null
           jq -e '.citationBoundary | length > 40' /tmp/citation.json >/dev/null
-          jq -e '.preferredSourceLinks | index("'"$SITE_URL"'/authority.json") != null' /tmp/citation.json >/dev/null
+          jq -e --arg authority "$SITE_URL/authority.json" '.preferredSourceLinks | index($authority) != null' /tmp/citation.json >/dev/null
 
           curl -L -sS "$SITE_URL/authority.json" > /tmp/authority.json
           jq -e --arg site "$SITE_URL" '.canonical == $site' /tmp/authority.json >/dev/null
