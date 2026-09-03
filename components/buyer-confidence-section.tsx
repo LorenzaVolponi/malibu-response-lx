@@ -2,13 +2,7 @@
 
 import { useRef } from 'react'
 import { CalendarDays, FileCheck, Handshake, Waves } from 'lucide-react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, useGSAP)
-}
+import { useDeferredGsap } from '@/lib/use-deferred-gsap'
 
 const steps = [
   {
@@ -36,22 +30,19 @@ const steps = [
 export function BuyerConfidenceSection() {
   const root = useRef<HTMLElement>(null)
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
-
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.from('[data-confidence-reveal]', {
-          y: 34,
-          opacity: 0,
-          duration: 0.85,
-          ease: 'power3.out',
-          stagger: 0.08,
-          scrollTrigger: { trigger: root.current, start: 'top 74%' },
-        })
+  useDeferredGsap(
+    root,
+    (gsap) => {
+      gsap.from('[data-confidence-reveal]', {
+        y: 34,
+        opacity: 0,
+        duration: 0.85,
+        ease: 'power3.out',
+        stagger: 0.08,
+        scrollTrigger: { trigger: root.current, start: 'top 74%' },
       })
     },
-    { scope: root },
+    { mediaQuery: '(prefers-reduced-motion: no-preference)' },
   )
 
   return (
