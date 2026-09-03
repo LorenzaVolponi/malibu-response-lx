@@ -3,23 +3,6 @@ import { z } from 'zod'
 import { whatsappUrl, type ContactIntent } from '@/lib/contact'
 
 const intentSchema = z.enum(['primary', 'secondary', 'technical', 'documents', 'test', 'offer']).catch('primary')
-const ATTRIBUTION_KEYS = [
-  'utm_source',
-  'utm_medium',
-  'utm_campaign',
-  'utm_content',
-  'utm_term',
-  'gclid',
-  'gbraid',
-  'wbraid',
-  'msclkid',
-  'fbclid',
-  'source_group',
-  'channel_group',
-  'referrer_host',
-  'landing_path',
-] as const
-
 const PAID_CLICK_KEYS = ['gclid', 'gbraid', 'wbraid', 'msclkid', 'fbclid'] as const
 const LEDGER_KEYS = [
   'utm_source',
@@ -30,9 +13,19 @@ const LEDGER_KEYS = [
   'referrer_host',
   'landing_path',
 ] as const
+const MESSAGE_CONTEXT_KEYS = [
+  'channel_group',
+  'source_group',
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'landing_path',
+] as const
 
 function safeParam(reqUrl: URL, key: string, maxLength = 250) {
-  return reqUrl.searchParams.get(key)?.trim().slice(0, maxLength) || undefined
+  const value = reqUrl.searchParams.get(key)?.trim()
+  if (!value) return undefined
+  return value.replace(/[\r\n\t|]+/g, ' ').replace(/\s{2,}/g, ' ').slice(0, maxLength)
 }
 
 function createLeadRef() {
@@ -42,8 +35,8 @@ function createLeadRef() {
 function withAttribution(url: string, reqUrl: URL, intent: ContactIntent, leadRef: string) {
   const destination = new URL(url)
   const currentText = destination.searchParams.get('text') ?? ''
-  const attribution = ATTRIBUTION_KEYS
-    .map((key) => [key, reqUrl.searchParams.get(key)?.slice(0, 500)] as const)
+  const attribution = MESSAGE_CONTEXT_KEYS
+    .map((key) => [key, safeParam(reqUrl, key)] as const)
     .filter(([, value]) => value)
 
   const context: string[] = [`lead_ref: ${leadRef}`, `intenção: ${intent}`]
@@ -89,6 +82,8 @@ export function GET(req: Request) {
 
   const response = NextResponse.redirect(destination, 302)
   response.headers.set('Cache-Control', 'private, no-store, max-age=0')
+  response.headers.set('Pragma', 'no-cache')
+  response.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive')
   response.headers.set('X-Lead-Reference', leadRef)
   return response
 }
