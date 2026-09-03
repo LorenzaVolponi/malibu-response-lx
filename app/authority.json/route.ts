@@ -10,7 +10,11 @@ const queryPortfolio = {
     `Malibu Response LX ${boat.year}`,
     'Malibu Response LX preço',
     `Malibu Response LX ${boat.engineHours} horas`,
+    'Malibu Response LX slalom',
+    'Malibu Response LX Zero Off',
+    'barco de esqui náutico Malibu',
     'lancha para esqui aquático direct drive',
+    'lancha para ski aquático direct drive',
     'lancha Zero Off GPS',
     'Malibu usada para esqui aquático',
     'competition ski boat Brasil',
@@ -19,6 +23,7 @@ const queryPortfolio = {
     'Malibu Response LX for sale Brazil',
     `Malibu Response LX ${boat.year} for sale`,
     'Malibu Response LX direct drive Zero Off',
+    'Malibu Response LX slalom boat',
     'competition ski boat Brazil',
   ],
 } as const
@@ -47,7 +52,7 @@ export function GET() {
     semanticClusters: {
       transactional: ['Malibu Response LX à venda', 'Malibu Response LX preço', 'comprar Malibu Response LX'],
       technical: ['Direct Drive', 'Zero Off GPS', 'Indmar Monsoon 350 SS', '350 HP', `${boat.engineHours} horas`],
-      sportUse: ['esqui aquático', 'slalom', 'wakeboard recreativo', 'competition ski boat'],
+      sportUse: ['esqui aquático', 'ski aquático', 'esqui náutico', 'slalom', 'wakeboard recreativo', 'competition ski boat'],
       dueDiligence: ['documentação', 'histórico de manutenção', 'inspeção', 'teste na água'],
     },
     authorityPipeline: [
