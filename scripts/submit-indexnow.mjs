@@ -1,6 +1,8 @@
+import { latestRuntimeCommit, productionContainsRuntime } from './check-production-runtime-freshness.mjs'
+
 const SITE_URL = (process.env.INDEXNOW_SITE_URL || 'https://malibu-response-lx.vercel.app').replace(/\/$/, '')
 const INDEXNOW_KEY = process.env.INDEXNOW_KEY
-const EXPECTED_COMMIT_SHA = process.env.EXPECTED_COMMIT_SHA
+const EXPECTED_RUNTIME_COMMIT = process.env.EXPECTED_RUNTIME_COMMIT || latestRuntimeCommit().commit
 
 if (!INDEXNOW_KEY) {
   throw new Error('INDEXNOW_KEY is required')
@@ -8,14 +10,11 @@ if (!INDEXNOW_KEY) {
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-async function waitForProductionCommit() {
-  if (!EXPECTED_COMMIT_SHA) {
-    console.log('No expected commit SHA provided; skipping deploy SHA check.')
-    return true
-  }
-
+async function waitForProductionRuntime() {
   const buildInfoUrl = `${SITE_URL}/api/build-info`
   const maxAttempts = 30
+
+  console.log(`IndexNow expects runtime release ${EXPECTED_RUNTIME_COMMIT}.`)
 
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     try {
@@ -26,12 +25,14 @@ async function waitForProductionCommit() {
 
       if (response.ok) {
         const data = await response.json()
-        if (data.commit === EXPECTED_COMMIT_SHA) {
-          console.log(`Production is running commit ${EXPECTED_COMMIT_SHA}.`)
+        const productionCommit = typeof data.commit === 'string' ? data.commit : ''
+
+        if (productionContainsRuntime(EXPECTED_RUNTIME_COMMIT, productionCommit)) {
+          console.log(`Production commit ${productionCommit} contains runtime release ${EXPECTED_RUNTIME_COMMIT}.`)
           return true
         }
 
-        console.log(`Deploy check ${attempt}/${maxAttempts}: production commit is ${data.commit ?? 'unknown'}.`)
+        console.log(`Deploy check ${attempt}/${maxAttempts}: production commit is ${productionCommit || 'unknown'}.`)
       } else {
         console.log(`Deploy check ${attempt}/${maxAttempts}: ${response.status} from ${buildInfoUrl}.`)
       }
@@ -39,10 +40,10 @@ async function waitForProductionCommit() {
       console.log(`Deploy check ${attempt}/${maxAttempts} failed: ${error instanceof Error ? error.message : String(error)}`)
     }
 
-    await sleep(10000)
+    if (attempt < maxAttempts) await sleep(10000)
   }
 
-  console.log(`IndexNow deferred: production did not reach commit ${EXPECTED_COMMIT_SHA} within the deploy check window.`)
+  console.log(`IndexNow deferred: production does not contain runtime release ${EXPECTED_RUNTIME_COMMIT} within the deploy check window.`)
   return false
 }
 
@@ -96,7 +97,7 @@ async function getIndexableUrls() {
 }
 
 async function submitIndexNow() {
-  const productionReady = await waitForProductionCommit()
+  const productionReady = await waitForProductionRuntime()
   if (!productionReady) {
     console.log('No stale URLs were submitted. A later scheduled or manual run can retry after production catches up.')
     return
