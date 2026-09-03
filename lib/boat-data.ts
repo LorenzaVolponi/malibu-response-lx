@@ -142,7 +142,7 @@ export const conditionItems = [
 
 export const faqs = [
   {
-    question: 'O preço é negociável?',
+    question: 'Qual é o preço da Malibu Response LX 2013?',
     answer: `O valor final anunciado é ${boat.priceLabel}. Condições de pagamento e demais detalhes devem ser tratados diretamente pelo WhatsApp do vendedor.`,
   },
   {
@@ -187,7 +187,7 @@ FATOS CONFIRMADOS:
 - Interior em couro náutico creme com faixas azul-marinho, conservado.
 - Acompanha toldo bimini. Não acompanha carreta.
 - Cores externas: casco branco perolado com faixa azul-marinho.
-- Estado geral: bem conservada, motor e estofamento em bom estado pelas fotos.
+- Estado visual: apresentação geral e estofamento aparentam conservação nas fotos; o motor está identificado nas imagens, mas a condição mecânica deve ser validada por inspeção e/ou teste.
 
 REGRAS:
 - O valor final oficial é ${boat.priceLabel}; nunca informe R$ 175.000 nem qualquer outro preço.

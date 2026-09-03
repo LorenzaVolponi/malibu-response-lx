@@ -106,6 +106,7 @@ export function Hero() {
         <p className="mb-5 inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs tracking-luxe text-gold uppercase">À venda no Brasil · venda particular · sem intermediário</p>
         <h1 className="text-balance font-serif text-4xl leading-[0.95] text-cream sm:text-7xl lg:text-8xl">
           Malibu <span className="block text-gradient-gold">Response LX</span>
+          <span className="mt-4 block font-sans text-sm font-medium leading-normal tracking-[0.18em] text-cream/70 uppercase sm:text-base">{boat.year} à venda no Brasil</span>
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-pretty text-base leading-relaxed text-cream/80 sm:text-lg">
           Competition ski boat direct drive para esqui aquático e slalom. Indmar V8 350 HP, Zero Off GPS, {boat.year} e {boat.engineHours} horas informadas.
