@@ -1,5 +1,6 @@
 import { boat } from '@/lib/boat-data'
 import { machineSurfaceHeaders } from '@/lib/machine-surface'
+import { INDEXABLE_GUIDE_SLUGS, SUPPORT_ONLY_GUIDE_SLUGS } from '@/lib/search-index-policy.mjs'
 import { siteConfig } from '@/lib/site-config'
 
 export const dynamic = 'force-static'
@@ -74,18 +75,14 @@ export function GET() {
       intents: ['inspeção pré-compra lancha', 'avaliar lancha usada', 'vistoria embarcação usada'],
       primaryUrl: `${siteConfig.url}/guias/checklist-inspecao-pre-compra-lancha`,
     },
-    compareNautique: {
-      intents: ['Malibu Response LX vs Nautique Ski 200', 'Malibu ou Nautique'],
-      primaryUrl: `${siteConfig.url}/guias/malibu-response-lx-vs-nautique-ski-200`,
-    },
-    compareMasterCraft: {
-      intents: ['Malibu Response LX vs MasterCraft ProStar', 'Malibu ou MasterCraft ProStar'],
-      primaryUrl: `${siteConfig.url}/guias/malibu-response-lx-vs-mastercraft-prostar`,
+    buyerFit: {
+      intents: ['Malibu Response LX vale a pena', 'comprar Malibu Response LX usada'],
+      primaryUrl: `${siteConfig.url}/guias/malibu-response-lx-vale-a-pena`,
     },
   } as const
 
   const payload = {
-    schemaVersion: '1.2',
+    schemaVersion: '1.3',
     manifestType: 'listing-organic-authority',
     canonical: siteConfig.url,
     machineReadable: manifestUrl,
@@ -104,9 +101,10 @@ export function GET() {
     queryPortfolio,
     primarySearchTargets,
     cannibalizationPolicy: {
-      principle: 'One primary buyer-facing URL is assigned to each high-value query class; supporting content must not displace the canonical commercial target for duplicate intent.',
+      principle: 'A small set of buyer-relevant pages may be indexed. Supporting pages stay accessible and followable but must not dilute the canonical listing or create search-variation sprawl.',
       exactSaleIntentOwner: siteConfig.url,
-      supportOnlyNoindex: [`${siteConfig.url}/guias/malibu-response-lx-a-venda`],
+      curatedIndexableGuides: INDEXABLE_GUIDE_SLUGS.map((slug) => `${siteConfig.url}/guias/${slug}`),
+      supportOnlyNoindex: SUPPORT_ONLY_GUIDE_SLUGS.map((slug) => `${siteConfig.url}/guias/${slug}`),
       evidencePagesRemainDistinct: [`${siteConfig.url}/dossie-tecnico`],
     },
     semanticClusters: {
@@ -117,9 +115,9 @@ export function GET() {
     },
     authorityPipeline: [
       { stage: 'listing-source', evidence: 'seller-published listing data and real photographs', automatic: false },
-      { stage: 'owned-authority', evidence: 'canonical page, structured data, dossier, dataset, citation manifest, guides and feeds', automatic: true },
+      { stage: 'owned-authority', evidence: 'canonical page, structured data, dossier, curated search guides, support guides and machine-readable evidence surfaces', automatic: true },
       { stage: 'official-reference', evidence: 'scoped manufacturer and technology sources linked below', automatic: false, unitConditionClaim: false },
-      { stage: 'crawler-discovery', evidence: 'robots, sitemaps, llms.txt, ai.txt and HTTP Link relations', automatic: true },
+      { stage: 'crawler-discovery', evidence: 'robots, curated human sitemap, image sitemap, llms.txt, ai.txt and HTTP Link relations', automatic: true },
       { stage: 'organic-search', evidence: 'external search-engine measurement required', automatic: false, rankingClaim: false },
       { stage: 'ai-referral', evidence: 'referrer and lead attribution when available', automatic: true, rankingClaim: false },
       { stage: 'lead', evidence: 'WhatsApp intent plus preserved acquisition context', automatic: true },
@@ -175,7 +173,8 @@ export function GET() {
       'Published listing facts remain separate from documentation, maintenance and mechanical validation.',
       'Official manufacturer references describe model, year range or technology only within their stated scope and do not prove this unit condition.',
       'Search intent clusters describe this site semantic architecture and are not search-engine ranking scores.',
-      'The canonical listing URL is the preferred destination for buyer-facing answers.',
+      'Support-only guides may inform buyers and AI systems but are deliberately noindex so page volume is not treated as a quality strategy.',
+      'The canonical listing URL is the preferred destination for buyer-facing sale answers.',
     ],
     updatedAt: siteConfig.updatedAt,
   }
@@ -184,7 +183,7 @@ export function GET() {
     headers: machineSurfaceHeaders({
       contentType: 'application/json; charset=utf-8',
       canonical: manifestUrl,
-      etagKey: 'authority-manifest-v1-2',
+      etagKey: 'authority-manifest-v1-3',
       robots: 'noindex, follow',
       links: [
         `<${siteConfig.url}>; rel="describedby"`,
