@@ -3,13 +3,26 @@ import { z } from 'zod'
 import { whatsappUrl, type ContactIntent } from '@/lib/contact'
 
 const intentSchema = z.enum(['primary', 'secondary', 'technical', 'documents', 'test', 'offer']).catch('primary')
-const ATTRIBUTION_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'gclid', 'gbraid', 'wbraid', 'msclkid'] as const
+const ATTRIBUTION_KEYS = [
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
+  'gclid',
+  'gbraid',
+  'wbraid',
+  'msclkid',
+  'fbclid',
+  'source_group',
+  'landing_path',
+] as const
 
 function withAttribution(url: string, reqUrl: URL, intent: ContactIntent) {
   const destination = new URL(url)
   const currentText = destination.searchParams.get('text') ?? ''
   const attribution = ATTRIBUTION_KEYS
-    .map((key) => [key, reqUrl.searchParams.get(key)] as const)
+    .map((key) => [key, reqUrl.searchParams.get(key)?.slice(0, 500)] as const)
     .filter(([, value]) => value)
 
   const context: string[] = [`intenção: ${intent}`]
