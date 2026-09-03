@@ -3,15 +3,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
 import { gallery } from '@/lib/boat-data'
 import { pushDataLayerEvent } from '@/lib/analytics'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, useGSAP)
-}
+import { useDeferredGsap } from '@/lib/use-deferred-gsap'
 
 const spanClass: Record<string, string> = {
   wide: 'sm:col-span-2',
@@ -67,30 +61,23 @@ export function GallerySection() {
     }
   }, [close, move, selected])
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
-
-      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
-        gsap.from('[data-gal-head]', {
-          y: 30,
-          opacity: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: root.current, start: 'top 78%' },
-        })
-        gsap.from('[data-gal-item]', {
-          y: 60,
-          opacity: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          stagger: 0.08,
-          scrollTrigger: { trigger: '[data-gal-grid]', start: 'top 82%' },
-        })
-      })
-    },
-    { scope: root },
-  )
+  useDeferredGsap(root, (gsap) => {
+    gsap.from('[data-gal-head]', {
+      y: 30,
+      opacity: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+      scrollTrigger: { trigger: root.current, start: 'top 78%' },
+    })
+    gsap.from('[data-gal-item]', {
+      y: 60,
+      opacity: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+      stagger: 0.08,
+      scrollTrigger: { trigger: '[data-gal-grid]', start: 'top 82%' },
+    })
+  })
 
   const current = selected === null ? null : gallery[selected]
 
