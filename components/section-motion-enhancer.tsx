@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 
-type MotionKind = 'brand-story' | 'cinematic' | 'journey' | 'specs' | 'features' | 'condition'
+type MotionKind = 'brand-story' | 'cinematic' | 'journey' | 'specs' | 'features' | 'condition' | 'buyer-confidence'
 
 type Props = {
   sectionId: string
@@ -185,6 +185,17 @@ export function SectionMotionEnhancer({ sectionId, kind }: Props) {
             ease: 'power3.out',
             stagger: 0.08,
             scrollTrigger: { trigger: element, start: 'top 72%' },
+          })
+        }
+
+        if (kind === 'buyer-confidence') {
+          gsap.from('[data-confidence-reveal]', {
+            y: 34,
+            opacity: 0,
+            duration: 0.85,
+            ease: 'power3.out',
+            stagger: 0.08,
+            scrollTrigger: { trigger: element, start: 'top 74%' },
           })
         }
       }, element)
