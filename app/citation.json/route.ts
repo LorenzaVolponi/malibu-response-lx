@@ -13,7 +13,8 @@ export function GET() {
     canonical: siteConfig.url,
     manifestUrl,
     entity: {
-      type: 'Boat',
+      type: 'Vehicle',
+      category: 'competition-ski-boat',
       entityId: `${siteConfig.url}/#product`,
       name: `${boat.brand} ${boat.model} ${boat.year}`,
       brand: boat.brand,
