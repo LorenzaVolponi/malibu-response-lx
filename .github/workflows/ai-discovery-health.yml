@@ -1,0 +1,91 @@
+name: AI Discovery Health
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 10 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: malibu-ai-discovery-health
+  cancel-in-progress: true
+
+jobs:
+  readiness:
+    name: Verify production AI and crawler surfaces
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    env:
+      SITE_URL: https://malibu-response-lx.vercel.app
+
+    steps:
+      - name: Check canonical and discovery endpoints
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          check_200() {
+            local path="$1"
+            local code
+            code="$(curl -L -sS -o /tmp/body -w '%{http_code}' "$SITE_URL$path")"
+            if [ "$code" != "200" ]; then
+              echo "Expected 200 for $path, got $code"
+              cat /tmp/body || true
+              exit 1
+            fi
+          }
+
+          for path in / /robots.txt /sitemap.xml /sitemap-images.xml /llms.txt /ai.txt /boat.json /feed.xml /dossie-tecnico /api/ai-readiness; do
+            check_200 "$path"
+          done
+
+          curl -L -sS "$SITE_URL/" | grep -F 'rel="canonical"' >/dev/null
+          curl -L -sS "$SITE_URL/" | grep -F "$SITE_URL" >/dev/null
+
+      - name: Verify crawler policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROBOTS="$(curl -L -sS "$SITE_URL/robots.txt")"
+          printf '%s' "$ROBOTS" | grep -F 'OAI-SearchBot' >/dev/null
+          printf '%s' "$ROBOTS" | grep -F 'OAI-AdsBot' >/dev/null
+          printf '%s' "$ROBOTS" | grep -F 'GPTBot' >/dev/null
+
+          for agent in OAI-SearchBot OAI-AdsBot ChatGPT-User GPTBot; do
+            code="$(curl -A "$agent" -L -sS -o /dev/null -w '%{http_code}' "$SITE_URL/")"
+            if [ "$code" != "200" ]; then
+              echo "$agent cannot fetch production homepage: HTTP $code"
+              exit 1
+            fi
+          done
+
+      - name: Verify machine-readable evidence contract
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          curl -L -sS "$SITE_URL/api/ai-readiness" > /tmp/readiness.json
+          jq -e '.status == "ok"' /tmp/readiness.json >/dev/null
+          jq -e --arg site "$SITE_URL" '.canonicalUrl == $site' /tmp/readiness.json >/dev/null
+          jq -e '.evidencePolicy.validationRequired | length >= 4' /tmp/readiness.json >/dev/null
+
+          curl -L -sS "$SITE_URL/boat.json" > /tmp/boat.json
+          jq -e --arg site "$SITE_URL" '.canonicalUrl == $site' /tmp/boat.json >/dev/null
+          jq -e '.authenticity.pendingIndependentValidation | length >= 4' /tmp/boat.json >/dev/null
+          jq -e '.machineGuidance.citationInstruction | length > 20' /tmp/boat.json >/dev/null
+
+      - name: Publish health summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '### Malibu AI discovery backend'
+            echo "- Canonical: $SITE_URL"
+            echo '- Checked: robots, sitemaps, llms.txt, ai.txt, boat.json, RSS and technical dossier'
+            echo '- Checked crawler access: OAI-SearchBot, OAI-AdsBot, ChatGPT-User and GPTBot'
+            echo '- Checked evidence contract: published facts stay separate from pending validation'
+            echo '- This workflow changes no frontend behavior.'
+          } >> "$GITHUB_STEP_SUMMARY"
