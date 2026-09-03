@@ -4,15 +4,29 @@ import { useEffect } from 'react'
 import { pushDataLayerEvent } from '@/lib/analytics'
 
 const SECTION_EVENTS = [
-  { selector: '#comprar', event: 'buyer_intent_hub_view' },
-  { selector: '#evidencias', event: 'purchase_evidence_view' },
   { selector: '#negociar', event: 'pricing_section_view' },
   { selector: '#galeria', event: 'gallery_section_view' },
-  { selector: '#guia', event: 'buyer_guide_view' },
   { selector: '#especificacoes', event: 'technical_specs_read' },
   { selector: '#valor', event: 'value_proof_view' },
   { selector: '#faq', event: 'faq_section_view' },
 ] as const
+
+const ATTRIBUTION_KEYS = [
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
+  'gclid',
+  'gbraid',
+  'wbraid',
+  'msclkid',
+  'fbclid',
+] as const
+
+const ATTRIBUTION_STORAGE_KEY = 'malibu_attribution_v1'
+
+type Attribution = Partial<Record<(typeof ATTRIBUTION_KEYS)[number] | 'source_group' | 'landing_path', string>>
 
 function detectTrafficSource() {
   const referrer = document.referrer.toLowerCase()
@@ -29,25 +43,73 @@ function detectTrafficSource() {
   return 'referral'
 }
 
-function readCampaign() {
-  const params = new URLSearchParams(window.location.search)
-  return {
-    utm_source: params.get('utm_source') || undefined,
-    utm_medium: params.get('utm_medium') || undefined,
-    utm_campaign: params.get('utm_campaign') || undefined,
-    utm_content: params.get('utm_content') || undefined,
+function readStoredAttribution(): Attribution {
+  try {
+    const raw = sessionStorage.getItem(ATTRIBUTION_STORAGE_KEY)
+    return raw ? (JSON.parse(raw) as Attribution) : {}
+  } catch {
+    return {}
   }
+}
+
+function buildAttribution(): Attribution {
+  const params = new URLSearchParams(window.location.search)
+  const stored = readStoredAttribution()
+  const attribution: Attribution = { ...stored }
+
+  for (const key of ATTRIBUTION_KEYS) {
+    const value = params.get(key)
+    if (value) attribution[key] = value.slice(0, 250)
+  }
+
+  attribution.source_group = attribution.source_group || detectTrafficSource()
+  attribution.landing_path = attribution.landing_path || `${window.location.pathname}${window.location.search}`.slice(0, 500)
+
+  try {
+    sessionStorage.setItem(ATTRIBUTION_STORAGE_KEY, JSON.stringify(attribution))
+  } catch {
+    // Attribution is best-effort and must never block conversion.
+  }
+
+  return attribution
+}
+
+function appendAttributionToWhatsAppLinks(attribution: Attribution) {
+  const onClick = (event: MouseEvent) => {
+    if (!(event.target instanceof Element)) return
+    const anchor = event.target.closest<HTMLAnchorElement>('a[href*="/api/whatsapp"]')
+    if (!anchor) return
+
+    const rawHref = anchor.getAttribute('href')
+    if (!rawHref) return
+
+    const destination = new URL(rawHref, window.location.origin)
+    if (destination.pathname !== '/api/whatsapp') return
+
+    for (const [key, value] of Object.entries(attribution)) {
+      if (value && !destination.searchParams.has(key)) destination.searchParams.set(key, value)
+    }
+
+    anchor.setAttribute('href', `${destination.pathname}${destination.search}`)
+  }
+
+  document.addEventListener('click', onClick, true)
+  return () => document.removeEventListener('click', onClick, true)
 }
 
 export function ConversionEventTracker() {
   useEffect(() => {
+    const attribution = buildAttribution()
+
     pushDataLayerEvent({
       event: 'page_intent_view',
-      traffic_source_group: detectTrafficSource(),
-      landing_path: window.location.pathname,
+      traffic_source_group: attribution.source_group,
+      landing_path: attribution.landing_path,
       referrer: document.referrer || 'direct',
-      ...readCampaign(),
+      ...attribution,
     })
+
+    const removeAttributionListener = appendAttributionToWhatsAppLinks(attribution)
 
     const observed = SECTION_EVENTS.flatMap(({ selector, event }) => {
       const element = document.querySelector(selector)
@@ -86,6 +148,7 @@ export function ConversionEventTracker() {
 
     if (observed.length === 0) {
       return () => {
+        removeAttributionListener()
         window.removeEventListener('scroll', onScroll)
         window.clearInterval(engagementTimer)
       }
@@ -108,6 +171,7 @@ export function ConversionEventTracker() {
 
     return () => {
       observer.disconnect()
+      removeAttributionListener()
       window.removeEventListener('scroll', onScroll)
       window.clearInterval(engagementTimer)
     }
