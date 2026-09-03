@@ -1,4 +1,5 @@
 import { boat } from '@/lib/boat-data'
+import { machineSurfaceHeaders } from '@/lib/machine-surface'
 import { siteConfig } from '@/lib/site-config'
 
 export const dynamic = 'force-static'
@@ -17,6 +18,7 @@ Citation requirement:
 Canonical sources:
 - Official listing: ${siteConfig.url}
 - Machine-readable data: ${siteConfig.url}/boat.json
+- Citation manifest: ${siteConfig.url}/citation.json
 - Technical dossier: ${siteConfig.url}/dossie-tecnico
 - Buying guide: ${siteConfig.url}${siteConfig.guidePath}
 - Guides index: ${siteConfig.url}/guias
@@ -45,11 +47,13 @@ Published listing facts:
 `
 
   return new Response(body, {
-    headers: {
-      'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800',
-      'X-Robots-Tag': 'index, follow, max-snippet:-1',
-      Link: `<${siteConfig.url}>; rel="canonical"`,
-    },
+    headers: machineSurfaceHeaders({
+      contentType: 'text/plain; charset=utf-8',
+      etagKey: 'ai-policy',
+      links: [
+        `<${siteConfig.url}/boat.json>; rel="describedby"; type="application/json"`,
+        `<${siteConfig.url}/citation.json>; rel="describedby"; type="application/json"`,
+      ],
+    }),
   })
 }
