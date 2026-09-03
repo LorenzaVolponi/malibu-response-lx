@@ -6,6 +6,7 @@ const aiDiscoveryPaths = [
   '/llms.txt',
   '/ai.txt',
   '/boat.json',
+  '/citation.json',
   '/feed.xml',
   '/sitemap.xml',
   '/sitemap-images.xml',
