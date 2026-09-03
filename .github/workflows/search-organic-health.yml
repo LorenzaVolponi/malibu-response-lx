@@ -137,9 +137,15 @@ jobs:
           HTML="$(curl -L -sS "$SITE_URL/")"
           printf '%s' "$HTML" | grep -F '"@type":"Product"' >/dev/null
           printf '%s' "$HTML" | grep -F '"@type":"Offer"' >/dev/null
+          printf '%s' "$HTML" | grep -F '"@type":"ItemPage"' >/dev/null
+          printf '%s' "$HTML" | grep -F '"additionalType":"https://schema.org/Vehicle"' >/dev/null
           printf '%s' "$HTML" | grep -F '"priceCurrency":"BRL"' >/dev/null
           printf '%s' "$HTML" | grep -F '"price":165000' >/dev/null
           printf '%s' "$HTML" | grep -F 'Malibu Response LX' >/dev/null
+          if printf '%s' "$HTML" | grep -F 'https://schema.org/Boat' >/dev/null; then
+            echo 'Invalid Schema.org Boat type found in structured data'
+            exit 1
+          fi
 
       - name: Publish summary
         if: always()
@@ -153,6 +159,6 @@ jobs:
             echo '- Checked canonical URLs.'
             echo '- Checked Googlebot and Bingbot access.'
             echo '- Checked XML and image sitemap coverage.'
-            echo '- Checked Product + Offer commercial structured data.'
+            echo '- Checked Product + Offer + ItemPage + Vehicle semantic integrity.'
             echo '- This workflow changes no frontend behavior.'
           } >> "$GITHUB_STEP_SUMMARY"
