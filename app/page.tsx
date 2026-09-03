@@ -15,7 +15,6 @@ import { GallerySection } from '@/components/gallery-section'
 import { PricingCta } from '@/components/pricing-cta'
 import { FaqSection } from '@/components/faq-section'
 import { BuyerConfidenceSection } from '@/components/buyer-confidence-section'
-import { ValueProofSection } from '@/components/value-proof-section'
 import { SiteFooter } from '@/components/site-footer'
 import { StickyMobileCta } from '@/components/sticky-mobile-cta'
 import { DeferredWidgets } from '@/components/deferred-widgets'
@@ -76,7 +75,6 @@ export default function Page() {
           <SpecsSection />
           <FeaturesSection />
           <ConditionSection />
-          <ValueProofSection />
           <CinematicSection {...cinematic[2]} />
           <GallerySection />
           <FaqSection />

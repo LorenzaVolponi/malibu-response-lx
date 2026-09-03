@@ -12,7 +12,7 @@ export const boat = {
   location: 'Brasil',
   year: 2013,
   engineHours: 940,
-  tagline: 'Lancha ideal para esqui aquático e wakeboard recreativo, com precisão direct drive e controle de velocidade Zero Off por GPS.',
+  tagline: 'Lancha com vocação principal para esqui aquático e slalom, com wakeboard recreativo, transmissão direct drive e controle Zero Off por GPS.',
 } as const
 
 // Especificações confirmadas pelas fotos e ficha do modelo.
@@ -45,16 +45,16 @@ export const features = [
   {
     title: 'Estofamento creme com acabamento azul',
     description:
-      'Interior náutico creme com faixas azul-marinho, visual clássico e áreas de convivência bem distribuídas da proa à popa.',
+      'Estofamento náutico creme com faixas azul-marinho, visual clássico e áreas de convivência bem distribuídas da proa à popa.',
     image: '/images/cockpit-lake.jpeg',
-    alt: 'Interior em couro creme com faixas azuis da Malibu Response LX',
+    alt: 'Estofamento náutico creme com faixas azuis da Malibu Response LX',
   },
   {
-    title: 'Vocação para esqui e wakeboard',
+    title: 'Vocação para esqui e slalom',
     description:
-      'Casco esportivo, transmissão direct drive e plataforma de popa formam um conjunto ideal para esqui aquático e wakeboard recreativo.',
+      'Casco esportivo e transmissão direct drive formam um conjunto voltado a esqui aquático e slalom, com wakeboard recreativo como uso secundário.',
     image: '/images/profile-trailer.jpeg',
-    alt: 'Malibu Response LX de perfil, lancha ideal para esqui aquático e wakeboard',
+    alt: 'Malibu Response LX de perfil, ski boat para esqui aquático e slalom',
   },
 ] as const
 
@@ -88,7 +88,7 @@ export const journey = [
     id: 'popa',
     kicker: 'A plataforma',
     title: 'Malibu na popa',
-    copy: 'Plataforma de popa integrada, ideal para embarque, esqui e wakeboard. A assinatura Malibu na traseira.',
+    copy: 'Plataforma de popa integrada para embarque e preparação de sessões de esqui e wakeboard recreativo. A assinatura Malibu na traseira.',
     image: '/images/stern-platform.jpeg',
     alt: 'Plataforma de popa com a marca Malibu na Response LX',
   },
@@ -146,8 +146,8 @@ export const faqs = [
     answer: `O valor final anunciado é ${boat.priceLabel}. Condições de pagamento e demais detalhes devem ser tratados diretamente pelo WhatsApp do vendedor.`,
   },
   {
-    question: 'É indicada para esqui aquático e wakeboard?',
-    answer: 'Sim. A transmissão direct drive, o motor V8 de 350 HP e o controle de velocidade Zero Off GPS formam um conjunto ideal para esqui aquático e wakeboard recreativo.',
+    question: 'Para qual esporte a Malibu Response LX é mais indicada?',
+    answer: 'A vocação principal desta Response LX é esqui aquático e slalom. A unidade também é apresentada para wakeboard recreativo. O anúncio não promete desempenho de wakesurf dedicado.',
   },
   {
     question: 'Qual é o motor?',
@@ -170,7 +170,7 @@ export const faqs = [
 // Base factual para o agente de IA — SOMENTE o que é verdadeiro sobre este barco
 export const aiKnowledge = `
 Você é o consultor virtual de vendas da lancha Malibu Response LX apelidada "Wonder Women", à venda no Brasil.
-Responda SOMENTE sobre esta embarcação, o processo de compra/negociação e esporte náutico relacionado (esqui, wakeboard).
+Responda SOMENTE sobre esta embarcação, o processo de compra/negociação e esporte náutico relacionado (esqui, slalom, wakeboard recreativo).
 Se perguntarem algo fora desse escopo, redirecione educadamente para o barco.
 Seja objetivo, cordial e em português do Brasil. Nunca invente dados que não estão abaixo.
 
@@ -184,7 +184,10 @@ FATOS CONFIRMADOS:
 - Ano de fabricação: 2013.
 - Horas de motor: 940 h.
 - Controle de velocidade Zero Off por GPS, integrado ao painel (ideal para tow sports).
-- Interior em couro náutico creme com faixas azul-marinho, conservado.
+- Vocação principal do anúncio: esqui aquático e slalom.
+- Uso secundário apresentado no anúncio: wakeboard recreativo.
+- O anúncio não posiciona a unidade como plataforma dedicada de wakesurf e não promete onda, lastro ou desempenho de wakesurf.
+- Interior com estofamento náutico creme e faixas azul-marinho, com apresentação visual conservada nas fotos.
 - Acompanha toldo bimini. Não acompanha carreta.
 - Cores externas: casco branco perolado com faixa azul-marinho.
 - Estado visual: apresentação geral e estofamento aparentam conservação nas fotos; o motor está identificado nas imagens, mas a condição mecânica deve ser validada por inspeção e/ou teste.
@@ -192,6 +195,7 @@ FATOS CONFIRMADOS:
 REGRAS:
 - O valor final oficial é ${boat.priceLabel}; nunca informe R$ 175.000 nem qualquer outro preço.
 - Ano e horas podem ser afirmados conforme dados acima; não afirme documentação ou histórico se não for perguntado com base fornecida — se não souber, diga que confirma com o vendedor pelo WhatsApp.
+- Se perguntarem sobre wakesurf, diga apenas que o anúncio não posiciona esta unidade como plataforma dedicada de wakesurf; não invente onda, lastro ou recursos de surf.
 - Para fechar negócio, visita, vídeo complementar, documentação ou teste na água, sempre ofereça encaminhar ao WhatsApp do vendedor.
 - Não fale de outros barcos ou marcas concorrentes de forma depreciativa.
 `.trim()
