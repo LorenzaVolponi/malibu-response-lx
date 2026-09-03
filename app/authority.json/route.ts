@@ -32,7 +32,7 @@ export function GET() {
   const manifestUrl = `${siteConfig.url}/authority.json`
 
   const payload = {
-    schemaVersion: '1.0',
+    schemaVersion: '1.1',
     manifestType: 'listing-organic-authority',
     canonical: siteConfig.url,
     machineReadable: manifestUrl,
@@ -58,10 +58,39 @@ export function GET() {
     authorityPipeline: [
       { stage: 'listing-source', evidence: 'seller-published listing data and real photographs', automatic: false },
       { stage: 'owned-authority', evidence: 'canonical page, structured data, dossier, dataset, citation manifest, guides and feeds', automatic: true },
+      { stage: 'official-reference', evidence: 'scoped manufacturer and technology sources linked below', automatic: false, unitConditionClaim: false },
       { stage: 'crawler-discovery', evidence: 'robots, sitemaps, llms.txt, ai.txt and HTTP Link relations', automatic: true },
       { stage: 'organic-search', evidence: 'external search-engine measurement required', automatic: false, rankingClaim: false },
       { stage: 'ai-referral', evidence: 'referrer and lead attribution when available', automatic: true, rankingClaim: false },
       { stage: 'lead', evidence: 'WhatsApp intent plus preserved acquisition context', automatic: true },
+    ],
+    officialReferenceSources: [
+      {
+        publisher: 'Malibu Boats',
+        url: 'https://www.malibuboats.com/owner-manuals',
+        subject: `Owner manuals, including model year ${boat.year}`,
+        scope: 'manufacturer model/year reference; not evidence of this unit condition',
+      },
+      {
+        publisher: 'Malibu Boats, LLC',
+        url: 'https://cdn.malibuboats.com/safety/20230718-Service-Advisory.pdf',
+        subject: 'Service Advisory — Bow Seating Hazard',
+        appliesTo: 'Response LX model years 1995-2014',
+        listingYearWithinRange: boat.year >= 1995 && boat.year <= 2014,
+        scope: 'manufacturer model safety advisory; not an inspection of this individual unit',
+      },
+      {
+        publisher: 'Zero Off GPS Speed Control',
+        url: 'https://www.zerogps.com/about/',
+        subject: 'GPS speed-control technology',
+        scope: 'technology reference; operation on this unit requires independent test',
+      },
+      {
+        publisher: 'Zero Off GPS Speed Control',
+        url: 'https://www.zerogps.com/faqs/',
+        subject: 'Zero Off technical FAQ and general compatibility guidance',
+        scope: 'technology reference; not a compatibility certification for this individual unit',
+      },
     ],
     evidenceSurfaces: {
       canonical: siteConfig.url,
@@ -84,6 +113,7 @@ export function GET() {
       'No organic ranking position is claimed without verifiable external measurement.',
       'No AI citation or referral is claimed without observable evidence.',
       'Published listing facts remain separate from documentation, maintenance and mechanical validation.',
+      'Official manufacturer references describe model, year range or technology only within their stated scope and do not prove this unit condition.',
       'Search intent clusters describe this site semantic architecture and are not search-engine ranking scores.',
       'The canonical listing URL is the preferred destination for buyer-facing answers.',
     ],
@@ -94,7 +124,7 @@ export function GET() {
     headers: machineSurfaceHeaders({
       contentType: 'application/json; charset=utf-8',
       canonical: manifestUrl,
-      etagKey: 'authority-manifest',
+      etagKey: 'authority-manifest-v1-1',
       robots: 'noindex, follow',
       links: [
         `<${siteConfig.url}>; rel="describedby"`,
