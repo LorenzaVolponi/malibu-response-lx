@@ -15,8 +15,8 @@ const SUGGESTIONS = [
   'Quais dados preciso confirmar?',
 ]
 
-export function AiChatWidget() {
-  const [open, setOpen] = useState(false)
+export function AiChatWidget({ initialOpen = false }: { initialOpen?: boolean }) {
+  const [open, setOpen] = useState(initialOpen)
   const [input, setInput] = useState('')
   const { messages, sendMessage, status, error } = useChat()
   const scrollRef = useRef<HTMLDivElement>(null)

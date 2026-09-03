@@ -2,15 +2,9 @@
 
 import { useRef, useState } from 'react'
 import { ChevronDown, MessageCircle } from 'lucide-react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
 import { boat, faqs } from '@/lib/boat-data'
 import { whatsappLeadUrl } from '@/lib/contact'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, useGSAP)
-}
+import { useDeferredGsap } from '@/lib/use-deferred-gsap'
 
 const wa = whatsappLeadUrl('primary')
 
@@ -18,22 +12,19 @@ export function FaqSection() {
   const root = useRef<HTMLElement>(null)
   const [open, setOpen] = useState(0)
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
-
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.from('[data-faq-reveal]', {
-          y: 34,
-          opacity: 0,
-          duration: 0.85,
-          ease: 'power3.out',
-          stagger: 0.07,
-          scrollTrigger: { trigger: root.current, start: 'top 74%' },
-        })
+  useDeferredGsap(
+    root,
+    (gsap) => {
+      gsap.from('[data-faq-reveal]', {
+        y: 34,
+        opacity: 0,
+        duration: 0.85,
+        ease: 'power3.out',
+        stagger: 0.07,
+        scrollTrigger: { trigger: root.current, start: 'top 74%' },
       })
     },
-    { scope: root },
+    { mediaQuery: '(prefers-reduced-motion: no-preference)' },
   )
 
   return (

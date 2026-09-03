@@ -2,18 +2,12 @@
 
 import { useRef } from 'react'
 import Image from 'next/image'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
 import { Check, MessageCircle, Share2 } from 'lucide-react'
 import { whatsappLeadUrl } from '@/lib/contact'
 import { siteConfig } from '@/lib/site-config'
 import { pushDataLayerEvent } from '@/lib/analytics'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, useGSAP)
-}
+import { useDeferredGsap } from '@/lib/use-deferred-gsap'
 
 const includes = [
   'Motor Indmar Monsoon 350 SS (V8 350 HP)',
@@ -38,28 +32,21 @@ export function PricingCta() {
   const root = useRef<HTMLElement>(null)
   const bg = useRef<HTMLDivElement>(null)
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
-
-      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
-        gsap.to(bg.current, {
-          yPercent: 20,
-          ease: 'none',
-          scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
-        })
-        gsap.from('[data-cta-reveal]', {
-          y: 40,
-          opacity: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          stagger: 0.1,
-          scrollTrigger: { trigger: root.current, start: 'top 70%' },
-        })
-      })
-    },
-    { scope: root },
-  )
+  useDeferredGsap(root, (gsap) => {
+    gsap.to(bg.current, {
+      yPercent: 20,
+      ease: 'none',
+      scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
+    })
+    gsap.from('[data-cta-reveal]', {
+      y: 40,
+      opacity: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+      stagger: 0.1,
+      scrollTrigger: { trigger: root.current, start: 'top 70%' },
+    })
+  })
 
   const shareListing = async () => {
     pushDataLayerEvent({ event: 'listing_share_click', share_surface: 'native' })

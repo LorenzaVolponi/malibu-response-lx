@@ -2,13 +2,7 @@
 
 import { useRef } from 'react'
 import Image from 'next/image'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, useGSAP)
-}
+import { useDeferredGsap } from '@/lib/use-deferred-gsap'
 
 type Props = {
   id: string
@@ -22,65 +16,56 @@ type Props = {
 export function CinematicSection({ id, image, alt, words, caption, priority }: Props) {
   const root = useRef<HTMLDivElement>(null)
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
+  useDeferredGsap(root, (gsap) => {
+    gsap.fromTo(
+      '.cine-img',
+      { scale: 1.18, yPercent: -4 },
+      {
+        scale: 1,
+        yPercent: 4,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: root.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        },
+      },
+    )
 
-      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
-        // Parallax + zoom lento na imagem enquanto a seção está fixada
-        gsap.fromTo(
-          '.cine-img',
-          { scale: 1.18, yPercent: -4 },
-          {
-            scale: 1,
-            yPercent: 4,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: root.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: true,
-            },
-          },
-        )
+    gsap.fromTo(
+      '.cine-word',
+      { yPercent: 120, opacity: 0 },
+      {
+        yPercent: 0,
+        opacity: 1,
+        ease: 'power3.out',
+        stagger: 0.12,
+        scrollTrigger: {
+          trigger: root.current,
+          start: 'top 62%',
+          end: 'top 18%',
+          scrub: 0.6,
+        },
+      },
+    )
 
-        // Revelação palavra a palavra ancorada ao scroll
-        gsap.fromTo(
-          '.cine-word',
-          { yPercent: 120, opacity: 0 },
-          {
-            yPercent: 0,
-            opacity: 1,
-            ease: 'power3.out',
-            stagger: 0.12,
-            scrollTrigger: {
-              trigger: root.current,
-              start: 'top 62%',
-              end: 'top 18%',
-              scrub: 0.6,
-            },
-          },
-        )
-
-        gsap.fromTo(
-          '.cine-caption',
-          { opacity: 0, y: 24 },
-          {
-            opacity: 1,
-            y: 0,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: root.current,
-              start: 'top 42%',
-              end: 'top 22%',
-              scrub: 0.6,
-            },
-          },
-        )
-      })
-    },
-    { scope: root },
-  )
+    gsap.fromTo(
+      '.cine-caption',
+      { opacity: 0, y: 24 },
+      {
+        opacity: 1,
+        y: 0,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: root.current,
+          start: 'top 42%',
+          end: 'top 22%',
+          scrub: 0.6,
+        },
+      },
+    )
+  })
 
   return (
     <section

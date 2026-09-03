@@ -2,35 +2,22 @@
 
 import { useRef } from 'react'
 import { CheckCircle2 } from 'lucide-react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
 import { conditionItems } from '@/lib/boat-data'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, useGSAP)
-}
+import { useDeferredGsap } from '@/lib/use-deferred-gsap'
 
 export function ConditionSection() {
   const root = useRef<HTMLElement>(null)
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
-
-      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
-        gsap.from('[data-condition-reveal]', {
-          y: 36,
-          opacity: 0,
-          duration: 0.85,
-          ease: 'power3.out',
-          stagger: 0.08,
-          scrollTrigger: { trigger: root.current, start: 'top 72%' },
-        })
-      })
-    },
-    { scope: root },
-  )
+  useDeferredGsap(root, (gsap) => {
+    gsap.from('[data-condition-reveal]', {
+      y: 36,
+      opacity: 0,
+      duration: 0.85,
+      ease: 'power3.out',
+      stagger: 0.08,
+      scrollTrigger: { trigger: root.current, start: 'top 72%' },
+    })
+  })
 
   return (
     <section ref={root} id="estado" className="relative bg-background py-20 sm:py-28">

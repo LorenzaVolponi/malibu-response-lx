@@ -1,0 +1,164 @@
+name: Search Organic Health
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: '53 9 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: malibu-search-organic-health-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  search:
+    name: Verify Google and Bing indexability
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+
+    env:
+      SITE_URL: https://malibu-response-lx.vercel.app
+      CANONICAL_URL: https://malibu-response-lx.vercel.app
+
+    steps:
+      - name: Checkout PR source
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        if: github.event_name == 'pull_request'
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        if: github.event_name == 'pull_request'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Build and start PR source
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm install --frozen-lockfile
+          pnpm build
+          pnpm start --hostname 127.0.0.1 --port 3000 > /tmp/malibu-search-health-server.log 2>&1 &
+          echo $! > /tmp/malibu-search-health-server.pid
+
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:3000/ >/dev/null; then
+              echo 'SITE_URL=http://127.0.0.1:3000' >> "$GITHUB_ENV"
+              exit 0
+            fi
+            sleep 1
+          done
+
+          cat /tmp/malibu-search-health-server.log || true
+          exit 1
+
+      - name: Verify core pages are indexable
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for path in / /comprar-barco-malibu-response-lx /dossie-tecnico /guias; do
+            code="$(curl -L -sS -o /tmp/page -w '%{http_code}' "$SITE_URL$path")"
+            if [ "$code" != "200" ]; then
+              echo "Expected 200 for $path, got $code"
+              exit 1
+            fi
+
+            headers="$(curl -sSI "$SITE_URL$path")"
+            if printf '%s' "$headers" | grep -Eqi '^x-robots-tag:.*noindex'; then
+              echo "Unexpected noindex header on $path"
+              exit 1
+            fi
+          done
+
+      - name: Verify canonical authority
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          check_canonical() {
+            local path="$1"
+            local expected="$2"
+            local html
+            html="$(curl -L -sS "$SITE_URL$path")"
+            printf '%s' "$html" | grep -F 'rel="canonical"' >/dev/null
+            printf '%s' "$html" | grep -F "$expected" >/dev/null
+          }
+
+          check_canonical / "$CANONICAL_URL"
+          check_canonical /comprar-barco-malibu-response-lx "$CANONICAL_URL/comprar-barco-malibu-response-lx"
+          check_canonical /dossie-tecnico "$CANONICAL_URL/dossie-tecnico"
+
+      - name: Verify Google and Bing crawler access
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROBOTS="$(curl -L -sS "$SITE_URL/robots.txt")"
+          printf '%s' "$ROBOTS" | grep -F 'Googlebot' >/dev/null
+          printf '%s' "$ROBOTS" | grep -F 'Bingbot' >/dev/null
+
+          for agent in Googlebot Bingbot; do
+            for path in / /comprar-barco-malibu-response-lx /dossie-tecnico; do
+              code="$(curl -A "$agent" -L -sS -o /dev/null -w '%{http_code}' "$SITE_URL$path")"
+              if [ "$code" != "200" ]; then
+                echo "$agent cannot fetch $path: HTTP $code"
+                exit 1
+              fi
+            done
+          done
+
+      - name: Verify sitemap coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          SITEMAP="$(curl -L -sS "$SITE_URL/sitemap.xml")"
+          printf '%s' "$SITEMAP" | grep -F "<loc>$CANONICAL_URL</loc>" >/dev/null
+          printf '%s' "$SITEMAP" | grep -F "$CANONICAL_URL/comprar-barco-malibu-response-lx" >/dev/null
+          printf '%s' "$SITEMAP" | grep -F "$CANONICAL_URL/dossie-tecnico" >/dev/null
+          printf '%s' "$SITEMAP" | grep -F "$CANONICAL_URL/guias" >/dev/null
+
+          IMAGE_SITEMAP="$(curl -L -sS "$SITE_URL/sitemap-images.xml")"
+          printf '%s' "$IMAGE_SITEMAP" | grep -F "$CANONICAL_URL/images/" >/dev/null
+
+      - name: Verify commercial structured data
+        shell: bash
+        run: |
+          set -euo pipefail
+          HTML="$(curl -L -sS "$SITE_URL/")"
+          printf '%s' "$HTML" | grep -F '"@type":"Product"' >/dev/null
+          printf '%s' "$HTML" | grep -F '"@type":"Offer"' >/dev/null
+          printf '%s' "$HTML" | grep -F '"@type":"ItemPage"' >/dev/null
+          printf '%s' "$HTML" | grep -F '"additionalType":"https://schema.org/Vehicle"' >/dev/null
+          printf '%s' "$HTML" | grep -F '"priceCurrency":"BRL"' >/dev/null
+          printf '%s' "$HTML" | grep -F '"price":165000' >/dev/null
+          printf '%s' "$HTML" | grep -F 'Malibu Response LX' >/dev/null
+          if printf '%s' "$HTML" | grep -F 'https://schema.org/Boat' >/dev/null; then
+            echo 'Invalid Schema.org Boat type found in structured data'
+            exit 1
+          fi
+
+      - name: Publish summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '### Search organic health'
+            echo "- Tested source: $SITE_URL"
+            echo "- Expected canonical: $CANONICAL_URL"
+            echo '- Checked indexability of core transactional/technical pages.'
+            echo '- Checked canonical URLs.'
+            echo '- Checked Googlebot and Bingbot access.'
+            echo '- Checked XML and image sitemap coverage.'
+            echo '- Checked Product + Offer + ItemPage + Vehicle semantic integrity.'
+            echo '- This workflow changes no frontend behavior.'
+          } >> "$GITHUB_STEP_SUMMARY"

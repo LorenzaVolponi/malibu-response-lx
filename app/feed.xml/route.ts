@@ -1,3 +1,4 @@
+import { machineSurfaceHeaders } from '@/lib/machine-surface'
 import { seoIntentPages } from '@/lib/seo-pages'
 import { siteConfig } from '@/lib/site-config'
 
@@ -39,9 +40,11 @@ export function GET() {
 </rss>`
 
   return new Response(xml, {
-    headers: {
-      'Content-Type': 'application/rss+xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800',
-    },
+    headers: machineSurfaceHeaders({
+      contentType: 'application/rss+xml; charset=utf-8',
+      canonical: `${siteConfig.url}/feed.xml`,
+      etagKey: 'rss-feed',
+      links: [`<${siteConfig.url}/guias>; rel="related"`],
+    }),
   })
 }

@@ -26,7 +26,16 @@ const nextConfig = {
     ]
 
     return [
-      { source: '/((?!_next/|api/).*)', headers: indexableHeaders },
+      { source: '/((?!_next/|api/|citation\\.json$).*)', headers: indexableHeaders },
+      {
+        source: '/',
+        headers: [
+          {
+            key: 'Link',
+            value: '<https://malibu-response-lx.vercel.app/boat.json>; rel="alternate"; type="application/json", <https://malibu-response-lx.vercel.app/citation.json>; rel="describedby"; type="application/json", <https://malibu-response-lx.vercel.app/llms.txt>; rel="alternate"; type="text/plain", <https://malibu-response-lx.vercel.app/feed.xml>; rel="alternate"; type="application/rss+xml"',
+          },
+        ],
+      },
       { source: '/_next/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }, { key: 'X-Content-Type-Options', value: 'nosniff' }] },
       { source: '/api/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, nosnippet' }, { key: 'X-Content-Type-Options', value: 'nosniff' }] },
       { source: '/sitemap.xml', headers: [{ key: 'Cache-Control', value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' }] },
@@ -34,6 +43,7 @@ const nextConfig = {
       { source: '/robots.txt', headers: [{ key: 'Cache-Control', value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' }] },
       { source: '/feed.xml', headers: [{ key: 'Content-Type', value: 'application/rss+xml; charset=utf-8' }, { key: 'Cache-Control', value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' }] },
       { source: '/boat.json', headers: [{ key: 'Content-Type', value: 'application/json; charset=utf-8' }, { key: 'Cache-Control', value: 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800' }] },
+      { source: '/citation.json', headers: [{ key: 'Content-Type', value: 'application/json; charset=utf-8' }, { key: 'Cache-Control', value: 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800' }, { key: 'X-Robots-Tag', value: 'noindex, follow' }] },
       { source: '/llms.txt', headers: [{ key: 'Content-Type', value: 'text/plain; charset=utf-8' }, { key: 'Cache-Control', value: 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800' }] },
       { source: '/ai.txt', headers: [{ key: 'Content-Type', value: 'text/plain; charset=utf-8' }, { key: 'Cache-Control', value: 'public, max-age=0, s-maxage=86400, stale-while-revalidate=604800' }] },
     ]

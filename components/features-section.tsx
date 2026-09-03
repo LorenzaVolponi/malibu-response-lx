@@ -1,57 +1,44 @@
 'use client'
 
 import { useRef } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
 import { features } from '@/lib/boat-data'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, useGSAP)
-}
+import { useDeferredGsap } from '@/lib/use-deferred-gsap'
 
 export function FeaturesSection() {
   const root = useRef<HTMLElement>(null)
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
+  useDeferredGsap(root, (gsap) => {
+    const rows = gsap.utils.toArray<HTMLElement>('[data-feature-row]')
+    rows.forEach((row) => {
+      const img = row.querySelector('[data-feature-img]')
+      const text = row.querySelectorAll('[data-feature-text]')
 
-      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
-        const rows = gsap.utils.toArray<HTMLElement>('[data-feature-row]')
-        rows.forEach((row) => {
-          const img = row.querySelector('[data-feature-img]')
-          const text = row.querySelectorAll('[data-feature-text]')
-
-          gsap.from(text, {
-            y: 40,
-            opacity: 0,
-            duration: 0.9,
-            ease: 'power3.out',
-            stagger: 0.1,
-            scrollTrigger: { trigger: row, start: 'top 72%' },
-          })
-
-          gsap.fromTo(
-            img,
-            { yPercent: -8, scale: 1.12 },
-            {
-              yPercent: 8,
-              scale: 1.12,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: row,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: true,
-              },
-            },
-          )
-        })
+      gsap.from(text, {
+        y: 40,
+        opacity: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        stagger: 0.1,
+        scrollTrigger: { trigger: row, start: 'top 72%' },
       })
-    },
-    { scope: root },
-  )
+
+      gsap.fromTo(
+        img,
+        { yPercent: -8, scale: 1.12 },
+        {
+          yPercent: 8,
+          scale: 1.12,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: row,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        },
+      )
+    })
+  })
 
   return (
     <section ref={root} id="destaques" className="relative bg-background py-20 sm:py-28">
@@ -93,22 +80,13 @@ export function FeaturesSection() {
                 </div>
 
                 <div className="[direction:ltr]">
-                  <span
-                    data-feature-text
-                    className="font-serif text-5xl text-cream/10 sm:text-6xl"
-                  >
+                  <span data-feature-text className="font-serif text-5xl text-cream/10 sm:text-6xl">
                     0{i + 1}
                   </span>
-                  <h3
-                    data-feature-text
-                    className="-mt-4 text-balance font-serif text-3xl text-cream sm:text-4xl"
-                  >
+                  <h3 data-feature-text className="-mt-4 text-balance font-serif text-3xl text-cream sm:text-4xl">
                     {f.title}
                   </h3>
-                  <p
-                    data-feature-text
-                    className="mt-4 max-w-md text-pretty leading-relaxed text-muted-foreground"
-                  >
+                  <p data-feature-text className="mt-4 max-w-md text-pretty leading-relaxed text-muted-foreground">
                     {f.description}
                   </p>
                 </div>

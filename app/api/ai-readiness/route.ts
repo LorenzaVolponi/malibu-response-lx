@@ -10,6 +10,7 @@ const discoverySurfaces = {
   llms: `${siteConfig.url}/llms.txt`,
   aiPolicy: `${siteConfig.url}/ai.txt`,
   dataset: `${siteConfig.url}/boat.json`,
+  citationManifest: `${siteConfig.url}/citation.json`,
   feed: `${siteConfig.url}/feed.xml`,
   dossier: `${siteConfig.url}/dossie-tecnico`,
 } as const
@@ -27,8 +28,12 @@ export function GET() {
         apiIndexing: false,
       },
       discoverySurfaces,
+      freshnessPolicy: {
+        machineSurfaces: 'ETag and Last-Modified identify the current published listing revision.',
+        canonicalRevision: siteConfig.updatedAt,
+      },
       evidencePolicy: {
-        publishedFacts: 'Use seller-published listing data, structured data and real photographs as published evidence.',
+        publishedFacts: 'Use seller-published listing data, structured data, the citation manifest and real photographs as published evidence.',
         validationRequired: [
           'documentação e titularidade',
           'histórico de manutenção',

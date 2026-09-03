@@ -48,21 +48,24 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
     document.addEventListener('click', onAnchorClick)
 
-    // Native scrolling is faster and more predictable on touch devices and for
-    // visitors who explicitly request reduced motion.
+    // Native scrolling stays on the critical path. Lenis/GSAP are progressive
+    // enhancement and are loaded only after a real desktop interaction.
     if (prefersReduced || coarsePointer) {
       return () => document.removeEventListener('click', onAnchorClick)
     }
 
     let cancelled = false
+    let bootStarted = false
     let animationFrame = 0
     let idleHandle = 0
-    let fallbackTimer = 0
     let lenis: LenisInstance | undefined
     let removePreloaderListener: (() => void) | undefined
     let removeLoadListener: (() => void) | undefined
 
     const boot = async () => {
+      if (cancelled || bootStarted) return
+      bootStarted = true
+
       const [{ default: Lenis }, { gsap }, { ScrollTrigger }] = await Promise.all([
         import('lenis'),
         import('gsap'),
@@ -111,19 +114,37 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       removeLoadListener = () => window.removeEventListener('load', onLoad)
     }
 
-    if (browserWindow.requestIdleCallback) {
-      idleHandle = browserWindow.requestIdleCallback(boot, { timeout: 900 })
-    } else {
-      fallbackTimer = window.setTimeout(boot, 250)
+    const scheduleBoot = () => {
+      removeInteractionListeners()
+      if (browserWindow.requestIdleCallback) {
+        idleHandle = browserWindow.requestIdleCallback(() => void boot(), { timeout: 1200 })
+      } else {
+        void boot()
+      }
     }
+
+    const onScrollKey = (event: KeyboardEvent) => {
+      if (!['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key)) return
+      scheduleBoot()
+    }
+
+    const removeInteractionListeners = () => {
+      window.removeEventListener('wheel', scheduleBoot)
+      window.removeEventListener('pointerdown', scheduleBoot)
+      window.removeEventListener('keydown', onScrollKey)
+    }
+
+    window.addEventListener('wheel', scheduleBoot, { once: true, passive: true })
+    window.addEventListener('pointerdown', scheduleBoot, { once: true, passive: true })
+    window.addEventListener('keydown', onScrollKey)
 
     return () => {
       cancelled = true
       document.removeEventListener('click', onAnchorClick)
+      removeInteractionListeners()
       removePreloaderListener?.()
       removeLoadListener?.()
       window.cancelAnimationFrame(animationFrame)
-      window.clearTimeout(fallbackTimer)
       if (idleHandle && browserWindow.cancelIdleCallback) browserWindow.cancelIdleCallback(idleHandle)
       lenis?.destroy()
       delete browserWindow.__malibuLenis

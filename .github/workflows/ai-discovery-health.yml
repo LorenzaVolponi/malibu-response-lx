@@ -38,12 +38,29 @@ jobs:
             fi
           }
 
-          for path in / /robots.txt /sitemap.xml /sitemap-images.xml /llms.txt /ai.txt /boat.json /feed.xml /dossie-tecnico /api/ai-readiness; do
+          for path in / /robots.txt /sitemap.xml /sitemap-images.xml /llms.txt /ai.txt /boat.json /citation.json /feed.xml /dossie-tecnico /api/ai-readiness; do
             check_200 "$path"
           done
 
           curl -L -sS "$SITE_URL/" | grep -F 'rel="canonical"' >/dev/null
           curl -L -sS "$SITE_URL/" | grep -F "$SITE_URL" >/dev/null
+
+      - name: Verify HTTP discovery and freshness signals
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ROOT_HEADERS="$(curl -sSI "$SITE_URL/")"
+          printf '%s' "$ROOT_HEADERS" | grep -Fi '/boat.json' >/dev/null
+          printf '%s' "$ROOT_HEADERS" | grep -Fi '/citation.json' >/dev/null
+          printf '%s' "$ROOT_HEADERS" | grep -Fi '/llms.txt' >/dev/null
+
+          for path in /llms.txt /ai.txt /citation.json; do
+            HEADERS="$(curl -sSI "$SITE_URL$path")"
+            printf '%s' "$HEADERS" | grep -Fi 'etag:' >/dev/null
+            printf '%s' "$HEADERS" | grep -Fi 'last-modified:' >/dev/null
+            printf '%s' "$HEADERS" | grep -Fi 'link:' >/dev/null
+          done
 
       - name: Verify crawler policy
         shell: bash
@@ -53,6 +70,7 @@ jobs:
           printf '%s' "$ROBOTS" | grep -F 'OAI-SearchBot' >/dev/null
           printf '%s' "$ROBOTS" | grep -F 'OAI-AdsBot' >/dev/null
           printf '%s' "$ROBOTS" | grep -F 'GPTBot' >/dev/null
+          printf '%s' "$ROBOTS" | grep -F '/citation.json' >/dev/null
 
           for agent in OAI-SearchBot OAI-AdsBot ChatGPT-User GPTBot; do
             code="$(curl -A "$agent" -L -sS -o /dev/null -w '%{http_code}' "$SITE_URL/")"
@@ -77,6 +95,12 @@ jobs:
           jq -e '.authenticity.pendingIndependentValidation | length >= 4' /tmp/boat.json >/dev/null
           jq -e '.machineGuidance.citationInstruction | length > 20' /tmp/boat.json >/dev/null
 
+          curl -L -sS "$SITE_URL/citation.json" > /tmp/citation.json
+          jq -e --arg site "$SITE_URL" '.canonical == $site' /tmp/citation.json >/dev/null
+          jq -e '.publishedClaims | length >= 8' /tmp/citation.json >/dev/null
+          jq -e '.pendingIndependentValidation | length >= 4' /tmp/citation.json >/dev/null
+          jq -e '.citationBoundary | length > 40' /tmp/citation.json >/dev/null
+
       - name: Publish health summary
         if: always()
         shell: bash
@@ -84,8 +108,9 @@ jobs:
           {
             echo '### Malibu AI discovery backend'
             echo "- Canonical: $SITE_URL"
-            echo '- Checked: robots, sitemaps, llms.txt, ai.txt, boat.json, RSS and technical dossier'
+            echo '- Checked: robots, sitemaps, llms.txt, ai.txt, boat.json, citation.json, RSS and technical dossier'
             echo '- Checked crawler access: OAI-SearchBot, OAI-AdsBot, ChatGPT-User and GPTBot'
+            echo '- Checked freshness: ETag, Last-Modified and HTTP discovery links'
             echo '- Checked evidence contract: published facts stay separate from pending validation'
             echo '- This workflow changes no frontend behavior.'
           } >> "$GITHUB_STEP_SUMMARY"

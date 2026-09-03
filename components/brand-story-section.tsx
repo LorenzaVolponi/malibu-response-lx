@@ -2,13 +2,7 @@
 
 import { useRef } from 'react'
 import Image from 'next/image'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useGSAP } from '@gsap/react'
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, useGSAP)
-}
+import { useDeferredGsap } from '@/lib/use-deferred-gsap'
 
 const pillars = [
   ['Precisão', 'Resposta direta no comando e condução estável para quem conhece a água.'],
@@ -19,39 +13,32 @@ const pillars = [
 export function BrandStorySection() {
   const root = useRef<HTMLElement>(null)
 
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia()
+  useDeferredGsap(root, (gsap) => {
+    gsap.from('[data-story-reveal]', {
+      y: 36,
+      opacity: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+      stagger: 0.1,
+      scrollTrigger: { trigger: root.current, start: 'top 72%' },
+    })
 
-      mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
-        gsap.from('[data-story-reveal]', {
-          y: 36,
-          opacity: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          stagger: 0.1,
-          scrollTrigger: { trigger: root.current, start: 'top 72%' },
-        })
-
-        gsap.fromTo(
-          '[data-story-img]',
-          { scale: 1.08, yPercent: -5 },
-          {
-            scale: 1.02,
-            yPercent: 5,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: root.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: true,
-            },
-          },
-        )
-      })
-    },
-    { scope: root },
-  )
+    gsap.fromTo(
+      '[data-story-img]',
+      { scale: 1.08, yPercent: -5 },
+      {
+        scale: 1.02,
+        yPercent: 5,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: root.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        },
+      },
+    )
+  })
 
   return (
     <section ref={root} id="essencia" className="relative overflow-hidden bg-background py-24 sm:py-32">

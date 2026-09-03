@@ -1,0 +1,98 @@
+name: Organic Quality Health
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: '41 11 * * 2,5'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: malibu-organic-quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lighthouse:
+    name: Protect SEO, Core Web Vitals and usability
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build production app
+        run: pnpm build
+
+      - name: Run Lighthouse organic quality gate
+        run: pnpm dlx @lhci/cli@0.15.1 autorun --config=./lighthouserc.json
+
+      - name: Diagnose Lighthouse LCP
+        if: always()
+        shell: bash
+        run: |
+          set -u
+          shopt -s nullglob
+          found=0
+
+          for report in .lighthouseci/results/*.json; do
+            if jq -e '.audits["largest-contentful-paint"]' "$report" >/dev/null 2>&1; then
+              found=1
+              echo "Report: $report"
+              jq -r '
+                "URL: " + (.finalUrl // .requestedUrl // "unknown"),
+                "LCP ms: " + ((.audits["largest-contentful-paint"].numericValue // 0) | tostring),
+                "LCP score: " + ((.audits["largest-contentful-paint"].score // 0) | tostring),
+                "LCP element: " + (
+                  .audits["largest-contentful-paint-element"].details.items[0].items[0].node.snippet //
+                  .audits["largest-contentful-paint-element"].details.items[0].node.snippet //
+                  "not exposed by this Lighthouse version"
+                )
+              ' "$report"
+              echo
+            fi
+          done
+
+          if [ "$found" -eq 0 ]; then
+            echo 'No Lighthouse JSON report with LCP audit was found.'
+          fi
+
+      - name: Upload Lighthouse diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-organic-${{ github.run_id }}
+          path: .lighthouseci/results
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Publish summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '### Organic quality gate'
+            echo '- Protects homepage, transactional guide and technical dossier.'
+            echo '- SEO >= 0.95'
+            echo '- Accessibility / best practices >= 0.90'
+            echo '- Performance >= 0.70'
+            echo '- CLS <= 0.10, LCP <= 4s, TBT <= 400ms'
+            echo '- LCP diagnostics and Lighthouse reports are retained for failed runs.'
+            echo '- No frontend feature is added by this workflow.'
+          } >> "$GITHUB_STEP_SUMMARY"

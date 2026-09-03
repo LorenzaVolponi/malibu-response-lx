@@ -114,6 +114,7 @@ export const viewport: Viewport = {
 const entityIds = {
   website: `${siteConfig.url}/#website`,
   seller: `${siteConfig.url}/#seller`,
+  offer: `${siteConfig.url}/#offer`,
   dataset: `${siteConfig.url}/boat.json#dataset`,
   product: `${siteConfig.url}/#product`,
   brand: `${siteConfig.url}/#malibu-boats`,
@@ -153,7 +154,7 @@ const globalEntityGraph = {
       '@id': entityIds.seller,
       name: 'Vendedor particular',
       url: siteConfig.url,
-      owns: { '@id': entityIds.product },
+      makesOffer: { '@id': entityIds.offer },
       knowsAbout: [
         { '@id': entityIds.model },
         { '@id': entityIds.engine },
@@ -228,7 +229,6 @@ const globalEntityGraph = {
       ],
       isBasedOn: `${siteConfig.url}/dossie-tecnico`,
       dateModified: siteConfig.updatedAt,
-      license: `${siteConfig.url}/dossie-tecnico`,
       keywords: [
         'Malibu Response LX 2013',
         'competition ski boat',
