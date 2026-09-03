@@ -1,6 +1,6 @@
 import { createUIMessageStream, createUIMessageStreamResponse, type UIMessage } from 'ai'
 import { boat, conditionItems, specs } from '@/lib/boat-data'
-import { contactMessages, whatsappLeadUrl } from '@/lib/contact'
+import { whatsappLeadUrl } from '@/lib/contact'
 import { siteConfig } from '@/lib/site-config'
 
 export const maxDuration = 10
@@ -12,20 +12,20 @@ const rateLimitStore = new Map<string, { count: number; resetAt: number }>()
 
 type IncomingMessage = UIMessage & { content?: string }
 
-const contactUrl = `${siteConfig.url}${whatsappLeadUrl('primary')}`
+type LeadIntent = 'primary' | 'documents' | 'test' | 'offer' | 'technical'
 
 const facts = {
-  price: `Preço: ${boat.priceLabel}. Propostas e condições devem ser tratadas diretamente pelo WhatsApp do vendedor.`,
-  yearHours: `Ano de fabricação: ${boat.year}. Horas de motor: ${boat.engineHours} h.`,
+  price: `Preço anunciado: ${boat.priceLabel}. Propostas e condições devem ser tratadas diretamente com o vendedor.`,
+  yearHours: `Ano de fabricação: ${boat.year}. Horas de motor informadas: ${boat.engineHours} h.`,
   motor: 'Motor: Indmar Monsoon 350 SS, V8 5.7L, 350 HP, identificado na tampa do motor.',
-  transmission: 'Transmissão: Direct Drive / eixo direto, configuração consagrada para esqui aquático.',
-  zeroOff: 'Controle de velocidade: Zero Off GPS integrado ao painel, útil para manter ritmo consistente em esportes náuticos.',
+  transmission: 'Transmissão: Direct Drive / eixo direto, configuração associada ao esqui aquático.',
+  zeroOff: 'Controle de velocidade: Zero Off GPS integrado ao painel, recurso usado para manter ritmo consistente em esportes náuticos.',
   includes: 'Inclui toldo bimini. A embarcação não acompanha carreta.',
   condition: conditionItems.map((item) => `${item.label}: ${item.status} (${item.note})`).join('\n'),
   specs: specs.map((item) => `${item.label}: ${item.value} — ${item.note}`).join('\n'),
 }
 
-const unknownDetails = 'Documentação, histórico de manutenção, local exato de visita e laudos precisam ser validados diretamente com o vendedor.'
+const unknownDetails = 'Documentação, histórico de manutenção, local exato de visita, laudos e condição operacional atual precisam ser validados diretamente com o vendedor.'
 
 function getClientKey(req: Request) {
   const forwardedFor = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
@@ -53,36 +53,48 @@ function isRateLimited(key: string) {
 }
 
 function normalize(text: string) {
-  return text
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
+  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
 }
 
 function getLastUserText(messages: IncomingMessage[]) {
   const lastUser = [...messages].reverse().find((message) => message.role === 'user')
-  const partsText = lastUser?.parts
-    ?.filter((part) => part.type === 'text')
-    .map((part) => part.text)
-    .join(' ')
-
+  const partsText = lastUser?.parts?.filter((part) => part.type === 'text').map((part) => part.text).join(' ')
   return (partsText || lastUser?.content || '').trim().slice(0, MAX_MESSAGE_LENGTH)
 }
 
-function formatAnswer(sections: string[], includeContact: boolean, includeUnknowns: boolean) {
-  const uniqueSections = [...new Set(sections)]
-  const lines = uniqueSections.map((section) => `• ${section}`)
+function detectIntent(q: string): LeadIntent | null {
+  if (/proposta|oferta|fechar|negociar|negociacao/.test(q)) return 'offer'
+  if (/teste|testar|visita|agendar|avaliacao|ver pessoalmente/.test(q)) return 'test'
+  if (/document|historico|manutenc|laudo|vistoria|registro|marinha|debito|video/.test(q)) return 'documents'
+  if (/motor|v8|indmar|monsoon|potencia|hp|horimetro|tecnic/.test(q)) return 'technical'
+  if (/whats|zap|contato|telefone|comprar|interesse/.test(q)) return 'primary'
+  return null
+}
 
+function contactUrl(intent: LeadIntent) {
+  return `${siteConfig.url}${whatsappLeadUrl(intent)}`
+}
+
+function formatAnswer(sections: string[], intent: LeadIntent | null, includeUnknowns: boolean) {
+  const lines = [...new Set(sections)].map((section) => `• ${section}`)
   if (includeUnknowns) lines.push(`• ${unknownDetails}`)
-  if (includeContact) lines.push(`• WhatsApp direto: ${contactUrl}`)
-
+  if (intent) {
+    const labels: Record<LeadIntent, string> = {
+      primary: 'Falar com o vendedor',
+      documents: 'Pedir vídeos, documentação e manutenção',
+      test: 'Agendar visita / teste',
+      offer: 'Fazer uma proposta',
+      technical: 'Falar sobre motor e dados técnicos',
+    }
+    lines.push(`• Próximo passo — ${labels[intent]}: ${contactUrl(intent)}`)
+  }
   return lines.join('\n')
 }
 
 function answerWithBoatFacts(question: string) {
   const q = normalize(question)
-  const wantsContact = /whats|zap|contato|telefone|visita|agendar|ver|teste|comprar|negociar|proposta|document/.test(q)
-  const asksUnknowns = /document|historico|manutenc|local|laudo|vistoria|registro|marinha|ipva|debito/.test(q)
+  const intent = detectIntent(q)
+  const asksUnknowns = /document|historico|manutenc|local|laudo|vistoria|registro|marinha|debito|operacional/.test(q)
   const sections: string[] = []
 
   if (/preco|valor|quanto|negoci/.test(q)) sections.push(facts.price)
@@ -96,12 +108,10 @@ function answerWithBoatFacts(question: string) {
   if (asksUnknowns) sections.push(unknownDetails)
 
   if (sections.length === 0) {
-    sections.push(
-      `${boat.brand} ${boat.model} "${boat.name}" à venda por ${boat.priceLabel}, ano ${boat.year}, ${boat.engineHours} h, motor Indmar Monsoon 350 SS V8 350 HP, Direct Drive, Zero Off GPS, bimini incluso; não acompanha carreta.`,
-    )
+    sections.push(`${boat.brand} ${boat.model} "${boat.name}" à venda por ${boat.priceLabel}, ano ${boat.year}, ${boat.engineHours} h informadas, motor Indmar Monsoon 350 SS V8 350 HP, Direct Drive, Zero Off GPS e bimini incluso; não acompanha carreta.`)
   }
 
-  return formatAnswer(sections, wantsContact, asksUnknowns && !sections.includes(unknownDetails))
+  return formatAnswer(sections, intent, asksUnknowns && !sections.includes(unknownDetails))
 }
 
 export async function POST(req: Request) {
@@ -121,7 +131,7 @@ export async function POST(req: Request) {
       writer.write({ type: 'text-delta', id, delta: text })
       writer.write({ type: 'text-end', id })
     },
-    onError: () => `O assistente não conseguiu responder agora. Fale diretamente pelo WhatsApp do vendedor: ${contactUrl}`,
+    onError: () => `O assistente não conseguiu responder agora. Fale diretamente com o vendedor: ${contactUrl('primary')}`,
   })
 
   return createUIMessageStreamResponse({ stream })
