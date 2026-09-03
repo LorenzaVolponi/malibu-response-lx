@@ -3,6 +3,7 @@ import { ScrollProgress } from '@/components/scroll-progress'
 import { SiteNav } from '@/components/site-nav'
 import { Hero } from '@/components/hero'
 import { ConversionIntentHub } from '@/components/conversion-intent-hub'
+import { PurchaseEvidenceLedger } from '@/components/purchase-evidence-ledger'
 import { CinematicSection } from '@/components/cinematic-section'
 import { BrandStorySection } from '@/components/brand-story-section'
 import { JourneyScroll } from '@/components/journey-scroll'
@@ -68,6 +69,7 @@ export default function Page() {
         <main id="conteudo">
           <Hero />
           <ConversionIntentHub />
+          <PurchaseEvidenceLedger />
           <BrandStorySection />
           <CinematicSection {...cinematic[0]} priority />
           <JourneyScroll />
