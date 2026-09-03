@@ -47,3 +47,22 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      - name: Verify curated guide indexing at runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm start --hostname 127.0.0.1 --port 3000 > /tmp/malibu-ci-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:3000/ >/dev/null; then
+              SITE_URL=http://127.0.0.1:3000 node scripts/verify-guide-index-runtime.mjs
+              exit 0
+            fi
+            sleep 1
+          done
+
+          cat /tmp/malibu-ci-server.log || true
+          exit 1
