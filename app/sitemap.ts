@@ -1,13 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { siteConfig } from '@/lib/site-config'
 import { seoIntentPages } from '@/lib/seo-pages'
-
-const SUPPORT_ONLY_GUIDE_SLUGS = new Set([
-  // The canonical homepage is the primary commercial target for the exact
-  // "Malibu Response LX à venda" intent. This guide remains accessible as
-  // supporting content but is intentionally kept out of the search sitemap.
-  'malibu-response-lx-a-venda',
-])
+import { isIndexableGuideSlug } from '@/lib/search-index-policy.mjs'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const updatedAt = new Date(siteConfig.updatedAt)
@@ -40,7 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   const intentPages: MetadataRoute.Sitemap = seoIntentPages
-    .filter((page) => !SUPPORT_ONLY_GUIDE_SLUGS.has(page.slug))
+    .filter((page) => isIndexableGuideSlug(page.slug))
     .map((page) => ({
       url: `${siteConfig.url}/guias/${page.slug}`,
       lastModified: updatedAt,
@@ -48,9 +42,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     }))
 
-  // Machine-readable discovery surfaces are intentionally excluded from the
-  // human search sitemap. They are advertised through robots.txt and HTTP Link
-  // headers and carry noindex directives so they support GEO without competing
-  // with the buyer-facing HTML pages in search results.
+  // Search indexing is deliberately curated: only guides with strong,
+  // unit-relevant buyer value are listed here. Support-only guides remain
+  // accessible and followable but are excluded from the human search sitemap.
+  // Machine-readable discovery surfaces are also intentionally excluded.
   return [...corePages, ...intentPages]
 }
