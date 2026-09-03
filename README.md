@@ -1,77 +1,59 @@
-# Malibu Response LX
+# Malibu Response LX — sales experience
 
-Landing page em Next.js para venda da lancha **Malibu Response LX 2013**, com foco em SEO, dados reais do anúncio, CTAs para WhatsApp, galeria, ficha técnica, guia de compra e assistente virtual baseado em fatos.
+Site de venda da Malibu Response LX com experiência premium, SEO/GEO, dados estruturados e arquitetura de conversão orientada a evidência.
 
-## Stack
+## Arquitetura de venda
 
-- Next.js 16 com App Router
-- React 19
-- TypeScript
-- Tailwind CSS 4
-- Vercel Analytics e integração opcional com Google Tag Manager
+A experiência foi desenhada para reduzir fricção entre descoberta e contato:
 
-## Como rodar localmente
+**Pesquisa / IA → desejo → evidência → contato → teste → proposta.**
+
+### Camadas principais
+
+- Hero comercial com preço e ação imediata.
+- Buyer Intent Hub para compra, validação, teste e proposta.
+- Evidence Ledger separando fatos publicados de itens que ainda precisam ser validados.
+- Galeria, 360°, ficha técnica, condição e conteúdo de comparação.
+- CTAs persistentes no mobile e desktop.
+- Consultor virtual limitado aos dados publicados, com roteamento para o próximo passo correto.
+- Compartilhamento nativo e via WhatsApp.
+- Tracking de origem, UTMs, profundidade, tempo engajado, seções e intenção de lead.
+- Cluster SEO/GEO com páginas de intenção, JSON-LD, sitemap, RSS, `boat.json`, `llms.txt` e `ai.txt`.
+
+## Conversão
+
+Os links de contato passam por `/api/whatsapp?intent=...`, permitindo mensagens específicas para:
+
+- interesse geral;
+- validação de documentação e vídeos;
+- visita e teste;
+- dúvidas técnicas;
+- proposta.
+
+Quando UTMs ou identificadores de mídia estão presentes, a rota preserva a atribuição na mensagem enviada ao vendedor.
+
+## Confiança e claims
+
+O site não deve transformar informação não verificada em afirmação. Documentação, histórico de manutenção, laudos, localização de visita e condição operacional atual devem ser confirmados diretamente com o vendedor e, quando aplicável, por inspeção independente.
+
+## Performance
+
+- Next.js com otimização de imagens AVIF/WebP e cache.
+- `lucide-react` com package import optimization.
+- assistente carregado de forma dinâmica e adiada até idle/primeira intenção do usuário.
+- animações condicionadas a `prefers-reduced-motion` quando aplicável.
+
+## Qualidade
+
+CI executa:
 
 ```bash
-pnpm install
-pnpm dev
-```
-
-Acesse `http://localhost:3000`.
-
-## Checks antes de publicar
-
-```bash
+pnpm install --frozen-lockfile
 pnpm lint
 pnpm typecheck
 pnpm build
 ```
 
-## Variáveis de ambiente
+## Fonte canônica
 
-- `NEXT_PUBLIC_GTM_ID`: ID opcional do Google Tag Manager.
-- `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`: token da meta tag de verificação do Google Search Console.
-- `NEXT_PUBLIC_BING_SITE_VERIFICATION`: token da meta tag de verificação do Bing Webmaster Tools.
-- `NEXT_PUBLIC_GOOGLE_ADS_ID`: ID opcional do Google Ads/gtag, como `AW-000000000`.
-- `NEXT_PUBLIC_GOOGLE_ADS_WHATSAPP_LABEL`: label opcional da conversão de clique no WhatsApp.
-
-A URL canônica é definida em `lib/site-config.ts` para impedir que URLs de preview da Vercel virem canonical por engano.
-
-## Onde editar dados do anúncio
-
-- Dados principais do barco: `lib/boat-data.ts`
-- Mensagens e links de WhatsApp: `lib/contact.ts`
-- URL, nome público e data de atualização do site: `lib/site-config.ts`
-- Termos e estratégia SEO: `lib/seo-data.ts`
-
-## SEO e conteúdo estruturado
-
-A home renderiza JSON-LD de produto, vídeo, FAQ, website, breadcrumb, organização e galeria. A página `/comprar-barco-malibu-response-lx` funciona como guia complementar de intenção transacional.
-
-Evite repetir palavras-chave artificialmente. Prefira descrições naturais com preço, ano, motor, horas, fotos reais e contato direto.
-
-### IndexNow
-
-O workflow `.github/workflows/indexnow.yml` roda quando conteúdo indexável chega à `main`. Ele espera a Vercel publicar exatamente o commit do push, valida a chave pública IndexNow, lê o sitemap de produção e envia as URLs HTML para `api.indexnow.org`.
-
-A chave pública fica em `public/9a7f3c1e4b8d2f6a0c5e7b1d3f9a4c2e.txt`. Ela não é segredo: faz parte do protocolo de comprovação de domínio do IndexNow.
-
-Depois de configurar os tokens de verificação na Vercel, valide a propriedade no Google Search Console e no Bing Webmaster Tools e envie `https://malibu-response-lx.vercel.app/sitemap.xml` em ambos.
-
-## Analytics e conversão
-
-- `NEXT_PUBLIC_GTM_ID` ativa Google Tag Manager.
-- Cliques de WhatsApp são enviados para `window.dataLayer`.
-- Eventos de seção e chat também são registrados no `dataLayer` para medir intenção de compra.
-- Cliques no WhatsApp disparam `generate_lead` e preservam UTMs, `gclid`, `gbraid`, `wbraid` e `msclkid` no texto da conversa.
-
-## Google Ads e off-page
-
-- Use `utm_source=google&utm_medium=cpc&utm_campaign=malibu_response_lx_sale&utm_content=whatsapp_lead&utm_term={keyword}` nas campanhas.
-- Configure `generate_lead` como conversão primária para cliques no WhatsApp.
-- Distribua a URL canônica em marketplaces náuticos, marinas, YouTube Shorts, Reels e comunidades de wake/esqui com UTMs por canal.
-- Evite compra de links e cadastros irrelevantes; priorize citações reais em ambientes náuticos.
-
-## Deploy
-
-O projeto pode ser publicado na Vercel. Antes de abrir merge para produção, rode `pnpm lint`, `pnpm typecheck` e `pnpm build` localmente ou valide pelo workflow de CI.
+A URL canônica e os metadados centrais são definidos em `lib/site-config.ts` e não devem ser substituídos por URLs temporárias de preview.
