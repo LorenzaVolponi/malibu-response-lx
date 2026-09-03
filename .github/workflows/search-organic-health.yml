@@ -19,12 +19,49 @@ jobs:
   search:
     name: Verify Google and Bing indexability
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 12
 
     env:
       SITE_URL: https://malibu-response-lx.vercel.app
+      CANONICAL_URL: https://malibu-response-lx.vercel.app
 
     steps:
+      - name: Checkout PR source
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        if: github.event_name == 'pull_request'
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        if: github.event_name == 'pull_request'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Build and start PR source
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm install --frozen-lockfile
+          pnpm build
+          pnpm start --hostname 127.0.0.1 --port 3000 > /tmp/malibu-search-health-server.log 2>&1 &
+          echo $! > /tmp/malibu-search-health-server.pid
+
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:3000/ >/dev/null; then
+              echo 'SITE_URL=http://127.0.0.1:3000' >> "$GITHUB_ENV"
+              exit 0
+            fi
+            sleep 1
+          done
+
+          cat /tmp/malibu-search-health-server.log || true
+          exit 1
+
       - name: Verify core pages are indexable
         shell: bash
         run: |
@@ -58,9 +95,9 @@ jobs:
             printf '%s' "$html" | grep -F "$expected" >/dev/null
           }
 
-          check_canonical / "$SITE_URL"
-          check_canonical /comprar-barco-malibu-response-lx "$SITE_URL/comprar-barco-malibu-response-lx"
-          check_canonical /dossie-tecnico "$SITE_URL/dossie-tecnico"
+          check_canonical / "$CANONICAL_URL"
+          check_canonical /comprar-barco-malibu-response-lx "$CANONICAL_URL/comprar-barco-malibu-response-lx"
+          check_canonical /dossie-tecnico "$CANONICAL_URL/dossie-tecnico"
 
       - name: Verify Google and Bing crawler access
         shell: bash
@@ -85,13 +122,13 @@ jobs:
         run: |
           set -euo pipefail
           SITEMAP="$(curl -L -sS "$SITE_URL/sitemap.xml")"
-          printf '%s' "$SITEMAP" | grep -F "<loc>$SITE_URL</loc>" >/dev/null
-          printf '%s' "$SITEMAP" | grep -F "$SITE_URL/comprar-barco-malibu-response-lx" >/dev/null
-          printf '%s' "$SITEMAP" | grep -F "$SITE_URL/dossie-tecnico" >/dev/null
-          printf '%s' "$SITEMAP" | grep -F "$SITE_URL/guias" >/dev/null
+          printf '%s' "$SITEMAP" | grep -F "<loc>$CANONICAL_URL</loc>" >/dev/null
+          printf '%s' "$SITEMAP" | grep -F "$CANONICAL_URL/comprar-barco-malibu-response-lx" >/dev/null
+          printf '%s' "$SITEMAP" | grep -F "$CANONICAL_URL/dossie-tecnico" >/dev/null
+          printf '%s' "$SITEMAP" | grep -F "$CANONICAL_URL/guias" >/dev/null
 
           IMAGE_SITEMAP="$(curl -L -sS "$SITE_URL/sitemap-images.xml")"
-          printf '%s' "$IMAGE_SITEMAP" | grep -F "$SITE_URL/images/" >/dev/null
+          printf '%s' "$IMAGE_SITEMAP" | grep -F "$CANONICAL_URL/images/" >/dev/null
 
       - name: Verify commercial structured data
         shell: bash
@@ -110,6 +147,8 @@ jobs:
         run: |
           {
             echo '### Search organic health'
+            echo "- Tested source: $SITE_URL"
+            echo "- Expected canonical: $CANONICAL_URL"
             echo '- Checked indexability of core transactional/technical pages.'
             echo '- Checked canonical URLs.'
             echo '- Checked Googlebot and Bingbot access.'
