@@ -42,7 +42,16 @@ export function Hero() {
   return (
     <section ref={root} id="topo" className="relative water-surface flex min-h-[100svh] items-center justify-center overflow-hidden py-24 sm:py-0">
       <div ref={imgRef} className="absolute inset-0 z-0 md:will-change-transform">
-        <Image src="/images/hero-side.jpeg" alt="Lancha Malibu Response LX de perfil na represa, casco branco com faixa azul-marinho" fill priority sizes="100vw" className="object-cover object-center saturate-110 contrast-105" fetchPriority="high" />
+        <Image
+          src="/images/hero-side.jpeg"
+          alt="Lancha Malibu Response LX de perfil na represa, casco branco com faixa azul-marinho"
+          fill
+          sizes="100vw"
+          loading="eager"
+          fetchPriority="high"
+          unoptimized
+          className="object-cover object-center saturate-110 contrast-105"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-navy-deep/75 via-navy-deep/35 to-background" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/65 to-transparent" />
       </div>
