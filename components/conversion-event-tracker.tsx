@@ -4,6 +4,8 @@ import { useEffect } from 'react'
 import { pushDataLayerEvent } from '@/lib/analytics'
 
 const SECTION_EVENTS = [
+  { selector: '#comprar', event: 'buyer_intent_hub_view' },
+  { selector: '#evidencias', event: 'purchase_evidence_view' },
   { selector: '#negociar', event: 'pricing_section_view' },
   { selector: '#galeria', event: 'gallery_section_view' },
   { selector: '#guia', event: 'buyer_guide_view' },
