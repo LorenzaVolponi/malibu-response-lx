@@ -6,8 +6,10 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { boat } from '@/lib/boat-data'
-import { Check, MessageCircle } from 'lucide-react'
+import { Check, MessageCircle, Share2 } from 'lucide-react'
 import { whatsappLeadUrl } from '@/lib/contact'
+import { siteConfig } from '@/lib/site-config'
+import { pushDataLayerEvent } from '@/lib/analytics'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, useGSAP)
@@ -29,6 +31,9 @@ const contactActions = [
   { label: 'Fazer uma proposta', href: whatsappLeadUrl('offer'), intent: 'offer' },
 ] as const
 
+const shareText = `${boat.brand} ${boat.model} ${boat.year} à venda por ${boat.priceLabel} — V8 350 HP, Direct Drive e Zero Off GPS.`
+const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(`${shareText}\n${siteConfig.url}`)}`
+
 export function PricingCta() {
   const root = useRef<HTMLElement>(null)
   const bg = useRef<HTMLDivElement>(null)
@@ -41,12 +46,7 @@ export function PricingCta() {
         gsap.to(bg.current, {
           yPercent: 20,
           ease: 'none',
-          scrollTrigger: {
-            trigger: root.current,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
-          },
+          scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
         })
         gsap.from('[data-cta-reveal]', {
           y: 40,
@@ -61,23 +61,19 @@ export function PricingCta() {
     { scope: root },
   )
 
+  const shareListing = async () => {
+    pushDataLayerEvent({ event: 'listing_share_click', share_surface: 'native' })
+    if (navigator.share) {
+      await navigator.share({ title: `${boat.brand} ${boat.model} ${boat.year}`, text: shareText, url: siteConfig.url }).catch(() => undefined)
+      return
+    }
+    window.open(whatsappShareUrl, '_blank', 'noopener,noreferrer')
+  }
+
   return (
-    <section
-      ref={root}
-      id="negociar"
-      className="relative overflow-hidden py-28 sm:py-36"
-    >
+    <section ref={root} id="negociar" className="relative overflow-hidden py-28 sm:py-36">
       <div ref={bg} className="absolute inset-0 -z-10 will-change-transform">
-        <Image
-          src="/images/exterior-front.jpeg"
-          alt=""
-          aria-hidden="true"
-          fill
-          sizes="100vw"
-          loading="lazy"
-          decoding="async"
-          className="scale-110 object-cover"
-        />
+        <Image src="/images/exterior-front.jpeg" alt="" aria-hidden="true" fill sizes="100vw" loading="lazy" decoding="async" className="scale-110 object-cover" />
         <div className="absolute inset-0 bg-navy-deep/80" />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
       </div>
@@ -86,27 +82,13 @@ export function PricingCta() {
         <div className="overflow-hidden rounded-4xl glass-strong p-8 sm:p-12">
           <div className="grid gap-10 lg:grid-cols-2">
             <div>
-              <p
-                data-cta-reveal
-                className="mb-3 text-xs tracking-luxe text-gold uppercase"
-              >
-                Valor da embarcação
-              </p>
-              <h2
-                data-cta-reveal
-                className="text-balance font-serif text-4xl leading-tight text-cream sm:text-5xl"
-              >
-                Malibu Response LX {boat.year} disponível para venda
-              </h2>
+              <p data-cta-reveal className="mb-3 text-xs tracking-luxe text-gold uppercase">Valor da embarcação</p>
+              <h2 data-cta-reveal className="text-balance font-serif text-4xl leading-tight text-cream sm:text-5xl">Malibu Response LX {boat.year} disponível para venda</h2>
               <div data-cta-reveal className="mt-8 flex items-end gap-3">
                 <span className="text-sm text-muted-foreground">Valor</span>
-                <span className="font-serif text-5xl text-gradient-gold">
-                  {boat.priceLabel}
-                </span>
+                <span className="font-serif text-5xl text-gradient-gold">{boat.priceLabel}</span>
               </div>
-              <p data-cta-reveal className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">
-                Fale diretamente pelo WhatsApp para receber vídeos complementares, documentação disponível, informações de manutenção e condições para avaliação presencial.
-              </p>
+              <p data-cta-reveal className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">Fale diretamente pelo WhatsApp para receber vídeos complementares, documentação disponível, informações de manutenção e condições para avaliação presencial.</p>
               <div data-cta-reveal className="mt-6 flex flex-col gap-3">
                 {contactActions.map((action, index) => (
                   <a
@@ -123,22 +105,34 @@ export function PricingCta() {
                     {action.label}
                   </a>
                 ))}
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    onClick={shareListing}
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-cream/10 px-4 py-2 text-xs font-semibold text-cream/75 transition hover:border-gold/35 hover:text-gold"
+                  >
+                    <Share2 className="size-4" aria-hidden="true" /> Compartilhar anúncio
+                  </button>
+                  <a
+                    href={whatsappShareUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => pushDataLayerEvent({ event: 'listing_share_click', share_surface: 'whatsapp' })}
+                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-cream/10 px-4 py-2 text-xs font-semibold text-cream/75 transition hover:border-gold/35 hover:text-gold"
+                  >
+                    <MessageCircle className="size-4" aria-hidden="true" /> Enviar a alguém
+                  </a>
+                </div>
               </div>
             </div>
 
             <div data-cta-reveal className="lg:border-l lg:border-cream/10 lg:pl-10">
-              <p className="mb-5 text-sm font-medium text-cream">
-                Incluso no conjunto
-              </p>
+              <p className="mb-5 text-sm font-medium text-cream">Incluso no conjunto</p>
               <ul className="flex flex-col gap-3">
                 {includes.map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-gold/15 text-gold">
-                      <Check className="size-3.5" aria-hidden="true" />
-                    </span>
-                    <span className="text-sm leading-relaxed text-cream/80">
-                      {item}
-                    </span>
+                    <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-gold/15 text-gold"><Check className="size-3.5" aria-hidden="true" /></span>
+                    <span className="text-sm leading-relaxed text-cream/80">{item}</span>
                   </li>
                 ))}
               </ul>
