@@ -1,9 +1,6 @@
-'use client'
-
-import { useRef } from 'react'
 import { specs } from '@/lib/boat-data'
 import { Gauge, Cog, Waves, Ship, Ruler, Satellite, Clock, MapPin, Wrench } from 'lucide-react'
-import { useDeferredGsap } from '@/lib/use-deferred-gsap'
+import { SectionMotionEnhancer } from '@/components/section-motion-enhancer'
 
 const icons = [Cog, Gauge, Waves, Ship, Ruler, Satellite, Clock, Gauge]
 
@@ -13,28 +10,8 @@ const toConfirm = [
 ] as const
 
 export function SpecsSection() {
-  const root = useRef<HTMLElement>(null)
-
-  useDeferredGsap(root, (gsap) => {
-    gsap.from('[data-spec-head]', {
-      y: 30,
-      opacity: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: root.current, start: 'top 75%' },
-    })
-    gsap.from('[data-spec-card]', {
-      y: 44,
-      opacity: 0,
-      duration: 0.8,
-      ease: 'power3.out',
-      stagger: 0.08,
-      scrollTrigger: { trigger: '[data-spec-grid]', start: 'top 80%' },
-    })
-  })
-
   return (
-    <section ref={root} id="especificacoes" className="relative bg-background py-24 sm:py-32">
+    <section id="especificacoes" className="relative bg-background py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-5">
         <div className="mb-14 grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end" data-spec-head>
           <div>
@@ -97,6 +74,7 @@ export function SpecsSection() {
           </aside>
         </div>
       </div>
+      <SectionMotionEnhancer sectionId="especificacoes" kind="specs" />
     </section>
   )
 }
