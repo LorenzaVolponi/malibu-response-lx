@@ -63,9 +63,10 @@ function findDefinition(byId, id, type) {
   return definition
 }
 
-const [html, authority] = await Promise.all([
+const [html, authority, citation] = await Promise.all([
   fetchText('/'),
   fetchJson('/authority.json'),
+  fetchJson('/citation.json'),
 ])
 
 assert.equal(authority.schemaVersion, '1.4', 'authority schema must remain at 1.4')
@@ -103,6 +104,34 @@ assert.ok(indmarOfficial, 'authority.json must retain the official Indmar identi
 assert.equal(indmarOfficial.publisher, 'Indmar Marine Engines')
 assert.match(indmarOfficial.scope, /not archival proof|not .*proof/i, 'Indmar source must remain context-only, not unit proof')
 
+const indmarCitation = citation.sourceRegistry.find((source) => source.id === 'indmar-marine-engines')
+assert.ok(indmarCitation, 'citation.json must retain Indmar as manufacturer identity context')
+assert.equal(indmarCitation.sourceType, 'official-manufacturer-identity-reference')
+assert.equal(indmarCitation.url, 'https://indmar.com/')
+assert.equal(indmarCitation.publisher, 'Indmar Marine Engines')
+assert.equal(indmarCitation.unitConditionProof, false, 'Indmar citation source must never become proof of individual-unit condition')
+assert.match(indmarCitation.scope, /not archival proof/i, 'Indmar citation source must explicitly reject archival-spec proof')
+assert.match(indmarCitation.scope, /350 HP/i, 'Indmar citation scope must explicitly reject use as proof of the 350 HP rating')
+
+const engineModelClaim = citation.publishedClaims.find((claim) => claim.claimId === 'engine-model')
+assert.ok(engineModelClaim, 'citation.json must retain the engine-model claim')
+assert.ok(
+  engineModelClaim.evidence.some((evidence) => evidence.sourceId === 'indmar-marine-engines' && evidence.role === 'manufacturer-identity-context'),
+  'engine-model claim must link Indmar only as manufacturer-identity-context',
+)
+assert.ok(
+  engineModelClaim.evidence.some((evidence) => evidence.role === 'unit-claim' && evidence.sourceId !== 'indmar-marine-engines'),
+  'engine-model claim must retain separate first-party unit evidence',
+)
+
+const enginePowerClaim = citation.publishedClaims.find((claim) => claim.claimId === 'engine-power')
+assert.ok(enginePowerClaim, 'citation.json must retain the engine-power claim')
+assert.equal(
+  enginePowerClaim.evidence.some((evidence) => evidence.sourceId === 'indmar-marine-engines'),
+  false,
+  'Current Indmar identity page must not be cited as proof or context for the published 350 HP rating',
+)
+
 const documents = jsonLdDocuments(html)
 assert.ok(documents.length >= 2, 'Expected global and page JSON-LD documents')
 const byId = collectById(documents)
@@ -129,4 +158,4 @@ const zeroOff = zeroOffDefinitions.find((entry) => entry.url === 'https://www.ze
 assert.ok(zeroOff, 'Zero Off entity must resolve to its official site')
 assert.ok(Array.isArray(zeroOff.sameAs) && zeroOff.sameAs.includes('https://www.zerogps.com/about/'), 'Zero Off entity must retain its official About identity reference')
 
-console.log('External entity resolution verified: Malibu Boats, Indmar Marine Engines and Zero Off resolve to scoped official identities without becoming unit-condition proof.')
+console.log('External entity resolution verified: Malibu Boats, Indmar Marine Engines and Zero Off resolve to scoped official identities; citation provenance keeps Indmar as manufacturer context only, never unit/spec proof.')

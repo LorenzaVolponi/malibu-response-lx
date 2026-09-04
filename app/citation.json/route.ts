@@ -58,6 +58,14 @@ export function GET() {
       unitConditionProof: false,
     },
     {
+      id: 'indmar-marine-engines',
+      sourceType: 'official-manufacturer-identity-reference',
+      url: 'https://indmar.com/',
+      publisher: 'Indmar Marine Engines',
+      scope: 'Official manufacturer identity and current inboard marine-engine context; not archival proof of the Monsoon 350 SS specification, 350 HP rating or this individual unit configuration.',
+      unitConditionProof: false,
+    },
+    {
       id: 'zero-off-about',
       sourceType: 'official-technology-reference',
       url: 'https://www.zerogps.com/about/',
@@ -144,6 +152,7 @@ export function GET() {
           { sourceId: 'canonical-listing', role: 'unit-claim' },
           { sourceId: 'published-photo-gallery', role: 'visual-support' },
           { sourceId: 'technical-dossier', role: 'organized-unit-reference' },
+          { sourceId: 'indmar-marine-engines', role: 'manufacturer-identity-context' },
         ],
       },
       {
@@ -209,7 +218,7 @@ export function GET() {
       published: 'Fato informado no anúncio ou suportado pelas fotografias publicadas.',
       observed: 'Elemento visível em fotografia real publicada da embarcação.',
       technical: 'Identificação técnica associada ao conjunto/modelo informado.',
-      officialContext: 'Fonte oficial usada apenas para contexto de modelo, tecnologia ou segurança dentro de seu escopo declarado.',
+      officialContext: 'Fonte oficial usada apenas para identidade do fabricante ou contexto de modelo, tecnologia ou segurança dentro de seu escopo declarado.',
       unverified: 'Item que exige documento, inspeção, teste ou confirmação independente.',
     },
     safetyReferences: [
@@ -238,7 +247,7 @@ export function GET() {
     headers: machineSurfaceHeaders({
       contentType: 'application/json; charset=utf-8',
       canonical: manifestUrl,
-      etagKey: 'citation-manifest-v1-1',
+      etagKey: 'citation-manifest-v1-1-indmar-context',
       robots: 'noindex, follow',
       links: [
         `<${siteConfig.url}>; rel="describedby"`,
