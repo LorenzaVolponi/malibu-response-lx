@@ -16,6 +16,7 @@ const rateLimitStore = new Map<string, { count: number; resetAt: number }>()
 const MALIBU_SAFETY_ADVISORY_URL = 'https://cdn.malibuboats.com/safety/20230718-Service-Advisory.pdf'
 
 type IncomingMessage = UIMessage & { content?: string }
+type TextPartCandidate = { type?: unknown; text?: unknown }
 
 type LeadIntent = 'primary' | 'documents' | 'test' | 'offer' | 'technical'
 
@@ -62,11 +63,18 @@ function normalize(text: string) {
   return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
 }
 
+function readTextPart(part: unknown) {
+  if (!part || typeof part !== 'object') return ''
+  const candidate = part as TextPartCandidate
+  if (candidate.type !== 'text' || typeof candidate.text !== 'string') return ''
+  return candidate.text
+}
+
 function getLastUserText(messages: IncomingMessage[]) {
   const lastUser = [...messages].reverse().find((message) => message.role === 'user')
   const partsText = lastUser?.parts
-    ?.filter((part) => part.type === 'text' && typeof part.text === 'string')
-    .map((part) => part.text)
+    ?.map(readTextPart)
+    .filter(Boolean)
     .join(' ')
 
   return sanitizePlainText(partsText || lastUser?.content || '', MAX_MESSAGE_LENGTH)
