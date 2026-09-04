@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   verify:
-    name: Verify production search and AI facts agree
+    name: Verify production search, AI and freshness contracts
     runs-on: ubuntu-latest
     timeout-minutes: 6
 
@@ -29,6 +29,11 @@ jobs:
           CANONICAL_URL: https://malibu-response-lx.vercel.app
         run: node scripts/verify-semantic-consistency-runtime.mjs
 
+      - name: Verify machine freshness and cache contract
+        env:
+          SITE_URL: https://malibu-response-lx.vercel.app
+        run: node scripts/verify-machine-freshness-runtime.mjs
+
       - name: Publish semantic health summary
         if: always()
         shell: bash
@@ -37,7 +42,9 @@ jobs:
             echo '### Semantic consistency health'
             echo '- Compares the canonical HTML/JSON-LD with boat.json, citation.json, authority.json, llms.txt, ai.txt and sitemap.xml.'
             echo '- Locks the published commercial facts: 2013, R$ 165.000, 940 h, Indmar Monsoon 350 SS V8, 350 HP, Direct Drive and Zero Off GPS.'
+            echo '- Verifies HTTP discovery, claim provenance, JSON-LD graph integrity and curated indexation policy.'
+            echo '- Verifies updatedAt, Last-Modified, ETag and CDN freshness headers across the machine-readable surfaces.'
             echo '- Verifies that 9 curated guides remain promoted to search and 18 support guides remain noindex/follow and outside the sitemap.'
-            echo '- A failure means search engines and AI systems may be receiving contradictory facts or indexation guidance.'
+            echo '- A failure means search engines or AI systems may be receiving contradictory, stale or incorrectly cached information.'
             echo '- This workflow does not change the frontend.'
           } >> "$GITHUB_STEP_SUMMARY"
