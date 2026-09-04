@@ -12,7 +12,7 @@ const expectedLastModified = new Date(`${expectedUpdatedAt}T12:00:00Z`).toUTCStr
 const machineSurfaces = [
   { path: '/boat.json', contentType: 'application/json', etagKey: 'boat-dataset-v2-1' },
   { path: '/citation.json', contentType: 'application/json', etagKey: 'citation-manifest-v1-1' },
-  { path: '/authority.json', contentType: 'application/json', etagKey: 'authority-manifest-v1-3' },
+  { path: '/authority.json', contentType: 'application/json', etagKey: 'authority-manifest-v1-4' },
   { path: '/llms.txt', contentType: 'text/plain', etagKey: 'llms-index-v2' },
   { path: '/ai.txt', contentType: 'text/plain', etagKey: 'ai-policy' },
 ]

@@ -51,7 +51,7 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Verify search, semantic and machine freshness contracts at runtime
+      - name: Verify search, semantic, identity and machine freshness contracts at runtime
         shell: bash
         run: |
           set -euo pipefail
@@ -63,6 +63,7 @@ jobs:
             if curl -fsS http://127.0.0.1:3000/ >/dev/null; then
               SITE_URL=http://127.0.0.1:3000 node scripts/verify-guide-index-runtime.mjs
               SITE_URL=http://127.0.0.1:3000 CANONICAL_URL=https://malibu-response-lx.vercel.app node scripts/verify-semantic-consistency-runtime.mjs
+              SITE_URL=http://127.0.0.1:3000 CANONICAL_URL=https://malibu-response-lx.vercel.app node scripts/verify-external-entity-resolution.mjs
               SITE_URL=http://127.0.0.1:3000 node scripts/verify-machine-freshness-runtime.mjs
               exit 0
             fi
