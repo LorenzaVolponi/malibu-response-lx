@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   verify:
-    name: Verify production search, AI, identity and freshness contracts
+    name: Verify production search, AI, identity, authority and freshness contracts
     runs-on: ubuntu-latest
     timeout-minutes: 6
 
@@ -35,6 +35,11 @@ jobs:
           CANONICAL_URL: https://malibu-response-lx.vercel.app
         run: node scripts/verify-external-entity-resolution.mjs
 
+      - name: Verify public authority bridge
+        env:
+          SITE_URL: https://malibu-response-lx.vercel.app
+        run: node scripts/verify-public-authority-bridge.mjs
+
       - name: Verify machine freshness and cache contract
         env:
           SITE_URL: https://malibu-response-lx.vercel.app
@@ -50,8 +55,9 @@ jobs:
             echo '- Locks the published commercial facts: 2013, R$ 165.000, 940 h, Indmar Monsoon 350 SS V8, 350 HP, Direct Drive and Zero Off GPS.'
             echo '- Verifies HTTP discovery, claim provenance, JSON-LD graph integrity and curated indexation policy.'
             echo '- Verifies official entity resolution for Malibu Boats, Indmar Marine Engines and Zero Off without converting those references into proof of individual-unit condition.'
+            echo '- Verifies that the public technical dossier visibly links the same official references declared in authority.json and cites them in TechArticle JSON-LD.'
             echo '- Verifies updatedAt, Last-Modified, ETag and CDN freshness headers across the machine-readable surfaces.'
             echo '- Verifies that 9 curated guides remain promoted to search and 18 support guides remain noindex/follow and outside the sitemap.'
-            echo '- A failure means search engines or AI systems may be receiving contradictory, stale, unresolved or incorrectly cached information.'
-            echo '- This workflow does not change the frontend.'
+            echo '- A failure means search engines or AI systems may be receiving contradictory, stale, unresolved or incorrectly scoped authority information.'
+            echo '- This workflow does not change the main sales frontend.'
           } >> "$GITHUB_STEP_SUMMARY"

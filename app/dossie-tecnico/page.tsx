@@ -12,6 +12,39 @@ const updatedLabel = new Intl.DateTimeFormat('pt-BR', {
   timeZone: 'America/Sao_Paulo',
 }).format(new Date(siteConfig.updatedAt))
 
+const officialReferenceSources = [
+  {
+    publisher: 'Malibu Boats',
+    label: 'Manuais oficiais Malibu Boats',
+    url: 'https://www.malibuboats.com/owner-manuals',
+    scope: `Referência oficial de fabricante que inclui o manual do ano ${boat.year}; não comprova a configuração, manutenção ou condição desta unidade.`,
+  },
+  {
+    publisher: 'Malibu Boats, LLC',
+    label: 'Service Advisory — Malibu Response LX',
+    url: 'https://cdn.malibuboats.com/safety/20230718-Service-Advisory.pdf',
+    scope: `Advisory oficial que abrange Response LX 1995–2014, intervalo que inclui ${boat.year}; o comprador deve verificar aplicabilidade e eventual atendimento nesta unidade.`,
+  },
+  {
+    publisher: 'Indmar Marine Engines',
+    label: 'Indmar Marine Engines',
+    url: 'https://indmar.com/',
+    scope: 'Referência oficial de identidade do fabricante do motor; não é histórico de manutenção, laudo ou comprovação específica desta unidade.',
+  },
+  {
+    publisher: 'Zero Off GPS Speed Control',
+    label: 'Zero Off — tecnologia de controle por GPS',
+    url: 'https://www.zerogps.com/about/',
+    scope: 'Referência oficial sobre a tecnologia Zero Off; funcionamento, instalação e compatibilidade da unidade anunciada devem ser testados independentemente.',
+  },
+  {
+    publisher: 'Zero Off GPS Speed Control',
+    label: 'Zero Off — FAQ técnica e compatibilidade geral',
+    url: 'https://www.zerogps.com/faqs/',
+    scope: 'FAQ técnica oficial e orientação geral de compatibilidade; não constitui certificação de compatibilidade, instalação ou funcionamento desta unidade específica.',
+  },
+] as const
+
 export const metadata: Metadata = {
   title: `Dossiê técnico da ${siteConfig.listingName} ${boat.year}`,
   description: `Ficha técnica, evidências visuais, itens informados e checklist de validação da ${siteConfig.listingName} ${boat.year} anunciada por ${boat.priceLabel}.`,
@@ -77,6 +110,7 @@ const dossierJsonLd = {
         `${siteConfig.url}/boat.json`,
         `${siteConfig.url}/guias`,
         `${siteConfig.url}${siteConfig.guidePath}`,
+        ...officialReferenceSources.map((source) => source.url),
       ],
     },
     {
@@ -94,6 +128,7 @@ const dossierJsonLd = {
       image: gallery.map((item, index) => ({ '@id': `${siteConfig.url}/#image-${index + 1}` })),
       about: { '@id': `${siteConfig.url}/#product` },
       isBasedOn: { '@id': `${siteConfig.url}/boat.json#dataset` },
+      citation: officialReferenceSources.map((source) => source.url),
       mentions: [
         { '@id': `${siteConfig.url}/#malibu-boats` },
         { '@id': `${siteConfig.url}/#response-lx` },
@@ -208,6 +243,31 @@ export default function TechnicalDossierPage() {
                 <h3 className="text-xl font-medium">{feature.title}</h3>
                 <p className="mt-3 leading-7 text-white/65">{feature.description}</p>
               </div>
+            ))}
+          </div>
+        </section>
+
+        <section id="fontes-oficiais" className="py-8" aria-labelledby="fontes-oficiais-titulo">
+          <p className="text-sm uppercase tracking-[0.22em] text-amber-300">Referências externas verificáveis</p>
+          <h2 id="fontes-oficiais-titulo" className="mt-3 text-3xl font-semibold">Fontes oficiais para conferência</h2>
+          <p className="mt-4 max-w-3xl leading-7 text-white/65">
+            Estas referências ajudam a contextualizar fabricante, modelo, motor, tecnologia e alertas aplicáveis. Elas não substituem documentação, histórico, inspeção ou teste desta embarcação específica.
+          </p>
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {officialReferenceSources.map((source) => (
+              <article key={source.url} className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+                <p className="text-xs uppercase tracking-[0.18em] text-white/45">{source.publisher}</p>
+                <h3 className="mt-2 text-lg font-medium">{source.label}</h3>
+                <p className="mt-3 text-sm leading-6 text-white/60">{source.scope}</p>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 inline-flex text-sm font-semibold text-amber-300 hover:underline"
+                >
+                  Abrir fonte oficial ↗
+                </a>
+              </article>
             ))}
           </div>
         </section>
