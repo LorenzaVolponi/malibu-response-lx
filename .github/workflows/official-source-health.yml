@@ -19,6 +19,24 @@ jobs:
     timeout-minutes: 8
 
     steps:
+      - name: Verify official entity identity roots
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          MALIBU_URL='https://www.malibuboats.com/'
+          MALIBU_BODY="$(curl --fail --location --silent --show-error --max-time 30 -A 'malibu-authority-source-health/1.0' "$MALIBU_URL")"
+          printf '%s' "$MALIBU_BODY" | grep -F 'Malibu' >/dev/null
+
+          INDMAR_URL='https://indmar.com/'
+          INDMAR_BODY="$(curl --fail --location --silent --show-error --max-time 30 -A 'malibu-authority-source-health/1.0' "$INDMAR_URL")"
+          printf '%s' "$INDMAR_BODY" | grep -F 'Indmar Marine Engines' >/dev/null
+          printf '%s' "$INDMAR_BODY" | grep -Ei 'inboard marine engines|marine engines' >/dev/null
+
+          ZERO_OFF_URL='https://www.zerogps.com/'
+          ZERO_OFF_BODY="$(curl --fail --location --silent --show-error --max-time 30 -A 'malibu-authority-source-health/1.0' "$ZERO_OFF_URL")"
+          printf '%s' "$ZERO_OFF_BODY" | grep -Ei 'Zero Off|GPS speed control|speed control' >/dev/null
+
       - name: Verify Malibu owner manuals source
         shell: bash
         run: |
@@ -56,9 +74,10 @@ jobs:
         run: |
           {
             echo '### Official authority source health'
+            echo '- Malibu Boats, Indmar Marine Engines and Zero Off identity roots: checked for live official identity markers.'
             echo '- Malibu Boats owner-manual index: checked for the 2013 manual marker.'
             echo '- Malibu Boats Response LX service advisory: checked for a live PDF response.'
             echo '- Zero Off official About and FAQ: checked for speed-control source markers.'
-            echo '- These checks verify source availability only; they do not convert model references into claims about the individual boat condition.'
+            echo '- These checks verify source availability and identity only; they do not convert manufacturer/model references into claims about the individual boat condition.'
             echo '- No frontend behavior is changed by this workflow.'
           } >> "$GITHUB_STEP_SUMMARY"
