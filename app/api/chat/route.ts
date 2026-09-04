@@ -1,11 +1,14 @@
 import { createUIMessageStream, createUIMessageStreamResponse, type UIMessage } from 'ai'
 import { boat, conditionItems, specs } from '@/lib/boat-data'
 import { whatsappLeadUrl } from '@/lib/contact'
+import { sanitizePlainText } from '@/lib/security'
 import { siteConfig } from '@/lib/site-config'
 
 export const maxDuration = 10
 
 const MAX_MESSAGE_LENGTH = 500
+const MAX_MESSAGES = 40
+const MAX_BODY_BYTES = 32_000
 const RATE_LIMIT_WINDOW_MS = 60_000
 const RATE_LIMIT_MAX_REQUESTS = 20
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>()
@@ -61,8 +64,12 @@ function normalize(text: string) {
 
 function getLastUserText(messages: IncomingMessage[]) {
   const lastUser = [...messages].reverse().find((message) => message.role === 'user')
-  const partsText = lastUser?.parts?.filter((part) => part.type === 'text').map((part) => part.text).join(' ')
-  return (partsText || lastUser?.content || '').trim().slice(0, MAX_MESSAGE_LENGTH)
+  const partsText = lastUser?.parts
+    ?.filter((part) => part.type === 'text' && typeof part.text === 'string')
+    .map((part) => part.text)
+    .join(' ')
+
+  return sanitizePlainText(partsText || lastUser?.content || '', MAX_MESSAGE_LENGTH)
 }
 
 function detectIntent(q: string): LeadIntent | null {
@@ -123,9 +130,28 @@ export async function POST(req: Request) {
     return new Response('Muitas mensagens em pouco tempo. Tente novamente em instantes.', { status: 429 })
   }
 
-  const body = await req.json().catch(() => ({ messages: [] }))
-  const messages = Array.isArray(body.messages) ? body.messages as IncomingMessage[] : []
-  const text = answerWithBoatFacts(getLastUserText(messages))
+  const contentType = req.headers.get('content-type') || ''
+  if (!contentType.toLowerCase().startsWith('application/json')) {
+    return new Response('Content-Type inválido.', { status: 415 })
+  }
+
+  const contentLength = Number(req.headers.get('content-length') || '0')
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
+    return new Response('Payload muito grande.', { status: 413 })
+  }
+
+  const body = await req.json().catch(() => null)
+  if (!body || typeof body !== 'object' || !Array.isArray(body.messages)) {
+    return new Response('Payload inválido.', { status: 400 })
+  }
+
+  const messages = (body.messages as IncomingMessage[]).slice(-MAX_MESSAGES)
+  const question = getLastUserText(messages)
+  if (!question) {
+    return new Response('Mensagem inválida.', { status: 400 })
+  }
+
+  const text = answerWithBoatFacts(question)
 
   const stream = createUIMessageStream<UIMessage>({
     originalMessages: messages,
