@@ -72,7 +72,7 @@ for (const [label, surface] of [
   assertIncludes(surface, expected.transmission, label)
   assertIncludes(surface, expected.speedControl, label)
 }
-assertIncludes(html, `\"price\":${expected.price}`, 'HTML JSON-LD')
+assertIncludes(html, `"price":${expected.price}`, 'HTML JSON-LD')
 assertIncludes(llms, expected.priceLabel, 'llms.txt')
 assertIncludes(aiPolicy, expected.priceLabel, 'ai.txt')
 assertIncludes(JSON.stringify(citation), expected.priceLabel, 'citation.json')
