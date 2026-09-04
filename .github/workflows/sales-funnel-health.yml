@@ -60,6 +60,43 @@ jobs:
           cat /tmp/malibu-sales-health-server.log || true
           exit 1
 
+      - name: Verify attributed share URLs and clean canonical
+        shell: bash
+        run: |
+          set -euo pipefail
+          html="$(curl -fsS "$SITE_URL/")"
+
+          HTML="$html" node <<'NODE'
+          const html = process.env.HTML || ''
+          const canonical = 'https://malibu-response-lx.vercel.app'
+
+          if (!html.includes('data-share-attribution="site_share"')) {
+            throw new Error('Share attribution marker is missing from rendered home')
+          }
+
+          const required = [
+            'utm_source=site_share',
+            'utm_medium=referral',
+            'utm_campaign=malibu_listing_share',
+            'utm_content=native_share',
+            'utm_content=whatsapp_share',
+          ]
+          for (const marker of required) {
+            if (!html.includes(marker)) throw new Error(`Rendered share URLs are missing ${marker}`)
+          }
+
+          const canonicalPatterns = [
+            `<link rel="canonical" href="${canonical}"`,
+            `<link href="${canonical}" rel="canonical"`,
+          ]
+          if (!canonicalPatterns.some((pattern) => html.includes(pattern))) {
+            throw new Error('Clean canonical link was not found on home')
+          }
+          if (/rel="canonical"[^>]+utm_|utm_[^>]+rel="canonical"/i.test(html)) {
+            throw new Error('Tracking parameters leaked into canonical metadata')
+          }
+          NODE
+
       - name: Verify buyer-clean lead redirect
         shell: bash
         run: |
@@ -177,6 +214,7 @@ jobs:
           {
             echo '### Sales funnel health'
             echo "- Tested source: $SITE_URL"
+            echo '- Verifies native and WhatsApp share URLs carry first-party share/referral attribution while canonical metadata remains clean.'
             echo '- Verifies WhatsApp redirect remains HTTP 302 and non-cacheable.'
             echo '- Verifies the buyer sees only the commercial message plus a short listing reference.'
             echo '- Verifies attribution/UTM/click IDs never leak into the buyer-facing WhatsApp text.'
@@ -184,5 +222,5 @@ jobs:
             echo '- Verifies raw advertising click IDs are not persisted in the ledger.'
             echo '- Verifies untrusted attribution delimiters are sanitized server-side.'
             echo '- Verifies invalid intents fall back safely to primary.'
-            echo '- No frontend behavior or layout is added by this workflow.'
+            echo '- No extra visual block is added by this workflow.'
           } >> "$GITHUB_STEP_SUMMARY"
