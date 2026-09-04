@@ -160,6 +160,60 @@ for (const slug of SUPPORT_ONLY_GUIDE_SLUGS) {
   assertIncludes(JSON.stringify(authority.cannibalizationPolicy.supportOnlyNoindex), url, 'authority.json support-only list')
 }
 
+// Claim-level provenance: every published claim must resolve to explicit sources, and official external references may never be treated as proof of this individual unit.
+assert.equal(citation.schemaVersion, '1.1', 'citation.json provenance schema must remain at 1.1')
+assert.ok(Array.isArray(citation.sourceRegistry) && citation.sourceRegistry.length > 0, 'citation.json must publish a source registry')
+assert.ok(Array.isArray(citation.publishedClaims) && citation.publishedClaims.length > 0, 'citation.json must publish claims')
+
+const sourceIds = citation.sourceRegistry.map((source) => source.id)
+assert.equal(new Set(sourceIds).size, sourceIds.length, 'citation.json source IDs must be unique')
+const sourcesById = new Map(citation.sourceRegistry.map((source) => [source.id, source]))
+
+for (const source of citation.sourceRegistry) {
+  assert.ok(source.id, 'Every provenance source must have an id')
+  assert.ok(source.sourceType, `${source.id} must declare sourceType`)
+  assert.doesNotThrow(() => new URL(source.url), `${source.id} must expose an absolute URL`)
+
+  if (source.sourceType.startsWith('official-')) {
+    assert.equal(source.unitConditionProof, false, `${source.id} must not claim to prove this individual unit condition`)
+  }
+}
+
+const claimIds = citation.publishedClaims.map((claim) => claim.claimId)
+assert.equal(new Set(claimIds).size, claimIds.length, 'citation.json claim IDs must be unique')
+
+for (const claim of citation.publishedClaims) {
+  assert.ok(claim.claimId, `Published claim ${claim.claim} must have claimId`)
+  assert.ok(Array.isArray(claim.evidence) && claim.evidence.length > 0, `${claim.claimId} must have evidence links`)
+
+  let hasUnitClaimEvidence = false
+  for (const evidence of claim.evidence) {
+    const source = sourcesById.get(evidence.sourceId)
+    assert.ok(source, `${claim.claimId} references unknown source ${evidence.sourceId}`)
+    assert.ok(evidence.role, `${claim.claimId}/${evidence.sourceId} must declare an evidence role`)
+
+    if (evidence.role === 'unit-claim') {
+      hasUnitClaimEvidence = true
+      assert.equal(source.sourceType.startsWith('official-'), false, `${claim.claimId} cannot use official external context as proof of this individual unit`)
+    }
+  }
+
+  assert.equal(hasUnitClaimEvidence, true, `${claim.claimId} must retain at least one first-party unit-claim source`)
+}
+
+const authorityOfficialUrls = new Set((authority.officialReferenceSources || []).map((source) => source.url))
+for (const source of citation.sourceRegistry.filter((item) => item.sourceType.startsWith('official-'))) {
+  assert.equal(authorityOfficialUrls.has(source.url), true, `${source.id} must remain aligned with authority.json official references`)
+}
+
+const responseSafety = (citation.safetyReferences || []).find((item) => item.sourceId === 'malibu-response-lx-safety-advisory')
+assert.ok(responseSafety, 'citation.json must retain the Malibu Response LX safety advisory')
+assert.equal(responseSafety.listingYearWithinRange, true, `Malibu Response LX ${expected.year} must remain within the published 1995-2014 advisory range`)
+assert.ok(responseSafety.guidance, 'Safety advisory must retain buyer-facing guidance in the machine manifest')
+const safetySource = sourcesById.get(responseSafety.sourceId)
+assert.equal(safetySource?.sourceType, 'official-manufacturer-safety-reference', 'Safety advisory source must remain an official manufacturer safety reference')
+assert.equal(safetySource?.listingYearWithinRange, true, 'Safety source registry must retain the listing-year applicability flag')
+
 // JSON-LD graph integrity: all home-fragment references must resolve and core commerce relations must be reciprocal.
 const jsonLdDocuments = extractJsonLdDocuments(html)
 const { definitionsById, references } = collectGraphFacts(jsonLdDocuments)
@@ -228,4 +282,5 @@ for (const [id, type] of [
 }
 
 console.log(`Semantic consistency verified across canonical HTML + 6 machine surfaces (${INDEXABLE_GUIDE_SLUGS.length} indexable guides, ${SUPPORT_ONLY_GUIDE_SLUGS.length} support-only guides).`)
+console.log(`Claim provenance verified: ${citation.publishedClaims.length} claims resolve to ${citation.sourceRegistry.length} scoped sources; official references are context-only for the individual unit.`)
 console.log(`JSON-LD entity graph verified: ${definitionsById.size} defined @id nodes; all same-page references resolve and core commerce relations are reciprocal.`)
