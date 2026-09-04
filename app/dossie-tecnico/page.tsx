@@ -32,10 +32,16 @@ const officialReferenceSources = [
     scope: 'Referência oficial de identidade do fabricante do motor; não é histórico de manutenção, laudo ou comprovação específica desta unidade.',
   },
   {
-    publisher: 'Zero Off',
+    publisher: 'Zero Off GPS Speed Control',
     label: 'Zero Off — tecnologia de controle por GPS',
     url: 'https://www.zerogps.com/about/',
     scope: 'Referência oficial sobre a tecnologia Zero Off; funcionamento, instalação e compatibilidade da unidade anunciada devem ser testados independentemente.',
+  },
+  {
+    publisher: 'Zero Off GPS Speed Control',
+    label: 'Zero Off — FAQ técnica e compatibilidade geral',
+    url: 'https://www.zerogps.com/faqs/',
+    scope: 'FAQ técnica oficial e orientação geral de compatibilidade; não constitui certificação de compatibilidade, instalação ou funcionamento desta unidade específica.',
   },
 ] as const
 
