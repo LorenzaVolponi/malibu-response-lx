@@ -51,7 +51,7 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Verify curated guide indexing at runtime
+      - name: Verify search policy and semantic consistency at runtime
         shell: bash
         run: |
           set -euo pipefail
@@ -62,6 +62,7 @@ jobs:
           for attempt in $(seq 1 30); do
             if curl -fsS http://127.0.0.1:3000/ >/dev/null; then
               SITE_URL=http://127.0.0.1:3000 node scripts/verify-guide-index-runtime.mjs
+              SITE_URL=http://127.0.0.1:3000 CANONICAL_URL=https://malibu-response-lx.vercel.app node scripts/verify-semantic-consistency-runtime.mjs
               exit 0
             fi
             sleep 1
