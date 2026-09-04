@@ -39,6 +39,18 @@ jobs:
           FRESHNESS_INTERVAL_MS: 10000
         run: node scripts/check-production-runtime-freshness.mjs
 
+      - name: Verify production search and semantic contracts
+        env:
+          SITE_URL: https://malibu-response-lx.vercel.app
+          CANONICAL_URL: https://malibu-response-lx.vercel.app
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/verify-guide-index-runtime.mjs
+          node scripts/verify-semantic-consistency-runtime.mjs
+          node scripts/verify-external-entity-resolution.mjs
+          node scripts/verify-machine-freshness-runtime.mjs
+
       - name: Publish freshness summary
         if: always()
         shell: bash
@@ -49,5 +61,6 @@ jobs:
             echo '- Workflow/docs-only commits do not create false stale alerts.'
             echo '- Production may report that runtime commit itself or a later descendant containing it.'
             echo '- Push runs allow up to ~5 minutes for deployment catch-up before failing.'
-            echo '- A failure means code may be merged but the canonical site is still serving older runtime.'
+            echo '- After freshness is confirmed, the canonical production site is checked for guide index policy, semantic/provenance consistency, external entity resolution and machine freshness/cache headers.'
+            echo '- A failure means either production is stale or the deployed responses violate a search/AI contract even if the expected commit is present.'
           } >> "$GITHUB_STEP_SUMMARY"
