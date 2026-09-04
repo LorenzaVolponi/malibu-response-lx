@@ -14,18 +14,31 @@ const expected = {
   speedControl: 'Zero Off GPS',
 }
 
-async function get(path, as = 'text') {
+async function getSurface(path, as = 'text') {
   const response = await fetch(`${SITE_URL}${path}`, {
     headers: { 'User-Agent': 'malibu-semantic-consistency-health/1.0' },
     cache: 'no-store',
   })
 
   assert.equal(response.ok, true, `${path} should return 2xx, got ${response.status}`)
-  return as === 'json' ? response.json() : response.text()
+  const body = as === 'json' ? await response.json() : await response.text()
+  return { body, headers: response.headers, status: response.status }
 }
 
 function assertIncludes(haystack, needle, label) {
   assert.equal(haystack.includes(needle), true, `${label} should include ${needle}`)
+}
+
+function assertHeaderIncludes(headers, name, needle, label) {
+  const value = headers.get(name) || ''
+  assertIncludes(value.toLowerCase(), needle.toLowerCase(), `${label} ${name}`)
+}
+
+function assertLink(headers, url, rel, type, label) {
+  const link = headers.get('link') || ''
+  assertIncludes(link, `<${url}>`, `${label} Link`)
+  assertIncludes(link, `rel="${rel}"`, `${label} Link`)
+  if (type) assertIncludes(link, `type="${type}"`, `${label} Link`)
 }
 
 function asTypes(value) {
@@ -88,15 +101,66 @@ function assertRef(value, expectedId, label) {
   assert.equal(value?.['@id'], expectedId, `${label} must reference ${expectedId}`)
 }
 
-const [html, boatData, citation, authority, llms, aiPolicy, sitemap] = await Promise.all([
-  get('/'),
-  get('/boat.json', 'json'),
-  get('/citation.json', 'json'),
-  get('/authority.json', 'json'),
-  get('/llms.txt'),
-  get('/ai.txt'),
-  get('/sitemap.xml'),
+const [homeSurface, boatSurface, citationSurface, authoritySurface, llmsSurface, aiSurface, sitemapSurface] = await Promise.all([
+  getSurface('/'),
+  getSurface('/boat.json', 'json'),
+  getSurface('/citation.json', 'json'),
+  getSurface('/authority.json', 'json'),
+  getSurface('/llms.txt'),
+  getSurface('/ai.txt'),
+  getSurface('/sitemap.xml'),
 ])
+
+const html = homeSurface.body
+const boatData = boatSurface.body
+const citation = citationSurface.body
+const authority = authoritySurface.body
+const llms = llmsSurface.body
+const aiPolicy = aiSurface.body
+const sitemap = sitemapSurface.body
+
+// HTTP discovery contract: crawlers and agents must receive stable index policy, media types and machine-readable relations.
+assertHeaderIncludes(homeSurface.headers, 'x-robots-tag', 'index, follow', 'canonical home')
+assertLink(homeSurface.headers, `${CANONICAL_URL}/boat.json`, 'alternate', 'application/json', 'canonical home')
+assertLink(homeSurface.headers, `${CANONICAL_URL}/citation.json`, 'describedby', 'application/json', 'canonical home')
+assertLink(homeSurface.headers, `${CANONICAL_URL}/authority.json`, 'describedby', 'application/json', 'canonical home')
+assertLink(homeSurface.headers, `${CANONICAL_URL}/llms.txt`, 'alternate', 'text/plain', 'canonical home')
+assertLink(homeSurface.headers, `${CANONICAL_URL}/feed.xml`, 'alternate', 'application/rss+xml', 'canonical home')
+
+for (const [path, surface, contentType] of [
+  ['/boat.json', boatSurface, 'application/json'],
+  ['/citation.json', citationSurface, 'application/json'],
+  ['/authority.json', authoritySurface, 'application/json'],
+  ['/llms.txt', llmsSurface, 'text/plain'],
+  ['/ai.txt', aiSurface, 'text/plain'],
+]) {
+  assertHeaderIncludes(surface.headers, 'x-robots-tag', 'noindex, follow', path)
+  assertHeaderIncludes(surface.headers, 'content-type', contentType, path)
+}
+
+assertLink(boatSurface.headers, `${CANONICAL_URL}/dossie-tecnico`, 'describedby', null, 'boat.json')
+assertLink(boatSurface.headers, `${CANONICAL_URL}/citation.json`, 'related', 'application/json', 'boat.json')
+assertLink(boatSurface.headers, `${CANONICAL_URL}/authority.json`, 'related', 'application/json', 'boat.json')
+assertLink(boatSurface.headers, `${CANONICAL_URL}/feed.xml`, 'alternate', 'application/rss+xml', 'boat.json')
+
+for (const [label, surface] of [
+  ['citation.json', citationSurface],
+  ['authority.json', authoritySurface],
+]) {
+  assertLink(surface.headers, CANONICAL_URL, 'describedby', null, label)
+  assertLink(surface.headers, `${CANONICAL_URL}/boat.json`, 'related', 'application/json', label)
+}
+assertLink(citationSurface.headers, `${CANONICAL_URL}/authority.json`, 'related', 'application/json', 'citation.json')
+assertLink(authoritySurface.headers, `${CANONICAL_URL}/citation.json`, 'related', 'application/json', 'authority.json')
+
+for (const [label, surface] of [
+  ['llms.txt', llmsSurface],
+  ['ai.txt', aiSurface],
+]) {
+  assertLink(surface.headers, `${CANONICAL_URL}/boat.json`, 'describedby', 'application/json', label)
+  assertLink(surface.headers, `${CANONICAL_URL}/citation.json`, 'describedby', 'application/json', label)
+  assertLink(surface.headers, `${CANONICAL_URL}/authority.json`, 'describedby', 'application/json', label)
+}
 
 for (const [label, surface] of [
   ['HTML', html],
@@ -281,6 +345,7 @@ for (const [id, type] of [
   assertRef(physicalDefinition.isPartOf, ids.product, `${id}.isPartOf`)
 }
 
+console.log(`HTTP discovery contract verified across canonical + 5 machine surfaces with stable robots, media types and Link relations.`)
 console.log(`Semantic consistency verified across canonical HTML + 6 machine surfaces (${INDEXABLE_GUIDE_SLUGS.length} indexable guides, ${SUPPORT_ONLY_GUIDE_SLUGS.length} support-only guides).`)
 console.log(`Claim provenance verified: ${citation.publishedClaims.length} claims resolve to ${citation.sourceRegistry.length} scoped sources; official references are context-only for the individual unit.`)
 console.log(`JSON-LD entity graph verified: ${definitionsById.size} defined @id nodes; all same-page references resolve and core commerce relations are reciprocal.`)
