@@ -82,30 +82,22 @@ assert.equal(authority.cannibalizationPolicy.supportOnlyNoindex.length, SUPPORT_
 assertIncludes(llms, '## Guias promovidos ao índice', 'llms.txt')
 assertIncludes(llms, '## Guias de apoio (noindex, follow)', 'llms.txt')
 
-const relatedBySlug = new Map(
-  boatData.relatedContent.map((item) => [item.url.split('/').pop(), item]),
-)
+const relatedSlugs = new Set(boatData.relatedContent.map((item) => item.url.split('/').pop()))
 
 for (const slug of INDEXABLE_GUIDE_SLUGS) {
   const url = `${CANONICAL_URL}/guias/${slug}`
   assertIncludes(sitemap, `<loc>${url}</loc>`, 'sitemap.xml')
   assertIncludes(llms, `- ${url}`, 'llms.txt promoted guide list')
-
-  const item = relatedBySlug.get(slug)
-  assert.ok(item, `boat.json relatedContent must include ${slug}`)
-  assert.equal(item.searchIndexPolicy, 'index, follow', `${slug} should be index, follow in boat.json`)
-  assert.equal(item.searchRole, 'curated-organic-target', `${slug} should be a curated organic target`)
+  assert.equal(relatedSlugs.has(slug), true, `boat.json relatedContent must include ${slug}`)
+  assertIncludes(JSON.stringify(authority.cannibalizationPolicy.curatedIndexableGuides), url, 'authority.json curated index list')
 }
 
 for (const slug of SUPPORT_ONLY_GUIDE_SLUGS) {
   const url = `${CANONICAL_URL}/guias/${slug}`
   assert.equal(sitemap.includes(`<loc>${url}</loc>`), false, `${slug} must stay out of sitemap.xml`)
   assertIncludes(llms, `- ${url}`, 'llms.txt support guide list')
-
-  const item = relatedBySlug.get(slug)
-  assert.ok(item, `boat.json relatedContent must include ${slug}`)
-  assert.equal(item.searchIndexPolicy, 'noindex, follow', `${slug} should be noindex, follow in boat.json`)
-  assert.equal(item.searchRole, 'support-only', `${slug} should remain support-only`)
+  assert.equal(relatedSlugs.has(slug), true, `boat.json relatedContent must include ${slug}`)
+  assertIncludes(JSON.stringify(authority.cannibalizationPolicy.supportOnlyNoindex), url, 'authority.json support-only list')
 }
 
 console.log(`Semantic consistency verified across canonical HTML + 6 machine surfaces (${INDEXABLE_GUIDE_SLUGS.length} indexable guides, ${SUPPORT_ONLY_GUIDE_SLUGS.length} support-only guides).`)
