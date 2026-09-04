@@ -7,12 +7,14 @@ import { siteConfig } from '@/lib/site-config'
 export const dynamic = 'force-static'
 
 export function GET() {
-  const pagesBySlug = new Map(seoIntentPages.map((page) => [page.slug, page]))
+  const pagesBySlug = new Map<string, (typeof seoIntentPages)[number]>(
+    seoIntentPages.map((page) => [page.slug, page]),
+  )
 
   const indexableGuideLinks = INDEXABLE_GUIDE_SLUGS
     .map((slug) => {
       const page = pagesBySlug.get(slug)
-      return page ? `- ${seoIntentPageUrl(slug)} — ${page.h1}` : null
+      return page ? `- ${seoIntentPageUrl(page.slug)} — ${page.h1}` : null
     })
     .filter(Boolean)
     .join('\n')
@@ -20,7 +22,7 @@ export function GET() {
   const supportGuideLinks = SUPPORT_ONLY_GUIDE_SLUGS
     .map((slug) => {
       const page = pagesBySlug.get(slug)
-      return page ? `- ${seoIntentPageUrl(slug)} — ${page.h1}` : null
+      return page ? `- ${seoIntentPageUrl(page.slug)} — ${page.h1}` : null
     })
     .filter(Boolean)
     .join('\n')
