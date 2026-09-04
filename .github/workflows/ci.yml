@@ -36,6 +36,9 @@ jobs:
       - name: Verify search index policy coverage
         run: node scripts/verify-search-index-policy.mjs
 
+      - name: Verify official source monitoring coverage
+        run: node scripts/verify-official-source-monitoring.mjs
+
       - name: Resolve latest runtime release
         run: node scripts/check-production-runtime-freshness.mjs --expected-only
 
