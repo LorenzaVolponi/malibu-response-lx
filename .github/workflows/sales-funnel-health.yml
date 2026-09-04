@@ -64,10 +64,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          html="$(curl -fsS "$SITE_URL/")"
+          curl -fsS "$SITE_URL/" -o /tmp/malibu-share-home.html
 
-          HTML="$html" node <<'NODE'
-          const html = process.env.HTML || ''
+          node <<'NODE'
+          const fs = require('node:fs')
+          const html = fs.readFileSync('/tmp/malibu-share-home.html', 'utf8')
           const canonical = 'https://malibu-response-lx.vercel.app'
 
           if (!html.includes('data-share-attribution="site_share"')) {
@@ -85,16 +86,13 @@ jobs:
             if (!html.includes(marker)) throw new Error(`Rendered share URLs are missing ${marker}`)
           }
 
-          const canonicalPatterns = [
-            `<link rel="canonical" href="${canonical}"`,
-            `<link href="${canonical}" rel="canonical"`,
-          ]
-          if (!canonicalPatterns.some((pattern) => html.includes(pattern))) {
-            throw new Error('Clean canonical link was not found on home')
-          }
-          if (/rel="canonical"[^>]+utm_|utm_[^>]+rel="canonical"/i.test(html)) {
-            throw new Error('Tracking parameters leaked into canonical metadata')
-          }
+          const canonicalTag = (html.match(/<link\b[^>]*\brel=["']canonical["'][^>]*>/i) ||
+            html.match(/<link\b[^>]*\bhref=["'][^"']+["'][^>]*\brel=["']canonical["'][^>]*>/i))?.[0] || ''
+          if (!canonicalTag) throw new Error('Canonical link was not found on home')
+
+          const href = canonicalTag.match(/\bhref=["']([^"']+)["']/i)?.[1] || ''
+          if (href !== canonical) throw new Error(`Canonical must stay clean: ${href}`)
+          if (/utm_/i.test(canonicalTag)) throw new Error('Tracking parameters leaked into canonical metadata')
           NODE
 
       - name: Verify buyer-clean lead redirect
