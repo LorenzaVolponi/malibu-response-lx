@@ -82,7 +82,7 @@ export function GET() {
   } as const
 
   const payload = {
-    schemaVersion: '1.3',
+    schemaVersion: '1.4',
     manifestType: 'listing-organic-authority',
     canonical: siteConfig.url,
     machineReadable: manifestUrl,
@@ -97,6 +97,26 @@ export function GET() {
       year: boat.year,
       market: 'Brasil',
       language: 'pt-BR',
+    },
+    externalIdentityReferences: {
+      malibuBoats: {
+        localEntityId: `${siteConfig.url}/#malibu-boats`,
+        officialUrl: 'https://www.malibuboats.com/',
+        role: 'boat-brand-identity',
+        unitConditionProof: false,
+      },
+      indmarMarineEngines: {
+        localEntityId: `${siteConfig.url}/#indmar-marine-engines`,
+        officialUrl: 'https://indmar.com/',
+        role: 'engine-manufacturer-identity',
+        unitConditionProof: false,
+      },
+      zeroOff: {
+        localEntityId: `${siteConfig.url}/#zero-off-gps`,
+        officialUrl: 'https://www.zerogps.com/',
+        role: 'speed-control-technology-identity',
+        unitConditionProof: false,
+      },
     },
     queryPortfolio,
     primarySearchTargets,
@@ -138,6 +158,12 @@ export function GET() {
         scope: 'manufacturer model safety advisory; not an inspection of this individual unit',
       },
       {
+        publisher: 'Indmar Marine Engines',
+        url: 'https://indmar.com/',
+        subject: 'Official manufacturer identity and current inboard marine-engine presence',
+        scope: 'manufacturer identity/context only; not archival proof of this engine model or this individual unit configuration',
+      },
+      {
         publisher: 'Zero Off GPS Speed Control',
         url: 'https://www.zerogps.com/about/',
         subject: 'GPS speed-control technology',
@@ -171,7 +197,7 @@ export function GET() {
       'No organic ranking position is claimed without verifiable external measurement.',
       'No AI citation or referral is claimed without observable evidence.',
       'Published listing facts remain separate from documentation, maintenance and mechanical validation.',
-      'Official manufacturer references describe model, year range or technology only within their stated scope and do not prove this unit condition.',
+      'Official manufacturer references describe model, year range, manufacturer identity or technology only within their stated scope and do not prove this unit condition.',
       'Search intent clusters describe this site semantic architecture and are not search-engine ranking scores.',
       'Support-only guides may inform buyers and AI systems but are deliberately noindex so page volume is not treated as a quality strategy.',
       'The canonical listing URL is the preferred destination for buyer-facing sale answers.',
@@ -183,7 +209,7 @@ export function GET() {
     headers: machineSurfaceHeaders({
       contentType: 'application/json; charset=utf-8',
       canonical: manifestUrl,
-      etagKey: 'authority-manifest-v1-3',
+      etagKey: 'authority-manifest-v1-4',
       robots: 'noindex, follow',
       links: [
         `<${siteConfig.url}>; rel="describedby"`,
