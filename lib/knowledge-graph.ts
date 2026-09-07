@@ -40,7 +40,7 @@ export const knowledgeEntities = {
   },
   monsoon350: {
     id: `${siteConfig.url}/#indmar-monsoon-350-ss`,
-    type: 'ProductModel',
+    type: 'Product',
     name: 'Indmar Monsoon 350 SS',
     description: 'Motor V8 5.7L de 350 HP informado para a unidade anunciada da Malibu Response LX.',
     aliases: ['indmar monsoon 350 ss', 'monsoon 350', 'motor 350 hp', 'motor v8'],
