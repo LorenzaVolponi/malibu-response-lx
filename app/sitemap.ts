@@ -3,6 +3,11 @@ import { siteConfig } from '@/lib/site-config'
 import { seoIntentPages } from '@/lib/seo-pages'
 import { isIndexableGuideSlug } from '@/lib/search-index-policy.mjs'
 
+// Search policy can change independently of page content. Next.js caches
+// sitemap.ts metadata routes by default, so render this route on demand to
+// prevent a previous release's URL set from surviving a production deploy.
+export const revalidate = 0
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const updatedAt = new Date(siteConfig.updatedAt)
 
