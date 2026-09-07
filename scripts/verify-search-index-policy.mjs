@@ -18,13 +18,19 @@ const missingFromPolicy = diff(sourceSlugs, ALL_CLASSIFIED_GUIDE_SLUGS)
 const stalePolicyEntries = diff(ALL_CLASSIFIED_GUIDE_SLUGS, sourceSlugs)
 const overlap = INDEXABLE_GUIDE_SLUGS.filter((slug) => SUPPORT_ONLY_GUIDE_SLUGS.includes(slug))
 
+// Keep the curated search surface intentionally small. This count changes only
+// when a guide is deliberately promoted into the human-search index policy.
+const EXPECTED_INDEXABLE_GUIDES = 10
+
 const failures = []
 if (duplicateSource.length) failures.push(`Duplicate guide slugs in seo-pages.ts: ${duplicateSource.join(', ')}`)
 if (duplicatePolicy.length) failures.push(`Duplicate guide slugs in index policy: ${duplicatePolicy.join(', ')}`)
 if (missingFromPolicy.length) failures.push(`Unclassified guide slugs: ${missingFromPolicy.join(', ')}`)
 if (stalePolicyEntries.length) failures.push(`Policy entries with no guide: ${stalePolicyEntries.join(', ')}`)
 if (overlap.length) failures.push(`Guide slugs classified both indexable and support-only: ${overlap.join(', ')}`)
-if (INDEXABLE_GUIDE_SLUGS.length !== 9) failures.push(`Expected 9 curated indexable guides, found ${INDEXABLE_GUIDE_SLUGS.length}`)
+if (INDEXABLE_GUIDE_SLUGS.length !== EXPECTED_INDEXABLE_GUIDES) {
+  failures.push(`Expected ${EXPECTED_INDEXABLE_GUIDES} curated indexable guides, found ${INDEXABLE_GUIDE_SLUGS.length}`)
+}
 
 if (failures.length) {
   console.error(failures.join('\n'))
