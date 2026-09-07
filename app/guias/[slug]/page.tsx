@@ -5,6 +5,7 @@ import { MessageCircle } from 'lucide-react'
 import { boat } from '@/lib/boat-data'
 import { knowledgeEntities, knowledgeGraphForText } from '@/lib/knowledge-graph'
 import { getSeoIntentPage, seoIntentPages, seoIntentPageUrl, seoLeadHref } from '@/lib/seo-pages'
+import { isIndexableGuideSlug } from '@/lib/search-index-policy.mjs'
 import { siteConfig } from '@/lib/site-config'
 
 type Props = {
@@ -60,6 +61,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!page) return {}
 
   const pageUrl = seoIntentPageUrl(page.slug)
+  const indexable = isIndexableGuideSlug(page.slug)
 
   return {
     title: page.title,
@@ -96,10 +98,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [`${siteConfig.url}/images/hero-side.jpeg`],
     },
     robots: {
-      index: true,
+      index: indexable,
       follow: true,
       googleBot: {
-        index: true,
+        index: indexable,
         follow: true,
         'max-image-preview': 'large',
         'max-snippet': -1,
