@@ -4,6 +4,10 @@ Repositório do site oficial do anúncio particular da **Malibu Response LX 2013
 
 **Site oficial / URL canônica:** https://malibu-response-lx.vercel.app
 
+**Publicação externa da mesma unidade:** https://www.facebook.com/marketplace/item/1454425093400881
+
+A publicação externa serve como referência adicional de identidade/distribuição da mesma embarcação; a URL canônica do conteúdo permanece o site oficial acima.
+
 ## Regra de produto
 
 **Não adicionar blocos visuais para resolver problemas de backend.**
@@ -15,6 +19,7 @@ A infraestrutura deve melhorar descoberta, mensuração e conversão sem transfo
 Superfícies oficiais e machine-readable:
 
 - Site oficial: https://malibu-response-lx.vercel.app
+- Publicação externa / Facebook Marketplace: https://www.facebook.com/marketplace/item/1454425093400881
 - Robots: https://malibu-response-lx.vercel.app/robots.txt
 - Sitemap: https://malibu-response-lx.vercel.app/sitemap.xml
 - Sitemap de imagens: https://malibu-response-lx.vercel.app/sitemap-images.xml
@@ -26,7 +31,7 @@ Superfícies oficiais e machine-readable:
 - Dossiê técnico: https://malibu-response-lx.vercel.app/dossie-tecnico
 - Diagnóstico de discovery: https://malibu-response-lx.vercel.app/api/ai-readiness — não indexável
 
-A URL canônica é definida em `lib/site-config.ts` e não deve ser substituída por URLs de preview.
+A URL canônica é definida em `lib/site-config.ts` e não deve ser substituída por URLs de preview nem pela publicação externa.
 
 ## Política de evidência
 
