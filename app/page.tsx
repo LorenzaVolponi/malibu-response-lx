@@ -23,7 +23,7 @@ import { siteConfig } from '@/lib/site-config'
 
 const SITE_URL = siteConfig.url
 const entityIds = {
-  website: `${SITE_URL}/#website`, webpage: `${SITE_URL}/#webpage`, product: `${SITE_URL}/#product`, offer: `${SITE_URL}/#offer`, seller: `${SITE_URL}/#seller`, brand: `${SITE_URL}/#malibu-boats`, manufacturer: `${SITE_URL}/#malibu-boats-manufacturer`, model: `${SITE_URL}/#response-lx`, engine: `${SITE_URL}/#indmar-monsoon-350-ss`, engineManufacturer: `${SITE_URL}/#indmar-marine-engines`, zeroOff: `${SITE_URL}/#zero-off-gps`, directDrive: `${SITE_URL}/#direct-drive`, skiBoat: `${SITE_URL}/#ski-boat`, slalom: `${SITE_URL}/#slalom-water-skiing`, wakeboard: `${SITE_URL}/#wakeboard`, glossary: `${SITE_URL}/#nautical-glossary`, evidenceProfile: `${SITE_URL}/#evidence-profile`,
+  website: `${SITE_URL}/#website`, webpage: `${SITE_URL}/#webpage`, product: `${SITE_URL}/#product`, offer: `${SITE_URL}/#offer`, seller: `${SITE_URL}/#seller`, brand: `${SITE_URL}/#malibu-boats`, model: `${SITE_URL}/#response-lx`, engine: `${SITE_URL}/#indmar-monsoon-350-ss`, engineManufacturer: `${SITE_URL}/#indmar-marine-engines`, zeroOff: `${SITE_URL}/#zero-off-gps`, directDrive: `${SITE_URL}/#direct-drive`, skiBoat: `${SITE_URL}/#ski-boat`, slalom: `${SITE_URL}/#slalom-water-skiing`, wakeboard: `${SITE_URL}/#wakeboard`, glossary: `${SITE_URL}/#nautical-glossary`, evidenceProfile: `${SITE_URL}/#evidence-profile`,
 }
 
 const imageObjects = gallery.map((image, index) => ({ '@type': 'ImageObject', '@id': `${SITE_URL}/#image-${index + 1}`, contentUrl: `${SITE_URL}${image.src}`, url: `${SITE_URL}${image.src}`, caption: image.alt, name: image.alt, representativeOfPage: index === 0, inLanguage: 'pt-BR', about: { '@id': entityIds.product }, creditText: 'Fotografia real publicada no anúncio da embarcação' }))
@@ -35,12 +35,11 @@ const definedTerms = [
   { '@type': 'DefinedTerm', '@id': entityIds.zeroOff, name: 'Zero Off GPS', description: 'Sistema de controle de velocidade por GPS utilizado em embarcações de esqui aquático.', inDefinedTermSet: { '@id': entityIds.glossary } },
 ]
 const glossaryJsonLd = { '@type': 'DefinedTermSet', '@id': entityIds.glossary, name: 'Glossário técnico da Malibu Response LX', description: 'Conjunto de termos técnicos e esportivos relacionados à embarcação anunciada.', inLanguage: 'pt-BR', hasDefinedTerm: definedTerms.map((term) => ({ '@id': term['@id'] })) }
-const manufacturerEntities = [
-  { '@type': 'Organization', '@id': entityIds.manufacturer, name: 'Malibu Boats', url: 'https://www.malibuboats.com/' },
-  { '@type': 'Organization', '@id': entityIds.engineManufacturer, name: 'Indmar Marine Engines', url: 'https://www.indmar.com/' },
+const relatedBrandEntities = [
+  { '@type': 'Brand', '@id': entityIds.engineManufacturer, name: 'Indmar Marine Engines', url: 'https://www.indmar.com/' },
 ]
 const productJsonLd = {
-  '@type': 'Product', '@id': entityIds.product, additionalType: 'https://schema.org/Vehicle', url: SITE_URL, name: `${boat.brand} ${boat.model} ${boat.year}`, alternateName: ['Malibu Response LX à venda', 'Lancha Malibu Response LX 2013', boat.name], description: 'Malibu Response LX 2013 à venda, lancha ideal para esqui aquático e slalom com motor Indmar Monsoon 350 SS V8 de 350 HP, transmissão direct drive e controle de velocidade Zero Off GPS.', brand: { '@id': entityIds.brand }, manufacturer: { '@id': entityIds.manufacturer }, model: { '@id': entityIds.model }, category: 'Competition ski boat usada', image: imageObjects.map((image) => ({ '@id': image['@id'] })),
+  '@type': 'Product', '@id': entityIds.product, additionalType: 'https://schema.org/Vehicle', url: SITE_URL, name: `${boat.brand} ${boat.model} ${boat.year}`, alternateName: ['Malibu Response LX à venda', 'Lancha Malibu Response LX 2013', boat.name], description: 'Malibu Response LX 2013 à venda, lancha ideal para esqui aquático e slalom com motor Indmar Monsoon 350 SS V8 de 350 HP, transmissão direct drive e controle de velocidade Zero Off GPS.', brand: { '@id': entityIds.brand }, model: { '@id': entityIds.model }, category: 'Competition ski boat usada', image: imageObjects.map((image) => ({ '@id': image['@id'] })),
   offers: { '@type': 'Offer', '@id': entityIds.offer, priceCurrency: boat.currency, price: boat.price, availability: 'https://schema.org/LimitedAvailability', itemCondition: 'https://schema.org/UsedCondition', areaServed: { '@type': 'Country', name: 'Brasil' }, url: SITE_URL, sameAs: siteConfig.marketplaceUrl, seller: { '@id': entityIds.seller }, itemOffered: { '@id': entityIds.product } },
   mainEntityOfPage: { '@id': entityIds.webpage }, subjectOf: { '@id': entityIds.evidenceProfile }, isRelatedTo: [{ '@id': entityIds.engine }, { '@id': entityIds.zeroOff }, { '@id': entityIds.directDrive }, { '@id': entityIds.skiBoat }, { '@id': entityIds.slalom }, { '@id': entityIds.wakeboard }],
   audience: { '@type': 'Audience', audienceType: 'Compradores de embarcações esportivas, praticantes de esqui aquático e wakeboard' },
@@ -56,7 +55,7 @@ const faqJsonLd = { '@type': 'FAQPage', '@id': `${SITE_URL}/#faq`, isPartOf: { '
 const breadcrumbJsonLd = { '@type': 'BreadcrumbList', '@id': `${SITE_URL}/#breadcrumb`, itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Início', item: SITE_URL }] }
 
 export default function Page() {
-  const structuredData = { '@context': 'https://schema.org', '@graph': [webPageJsonLd, productJsonLd, evidenceProfileJsonLd, galleryJsonLd, videoJsonLd, faqJsonLd, breadcrumbJsonLd, glossaryJsonLd, ...manufacturerEntities, ...definedTerms, ...imageObjects] }
+  const structuredData = { '@context': 'https://schema.org', '@graph': [webPageJsonLd, productJsonLd, evidenceProfileJsonLd, galleryJsonLd, videoJsonLd, faqJsonLd, breadcrumbJsonLd, glossaryJsonLd, ...relatedBrandEntities, ...definedTerms, ...imageObjects] }
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
