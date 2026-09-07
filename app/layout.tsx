@@ -196,7 +196,7 @@ const globalEntityGraph = {
       description: 'Marca de motores náuticos inboard.',
     },
     {
-      '@type': 'ProductModel',
+      '@type': 'Product',
       '@id': entityIds.engine,
       name: 'Indmar Monsoon 350 SS',
       category: 'Motor náutico V8',
