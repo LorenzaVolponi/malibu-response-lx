@@ -1,6 +1,6 @@
-# Malibu Response LX
+# Malibu Response LX 2013 à venda no Brasil — R$ 165.000
 
-Site de venda da **Malibu Response LX 2013**. A prioridade técnica é manter o front premium e simples enquanto SEO/GEO, atribuição, observabilidade e precisão de claims funcionam no backend.
+Repositório do site oficial do anúncio particular da **Malibu Response LX 2013** à venda no Brasil por **R$ 165.000**. A embarcação anunciada tem motor **Indmar Monsoon 350 SS V8 350 HP**, transmissão **direct drive**, **Zero Off GPS** e **940 horas informadas**. A prioridade técnica é manter o front premium e simples enquanto SEO/GEO, atribuição, observabilidade e precisão de claims funcionam no backend.
 
 **Site oficial / URL canônica:** https://malibu-response-lx.vercel.app
 
