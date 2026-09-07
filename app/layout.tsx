@@ -189,18 +189,18 @@ const globalEntityGraph = {
       ],
     },
     {
-      '@type': 'Brand',
+      '@type': 'Organization',
       '@id': entityIds.indmar,
       name: 'Indmar Marine Engines',
       url: 'https://indmar.com/',
-      description: 'Marca de motores náuticos inboard.',
+      description: 'Fabricante de motores náuticos inboard.',
     },
     {
       '@type': 'Product',
       '@id': entityIds.engine,
       name: 'Indmar Monsoon 350 SS',
       category: 'Motor náutico V8',
-      brand: { '@id': entityIds.indmar },
+      manufacturer: { '@id': entityIds.indmar },
       additionalProperty: [
         { '@type': 'PropertyValue', name: 'Potência', value: '350 HP' },
         { '@type': 'PropertyValue', name: 'Configuração', value: 'V8' },
