@@ -18,9 +18,10 @@ const missingFromPolicy = diff(sourceSlugs, ALL_CLASSIFIED_GUIDE_SLUGS)
 const stalePolicyEntries = diff(ALL_CLASSIFIED_GUIDE_SLUGS, sourceSlugs)
 const overlap = INDEXABLE_GUIDE_SLUGS.filter((slug) => SUPPORT_ONLY_GUIDE_SLUGS.includes(slug))
 
-// Keep the curated search surface intentionally small. This count changes only
-// when a guide is deliberately promoted into the human-search index policy.
-const EXPECTED_INDEXABLE_GUIDES = 10
+// Keep the curated search surface intentionally small. Exact sale intent belongs
+// to the canonical homepage; guides should expand topic coverage without
+// duplicating that primary transactional target.
+const EXPECTED_INDEXABLE_GUIDES = 9
 
 const failures = []
 if (duplicateSource.length) failures.push(`Duplicate guide slugs in seo-pages.ts: ${duplicateSource.join(', ')}`)

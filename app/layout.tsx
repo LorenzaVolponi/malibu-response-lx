@@ -9,13 +9,14 @@ import { ConversionEventTracker } from '@/components/conversion-event-tracker'
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.listingName} à venda | ${boat.priceLabel} | Zero Off GPS`,
+    default: `${siteConfig.listingName} à venda no Brasil | ${boat.priceLabel}`,
     template: `%s | ${siteConfig.name}`,
   },
-  description: `${siteConfig.listingName} à venda por ${boat.priceLabel}. Competition ski boat direct drive para esqui aquático e slalom, com motor Indmar Monsoon 350 SS V8 350 HP, ${boat.engineHours} h e Zero Off GPS.`,
+  description: `Lancha ${siteConfig.listingName} usada à venda no Brasil por ${boat.priceLabel}. Direct drive para esqui aquático e slalom, motor Indmar Monsoon 350 SS V8 350 HP, ${boat.engineHours} h e Zero Off GPS.`,
   applicationName: siteConfig.name,
   keywords: [
     'Malibu Response LX à venda',
+    'Malibu Response LX 2013 à venda no Brasil',
     'Malibu Response LX 2013',
     'Malibu Response LX preço',
     'Malibu Response LX usada',
@@ -48,14 +49,14 @@ export const metadata: Metadata = {
     types: { 'application/rss+xml': '/feed.xml' },
   },
   category: 'Náutica',
-  classification: 'Anúncio de competition ski boat usada para esqui aquático e slalom',
+  classification: 'Anúncio de lancha Malibu Response LX usada à venda no Brasil para esqui aquático e slalom',
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
     url: siteConfig.url,
     siteName: siteConfig.name,
-    title: `${siteConfig.listingName} à venda — ${boat.priceLabel}`,
-    description: `Competition ski boat direct drive com Indmar V8 350 HP, Zero Off GPS e ${boat.engineHours} horas informadas. Foco em esqui aquático e slalom.`,
+    title: `${siteConfig.listingName} à venda no Brasil — ${boat.priceLabel}`,
+    description: `Lancha esportiva direct drive com Indmar V8 350 HP, Zero Off GPS e ${boat.engineHours} horas informadas. Fotos reais e negociação direta.`,
     images: [{
       url: '/images/hero-side.jpeg',
       width: 1600,
@@ -65,8 +66,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${siteConfig.listingName} à venda por ${boat.priceLabel}`,
-    description: `Direct drive para esqui aquático e slalom: V8 350 HP, ${boat.engineHours} horas e Zero Off GPS.`,
+    title: `${siteConfig.listingName} à venda no Brasil por ${boat.priceLabel}`,
+    description: `Lancha direct drive para esqui aquático e slalom: V8 350 HP, ${boat.engineHours} horas e Zero Off GPS.`,
     images: ['/images/hero-side.jpeg'],
   },
   robots: {
@@ -133,7 +134,7 @@ const globalEntityGraph = {
       '@id': entityIds.website,
       url: siteConfig.url,
       name: siteConfig.name,
-      alternateName: `${siteConfig.listingName} à venda`,
+      alternateName: `${siteConfig.listingName} à venda no Brasil`,
       description: `Site oficial do anúncio da ${siteConfig.listingName}, com preço, dossiê técnico, guias e dados estruturados da embarcação.`,
       inLanguage: 'pt-BR',
       publisher: { '@id': entityIds.seller },
@@ -242,6 +243,7 @@ const globalEntityGraph = {
       dateModified: siteConfig.updatedAt,
       keywords: [
         'Malibu Response LX 2013',
+        'Malibu Response LX à venda no Brasil',
         'competition ski boat',
         'lancha de slalom',
         'Indmar Monsoon 350 SS',
