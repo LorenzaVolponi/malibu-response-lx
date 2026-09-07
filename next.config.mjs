@@ -84,7 +84,9 @@ const nextConfig = {
           { key: 'X-Frame-Options', value: 'DENY' },
         ],
       },
-      { source: '/sitemap.xml', headers: [{ key: 'Cache-Control', value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' }] },
+      // Search engines should never receive a previous release's URL policy.
+      // The sitemap is tiny, so correctness is more valuable than edge caching.
+      { source: '/sitemap.xml', headers: [{ key: 'Cache-Control', value: 'no-store, max-age=0' }] },
       { source: '/sitemap-images.xml', headers: [{ key: 'Cache-Control', value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' }] },
       { source: '/robots.txt', headers: [{ key: 'Cache-Control', value: 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400' }] },
       { source: '/feed.xml', headers: machineHeaders('application/rss+xml; charset=utf-8') },
